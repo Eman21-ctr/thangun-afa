@@ -160,17 +160,16 @@ const LandingPage = () => {
                     </div>
 
                     <div className="relative max-w-4xl mx-auto">
-                        <div className="overflow-hidden rounded-[2.5rem] bg-white shadow-xl shadow-primary/5 border border-primary-100/20">
+                        <div className="overflow-hidden rounded-2xl bg-white border border-primary-100/20">
                             <div
                                 className="flex transition-transform duration-700 ease-in-out"
                                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                             >
                                 {(team.length > 0 ? team : [{ id: 1, name: 'Anggota Tim', position: 'Petani', quote: 'Kami bangga bertani untuk masa depan.' }]).map((m, i) => (
-                                    <div key={m.id || i} className="w-full shrink-0 p-8 md:p-16">
+                                    <div key={m.id || i} className="w-full shrink-0 p-8 md:p-14 min-h-[350px] md:min-h-[400px] flex flex-col justify-center">
                                         <div className="space-y-8 text-left">
                                             <div className="relative">
-                                                <Quotes size={48} weight="fill" className="text-primary/10 absolute -top-6 -left-4" />
-                                                <p className="text-xl md:text-3xl font-normal text-gray-800 italic leading-relaxed relative z-10">
+                                                <p className="text-lg md:text-2xl font-normal text-gray-800 leading-relaxed">
                                                     "{m.quote || 'Berani bertani, berani mandiri untuk ketahanan pangan masa depan.'}"
                                                 </p>
                                             </div>
@@ -184,10 +183,10 @@ const LandingPage = () => {
                                                     />
                                                 </div>
                                                 <div className="text-left">
-                                                    <h3 className="text-lg md:text-xl font-black text-gray-900 tracking-tight leading-none">
+                                                    <h3 className="text-md md:text-lg font-black text-gray-900 tracking-tight leading-none">
                                                         {m.name || 'Anggota Tim'}
                                                     </h3>
-                                                    <p className="text-sm md:text-md font-bold text-primary uppercase mt-2 tracking-widest">
+                                                    <p className="text-[10px] md:text-xs font-bold text-primary uppercase mt-1.5 tracking-widest">
                                                         {m.position || 'Petani Muda'}
                                                     </p>
                                                 </div>
