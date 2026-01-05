@@ -216,13 +216,13 @@ const LandingPage = () => {
                         )}
 
                         {/* Navigation Dots */}
-                        <div className="flex justify-center mt-8 space-x-2">
+                        <div className="flex justify-center items-center mt-8 space-x-2">
                             {team.map((_, i) => (
                                 <button
                                     key={i}
                                     onClick={() => setCurrentSlide(i)}
                                     className={clsx(
-                                        "w-1.5 h-1.5 rounded-full transition-all duration-300",
+                                        "w-2 h-2 rounded-full transition-all duration-300 shrink-0",
                                         currentSlide === i ? "bg-primary" : "bg-primary/20"
                                     )}
                                 />
