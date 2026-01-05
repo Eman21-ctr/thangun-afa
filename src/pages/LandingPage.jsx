@@ -221,7 +221,7 @@ const LandingPage = () => {
                                 <button
                                     key={i}
                                     onClick={() => setCurrentSlide(i)}
-                                    className={`block w-2.5 h-2.5 rounded-full transition-all duration-500 shrink-0 ${currentSlide === i ? "bg-primary" : "bg-primary/20"
+                                    className={`block w-2.5 h-2.5 min-h-0 min-w-0 rounded-full transition-all duration-500 shrink-0 cursor-pointer ${currentSlide === i ? "bg-primary" : "bg-primary/20"
                                         }`}
                                     aria-label={`Go to slide ${i + 1}`}
                                 />
