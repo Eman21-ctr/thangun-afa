@@ -35,7 +35,7 @@ const ContentManagement = () => {
     })
 
     const [newPhoto, setNewPhoto] = useState({ photo_url: '', caption: '', display_type: 'square' })
-    const [newMember, setNewMember] = useState({ name: '', position: '', photo_url: '' })
+    const [newMember, setNewMember] = useState({ name: '', position: '', photo_url: '', quote: '' })
     const [newNews, setNewNews] = useState({ title: '', content: '', thumbnail_url: '', is_published: true })
 
     useEffect(() => {
@@ -101,7 +101,7 @@ const ContentManagement = () => {
                 await addTeamMember.mutateAsync(newMember)
                 toast.success('Anggota berhasil ditambahkan')
             }
-            setNewMember({ name: '', position: '', photo_url: '' })
+            setNewMember({ name: '', position: '', photo_url: '', quote: '' })
             setEditingId(null)
         } catch (error) {
             toast.error('Gagal menyimpan anggota')
@@ -451,6 +451,13 @@ const ContentManagement = () => {
                                     onChange={(e) => setNewMember({ ...newMember, photo_url: e.target.value })}
                                     className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
                                 />
+                                <textarea
+                                    rows="2"
+                                    placeholder="Kutipan / Testimoni Singkat"
+                                    value={newMember.quote}
+                                    onChange={(e) => setNewMember({ ...newMember, quote: e.target.value })}
+                                    className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700 resize-none"
+                                ></textarea>
                                 <button type="submit" className="w-full py-4 bg-primary text-white font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20">
                                     {editingId ? 'Simpan Perubahan' : 'Tambah Anggota'}
                                 </button>
@@ -470,7 +477,7 @@ const ContentManagement = () => {
                                         <button
                                             onClick={() => {
                                                 setEditingId(m.id)
-                                                setNewMember({ name: m.name, position: m.position, photo_url: m.photo_url })
+                                                setNewMember({ name: m.name, position: m.position, photo_url: m.photo_url, quote: m.quote || '' })
                                                 window.scrollTo({ top: 0, behavior: 'smooth' })
                                             }}
                                             className="p-1.5 bg-white text-primary rounded-full shadow-lg"

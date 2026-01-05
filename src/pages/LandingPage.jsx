@@ -1,5 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { Plant, Users, MapPin, WhatsappLogo, InstagramLogo, Leaf, ArrowRight, Heart, Drop, Sun, CircleNotch, Newspaper, Star, X, List } from '@phosphor-icons/react'
+import {
+    Plant, Users, MapPin, WhatsappLogo, InstagramLogo, Leaf, ArrowRight, Heart, Drop, Sun, CircleNotch, Newspaper, Star, List, X, Quotes, CaretLeft, CaretRight
+} from '@phosphor-icons/react'
 import { useContent } from '../hooks/useContent'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
@@ -20,6 +22,16 @@ const LandingPage = () => {
     const { settings, gallery, team, news, isLoading } = useContent()
     const navigate = useNavigate()
 
+    const [currentSlide, setCurrentSlide] = useState(0)
+
+    useEffect(() => {
+        if (team.length === 0) return
+        const interval = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % team.length)
+        }, 3000)
+        return () => clearInterval(interval)
+    }, [team.length])
+
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-cream">
@@ -29,6 +41,14 @@ const LandingPage = () => {
     }
 
     const whatsappLink = `https://wa.me/${settings?.whatsapp_number || '6281234567890'}`
+
+    const goToPrevSlide = () => {
+        setCurrentSlide((prev) => (prev - 1 + team.length) % team.length)
+    }
+
+    const goToNextSlide = () => {
+        setCurrentSlide((prev) => (prev + 1) % team.length)
+    }
 
     return (
         <div className="min-h-screen bg-cream font-sans">
@@ -128,8 +148,7 @@ const LandingPage = () => {
 
 
             {/* Tim Kami Section */}
-            {/* Tim Kami Section */}
-            <section id="tim" className="py-12 lg:py-24 px-6">
+            <section id="tim" className="py-12 lg:py-24 px-6 bg-gray-50/50">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12 lg:mb-20 space-y-3">
                         <div className="inline-flex items-center px-4 py-1.5 bg-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
@@ -139,24 +158,77 @@ const LandingPage = () => {
                             Yang Muda Yang Bertani
                         </h2>
                     </div>
-                    <div className="grid grid-cols-4 md:grid-cols-8 gap-2 md:gap-6">
-                        {(team.length > 0 ? team : [1, 2, 3, 4]).map((m, i) => (
-                            <div key={m.id || i} className="text-center group">
-                                <div className="w-16 h-16 md:w-24 md:h-24 mx-auto mb-3 rounded-full overflow-hidden bg-primary-50 ring-2 ring-primary/10 group-hover:ring-primary transition-all duration-500 shadow-sm">
-                                    <img
-                                        src={m.photo_url || `/images/member-${(i % 2) + 1}.jpg`}
-                                        alt={m.name}
-                                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
-                                    />
-                                </div>
-                                <h3 className="text-[9px] md:text-xs font-black text-gray-800 tracking-tight leading-tight">
-                                    {m.name || 'Anggota Tim'}
-                                </h3>
-                                <p className="text-[7px] md:text-[9px] font-bold text-primary/60 uppercase mt-0.5 tracking-widest leading-none">
-                                    {m.position || 'Petani'}
-                                </p>
+
+                    <div className="relative max-w-4xl mx-auto">
+                        <div className="overflow-hidden rounded-[2.5rem] bg-white shadow-xl shadow-primary/5 border border-primary-100/20">
+                            <div
+                                className="flex transition-transform duration-700 ease-in-out"
+                                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                            >
+                                {(team.length > 0 ? team : [{ id: 1, name: 'Anggota Tim', position: 'Petani', quote: 'Kami bangga bertani untuk masa depan.' }]).map((m, i) => (
+                                    <div key={m.id || i} className="w-full shrink-0 p-8 md:p-16">
+                                        <div className="space-y-8 text-left">
+                                            <div className="relative">
+                                                <Quotes size={48} weight="fill" className="text-primary/10 absolute -top-6 -left-4" />
+                                                <p className="text-xl md:text-3xl font-normal text-gray-800 italic leading-relaxed relative z-10">
+                                                    "{m.quote || 'Berani bertani, berani mandiri untuk ketahanan pangan masa depan.'}"
+                                                </p>
+                                            </div>
+
+                                            <div className="flex items-center space-x-4 pt-4">
+                                                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden bg-primary-100/50 border-2 border-primary-50">
+                                                    <img
+                                                        src={m.photo_url || `/images/member-${(i % 2) + 1}.jpg`}
+                                                        alt={m.name}
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                </div>
+                                                <div className="text-left">
+                                                    <h3 className="text-lg md:text-xl font-black text-gray-900 tracking-tight leading-none">
+                                                        {m.name || 'Anggota Tim'}
+                                                    </h3>
+                                                    <p className="text-sm md:text-md font-bold text-primary uppercase mt-2 tracking-widest">
+                                                        {m.position || 'Petani Muda'}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+                        </div>
+
+                        {/* Navigation Buttons */}
+                        {team.length > 1 && (
+                            <>
+                                <button
+                                    onClick={goToPrevSlide}
+                                    className="absolute top-1/2 -translate-y-1/2 left-4 p-3 bg-white rounded-full shadow-md text-gray-600 hover:bg-gray-100 transition-colors z-20"
+                                >
+                                    <CaretLeft size={24} weight="bold" />
+                                </button>
+                                <button
+                                    onClick={goToNextSlide}
+                                    className="absolute top-1/2 -translate-y-1/2 right-4 p-3 bg-white rounded-full shadow-md text-gray-600 hover:bg-gray-100 transition-colors z-20"
+                                >
+                                    <CaretRight size={24} weight="bold" />
+                                </button>
+                            </>
+                        )}
+
+                        {/* Navigation Dots */}
+                        <div className="flex justify-center mt-8 space-x-2">
+                            {team.map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setCurrentSlide(i)}
+                                    className={clsx(
+                                        "w-2 h-2 rounded-full transition-all duration-300",
+                                        currentSlide === i ? "w-8 bg-primary" : "bg-primary/20"
+                                    )}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>
