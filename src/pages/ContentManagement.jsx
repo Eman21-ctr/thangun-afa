@@ -8,6 +8,8 @@ import {
 } from '@phosphor-icons/react'
 import { toast } from 'react-hot-toast'
 import { clsx } from 'clsx'
+import imageCompression from 'browser-image-compression'
+import { supabase } from '../lib/supabase'
 
 const ContentManagement = () => {
     const {
@@ -37,6 +39,7 @@ const ContentManagement = () => {
     const [newPhoto, setNewPhoto] = useState({ photo_url: '', caption: '', display_type: 'square' })
     const [newMember, setNewMember] = useState({ name: '', position: '', photo_url: '', quote: '' })
     const [newNews, setNewNews] = useState({ title: '', content: '', thumbnail_url: '', is_published: true })
+    const [isUploading, setIsUploading] = useState(false)
 
     useEffect(() => {
         if (settings) {
@@ -70,6 +73,42 @@ const ContentManagement = () => {
         const newFeatures = [...formData.features]
         newFeatures[index][field] = value
         setFormData({ ...formData, features: newFeatures })
+    }
+
+    const handleImageUpload = async (file, type) => {
+        if (!file) return
+
+        const options = {
+            maxSizeMB: 0.5,
+            maxWidthOrHeight: 1200,
+            useWebWorker: true
+        }
+
+        try {
+            setIsUploading(true)
+            const compressedFile = await imageCompression(file, options)
+            const fileExt = file.name.split('.').pop()
+            const fileName = `${Math.random()}.${fileExt}`
+            const filePath = `${type}/${fileName}`
+
+            const { error: uploadError } = await supabase.storage
+                .from('content')
+                .upload(filePath, compressedFile)
+
+            if (uploadError) throw uploadError
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('content')
+                .getPublicUrl(filePath)
+
+            setIsUploading(false)
+            return publicUrl
+        } catch (error) {
+            console.error('Upload error:', error)
+            toast.error('Gagal mengupload gambar')
+            setIsUploading(false)
+            return null
+        }
     }
 
     const handlePhotoSubmit = async (e) => {
@@ -340,13 +379,27 @@ const ContentManagement = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <input
-                                    type="text"
-                                    placeholder="URL Foto (Contoh: /images/activity-1.jpg)"
-                                    value={newPhoto.photo_url}
-                                    onChange={(e) => setNewPhoto({ ...newPhoto, photo_url: e.target.value })}
-                                    className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
-                                />
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        placeholder="URL Foto (Contoh: /images/activity-1.jpg)"
+                                        value={newPhoto.photo_url}
+                                        onChange={(e) => setNewPhoto({ ...newPhoto, photo_url: e.target.value })}
+                                        className="flex-grow p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
+                                    />
+                                    <label className="shrink-0 flex items-center justify-center w-14 h-14 bg-primary text-white rounded-2xl cursor-pointer hover:bg-primary-600 transition-colors">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            className="hidden"
+                                            onChange={async (e) => {
+                                                const url = await handleImageUpload(e.target.files[0], 'gallery')
+                                                if (url) setNewPhoto({ ...newPhoto, photo_url: url })
+                                            }}
+                                        />
+                                        {isUploading ? <CircleNotch size={24} className="animate-spin" /> : <Plus size={24} weight="bold" />}
+                                    </label>
+                                </div>
                                 <div className="grid grid-cols-2 gap-3">
                                     <button
                                         type="button"
@@ -444,13 +497,27 @@ const ContentManagement = () => {
                                     onChange={(e) => setNewMember({ ...newMember, position: e.target.value })}
                                     className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
                                 />
-                                <input
-                                    type="text"
-                                    placeholder="URL Foto Profil"
-                                    value={newMember.photo_url}
-                                    onChange={(e) => setNewMember({ ...newMember, photo_url: e.target.value })}
-                                    className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
-                                />
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        placeholder="URL Foto Profil"
+                                        value={newMember.photo_url}
+                                        onChange={(e) => setNewMember({ ...newMember, photo_url: e.target.value })}
+                                        className="flex-grow p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
+                                    />
+                                    <label className="shrink-0 flex items-center justify-center w-14 h-14 bg-primary text-white rounded-2xl cursor-pointer hover:bg-primary-600 transition-colors">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            className="hidden"
+                                            onChange={async (e) => {
+                                                const url = await handleImageUpload(e.target.files[0], 'team')
+                                                if (url) setNewMember({ ...newMember, photo_url: url })
+                                            }}
+                                        />
+                                        {isUploading ? <CircleNotch size={24} className="animate-spin" /> : <Plus size={24} weight="bold" />}
+                                    </label>
+                                </div>
                                 <textarea
                                     rows="2"
                                     placeholder="Kutipan / Testimoni Singkat"
@@ -523,13 +590,27 @@ const ContentManagement = () => {
                                     onChange={(e) => setNewNews({ ...newNews, title: e.target.value })}
                                     className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
                                 />
-                                <input
-                                    type="text"
-                                    placeholder="URL Gambar Sampul (Optional)"
-                                    value={newNews.thumbnail_url}
-                                    onChange={(e) => setNewNews({ ...newNews, thumbnail_url: e.target.value })}
-                                    className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
-                                />
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        placeholder="URL Gambar Sampul (Optional)"
+                                        value={newNews.thumbnail_url}
+                                        onChange={(e) => setNewNews({ ...newNews, thumbnail_url: e.target.value })}
+                                        className="flex-grow p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
+                                    />
+                                    <label className="shrink-0 flex items-center justify-center w-14 h-14 bg-primary text-white rounded-2xl cursor-pointer hover:bg-primary-600 transition-colors">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            className="hidden"
+                                            onChange={async (e) => {
+                                                const url = await handleImageUpload(e.target.files[0], 'news')
+                                                if (url) setNewNews({ ...newNews, thumbnail_url: url })
+                                            }}
+                                        />
+                                        {isUploading ? <CircleNotch size={24} className="animate-spin" /> : <Plus size={24} weight="bold" />}
+                                    </label>
+                                </div>
                                 <textarea
                                     rows="5"
                                     placeholder="Isi Berita..."

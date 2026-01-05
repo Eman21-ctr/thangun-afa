@@ -166,15 +166,15 @@ const LandingPage = () => {
                                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                             >
                                 {(team.length > 0 ? team : [{ id: 1, name: 'Anggota Tim', position: 'Petani', quote: 'Kami bangga bertani untuk masa depan.' }]).map((m, i) => (
-                                    <div key={m.id || i} className="w-full shrink-0 p-8 md:p-14 min-h-[350px] md:min-h-[400px] flex flex-col justify-center">
-                                        <div className="space-y-8 text-left">
+                                    <div key={m.id || i} className="w-full shrink-0 p-8 md:p-14 min-h-[400px] md:min-h-[450px] flex flex-col justify-center">
+                                        <div className="space-y-12 text-left">
                                             <div className="relative">
                                                 <p className="text-lg md:text-2xl font-normal text-gray-800 leading-relaxed">
                                                     "{m.quote || 'Berani bertani, berani mandiri untuk ketahanan pangan masa depan.'}"
                                                 </p>
                                             </div>
 
-                                            <div className="flex items-center space-x-4 pt-4">
+                                            <div className="flex items-center space-x-4 pt-10 border-t border-gray-50">
                                                 <div className="w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden bg-primary-100/50 border-2 border-primary-50">
                                                     <img
                                                         src={m.photo_url || `/images/member-${(i % 2) + 1}.jpg`}
