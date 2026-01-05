@@ -142,6 +142,14 @@ export const useContent = () => {
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['news'] })
     })
 
+    const deleteNews = useMutation({
+        mutationFn: async (id) => {
+            const { error } = await supabase.from('news_articles').delete().eq('id', id)
+            if (error) throw error
+        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['news'] })
+    })
+
     const updateGallery = useMutation({
         mutationFn: async (photo) => {
             const { data, error } = await supabase
