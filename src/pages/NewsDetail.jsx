@@ -1,8 +1,10 @@
 import { useParams, Link } from 'react-router-dom'
 import { useContent } from '../hooks/useContent'
-import { Newspaper, ArrowLeft, Calendar, CircleNotch, MapPin, WhatsappLogo, InstagramLogo } from '@phosphor-icons/react'
+import { Calendar } from '@phosphor-icons/react'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
+import PublicFooter from '../components/layout/PublicFooter'
+import PublicNavbar from '../components/layout/PublicNavbar'
 
 const NewsDetail = () => {
     const { slug } = useParams()
@@ -12,7 +14,7 @@ const NewsDetail = () => {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-cream">
-                <CircleNotch className="animate-spin text-primary" size={40} weight="bold" />
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
             </div>
         )
     }
@@ -26,24 +28,14 @@ const NewsDetail = () => {
         )
     }
 
-    const whatsappLink = `https://wa.me/${settings?.whatsapp_number || '6281234567890'}`
-
     return (
-        <div className="min-h-screen bg-white font-sans pb-20">
-            {/* Header / Nav */}
-            <nav className="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-xl border-b border-primary-100/30">
-                <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <Link to="/" className="flex items-center space-x-2 text-primary group">
-                        <ArrowLeft size={20} weight="bold" className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="text-xs font-black uppercase tracking-widest">Kembali</span>
-                    </Link>
-                    <img src="/images/logo-color.png" alt="Thangun Afa" className="h-8 w-auto" />
-                </div>
-            </nav>
+        <div className="min-h-screen flex flex-col bg-white font-sans">
+            {/* Navigation */}
+            <PublicNavbar />
 
             {/* Content */}
-            <main className="pt-24 px-6">
-                <div className="max-w-3xl mx-auto">
+            <main className="pt-24 px-6 flex-grow">
+                <div className="max-w-3xl mx-auto mb-20">
                     {/* Meta */}
                     {/* Meta */}
                     <div className="flex items-center justify-between text-xs font-medium text-gray-500 mb-6">
@@ -71,29 +63,9 @@ const NewsDetail = () => {
                     <div className="prose prose-lg max-w-none text-gray-600 font-medium leading-relaxed whitespace-pre-line">
                         {article.content}
                     </div>
-
-                    {/* Footer / Share Placeholder */}
-                    <div className="mt-16 pt-10 border-t border-primary-100/50 flex flex-col md:flex-row items-center justify-between gap-6 pb-12">
-                        <div className="flex items-center space-x-4">
-                            <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center text-white shadow-lg">
-                                <MapPin size={24} weight="fill" />
-                            </div>
-                            <div>
-                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Lokasi Kami</p>
-                                <p className="text-sm font-bold text-gray-800">{settings?.address}</p>
-                            </div>
-                        </div>
-                        <div className="flex space-x-3">
-                            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="p-4 bg-primary text-white rounded-2xl shadow-xl shadow-primary/20 hover:scale-105 transition-all">
-                                <WhatsappLogo size={24} weight="fill" />
-                            </a>
-                            <a href={(settings?.instagram_url)} target="_blank" rel="noopener noreferrer" className="p-4 bg-white text-primary border border-primary-100 rounded-2xl shadow-lg hover:scale-105 transition-all">
-                                <InstagramLogo size={24} weight="fill" />
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </main>
+            <PublicFooter />
         </div>
     )
 }

@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useContent } from '../hooks/useContent'
-import { ArrowLeft, CircleNotch, Image as ImageIcon } from '@phosphor-icons/react'
 import { clsx } from 'clsx'
+import PublicFooter from '../components/layout/PublicFooter'
+import PublicNavbar from '../components/layout/PublicNavbar'
 
 const AllGallery = () => {
     const { gallery, isLoading } = useContent()
@@ -9,26 +10,18 @@ const AllGallery = () => {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-cream">
-                <CircleNotch className="animate-spin text-primary" size={40} weight="bold" />
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-cream font-sans pb-20">
-            <nav className="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-xl border-b border-primary-100/30">
-                <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <Link to="/" className="flex items-center space-x-2 text-primary group">
-                        <ArrowLeft size={20} weight="bold" className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="text-xs font-bold">Kembali</span>
-                    </Link>
-                    <h1 className="text-sm font-bold text-gray-800">Galeri momen</h1>
-                    <img src="/images/logo-color.png" alt="Thangun Afa" className="h-8 w-auto hidden md:block" />
-                </div>
-            </nav>
+        <div className="min-h-screen flex flex-col bg-white font-sans">
+            {/* Navigation */}
+            <PublicNavbar />
 
-            <main className="pt-28 px-6">
-                <div className="max-w-6xl mx-auto">
+            <main className="pt-28 px-6 flex-grow">
+                <div className="max-w-6xl mx-auto mb-20">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {gallery.map((photo, i) => {
                             const isLandscape = photo.display_type === 'landscape'
@@ -53,6 +46,7 @@ const AllGallery = () => {
                     </div>
                 </div>
             </main>
+            <PublicFooter />
         </div>
     )
 }

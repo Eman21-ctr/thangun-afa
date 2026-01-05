@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import { useContent } from '../hooks/useContent'
-import { Newspaper, ArrowLeft, Calendar, CircleNotch, ArrowRight } from '@phosphor-icons/react'
+import { Newspaper, Calendar, ArrowRight } from '@phosphor-icons/react'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
+import PublicFooter from '../components/layout/PublicFooter'
+import PublicNavbar from '../components/layout/PublicNavbar'
 
 const AllNews = () => {
     const { news, isLoading } = useContent()
@@ -11,27 +13,18 @@ const AllNews = () => {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-cream">
-                <CircleNotch className="animate-spin text-primary" size={40} weight="bold" />
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-white font-sans pb-20">
-            {/* Header / Nav */}
-            <nav className="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-xl border-b border-primary-100/30">
-                <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <Link to="/" className="flex items-center space-x-2 text-primary group">
-                        <ArrowLeft size={20} weight="bold" className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="text-xs font-bold">Kembali</span>
-                    </Link>
-                    <h1 className="text-sm font-bold text-gray-800">Arsip berita</h1>
-                    <img src="/images/logo-color.png" alt="Thangun Afa" className="h-8 w-auto hidden md:block" />
-                </div>
-            </nav>
+        <div className="min-h-screen flex flex-col bg-white font-sans">
+            {/* Navigation */}
+            <PublicNavbar />
 
-            <main className="pt-28 px-6">
-                <div className="max-w-6xl mx-auto">
+            <main className="pt-28 px-6 flex-grow">
+                <div className="max-w-6xl mx-auto mb-20">
                     <div className="grid md:grid-cols-3 gap-10">
                         {publishedNews.map((item) => (
                             <Link
@@ -65,6 +58,7 @@ const AllNews = () => {
                     </div>
                 </div>
             </main>
+            <PublicFooter />
         </div>
     )
 }

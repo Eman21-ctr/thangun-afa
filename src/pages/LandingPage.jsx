@@ -5,6 +5,8 @@ import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
 import { clsx } from 'clsx'
 import { useState, useEffect } from 'react'
+import PublicFooter from '../components/layout/PublicFooter'
+import PublicNavbar from '../components/layout/PublicNavbar'
 
 const iconMap = {
     Drop: Drop,
@@ -17,16 +19,6 @@ const iconMap = {
 const LandingPage = () => {
     const { settings, gallery, team, news, isLoading } = useContent()
     const navigate = useNavigate()
-    const [menuOpen, setMenuOpen] = useState(false)
-    const [scrolled, setScrolled] = useState(false)
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 20)
-        }
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
 
     if (isLoading) {
         return (
@@ -38,106 +30,10 @@ const LandingPage = () => {
 
     const whatsappLink = `https://wa.me/${settings?.whatsapp_number || '6281234567890'}`
 
-    const navLinks = [
-        { name: 'Beranda', href: '#' },
-        { name: 'Tentang', href: '/about' },
-        { name: 'Tim', href: '#tim' },
-        { name: 'Berita', href: '#berita' },
-        { name: 'Galeri', href: '#galeri' },
-    ]
-
     return (
         <div className="min-h-screen bg-cream font-sans">
             {/* Navigation */}
-            <nav className={clsx(
-                "fixed top-0 inset-x-0 z-[100] transition-all duration-500",
-                scrolled
-                    ? "bg-white/90 backdrop-blur-xl border-b border-primary-100/20 py-3 shadow-sm"
-                    : "bg-transparent py-5"
-            )}>
-                <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-                    <div className="flex items-center space-x-12">
-                        <Link to="/" className="flex items-center">
-                            <img
-                                src="/images/logo-color.png"
-                                alt="Thangun Afa"
-                                className={clsx(
-                                    "h-9 w-auto transition-all duration-500",
-                                    !scrolled && "brightness-0 invert"
-                                )}
-                            />
-                        </Link>
-
-                        {/* Desktop Links */}
-                        <div className="hidden lg:flex items-center space-x-8">
-                            {navLinks.map((link) => (
-                                <a
-                                    key={link.name}
-                                    href={link.href}
-                                    className={clsx(
-                                        "text-sm font-bold transition-colors duration-300",
-                                        scrolled ? "text-gray-600 hover:text-primary" : "text-white/90 hover:text-accent"
-                                    )}
-                                >
-                                    {link.name}
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="flex items-center space-x-4">
-                        <Link
-                            to="/login"
-                            className={clsx(
-                                "hidden lg:block px-6 py-2 text-xs font-bold rounded-xl transition-all duration-500",
-                                scrolled
-                                    ? "bg-primary text-white shadow-lg shadow-primary/20 hover:scale-105"
-                                    : "bg-white/20 text-white backdrop-blur-md border border-white/20 hover:bg-white hover:text-primary"
-                            )}
-                        >
-                            Masuk
-                        </Link>
-
-                        {/* Hamburger for mobile */}
-                        <button
-                            onClick={() => setMenuOpen(!menuOpen)}
-                            className={clsx(
-                                "lg:hidden p-2 transition-colors duration-500",
-                                scrolled ? "text-primary" : "text-white"
-                            )}
-                        >
-                            {menuOpen ? <X size={28} weight="bold" /> : <List size={28} weight="bold" />}
-                        </button>
-                    </div>
-                </div>
-
-                {/* Mobile Navigation Menu */}
-                {menuOpen && (
-                    <div className="absolute top-full left-0 right-0 bg-white border-b border-primary-100 shadow-2xl lg:hidden">
-                        <div className="p-6 space-y-6">
-                            <div className="grid grid-cols-1 gap-4">
-                                {navLinks.map((link) => (
-                                    <a
-                                        key={link.name}
-                                        href={link.href}
-                                        onClick={() => setMenuOpen(false)}
-                                        className="px-4 py-3 text-sm font-bold text-gray-700 hover:bg-primary-50 hover:text-primary rounded-xl transition-all"
-                                    >
-                                        {link.name}
-                                    </a>
-                                ))}
-                                <Link
-                                    to="/login"
-                                    onClick={() => setMenuOpen(false)}
-                                    className="px-4 py-4 bg-primary text-white text-sm font-bold rounded-xl text-center shadow-lg shadow-primary/20"
-                                >
-                                    Masuk Ke Dashboard
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </nav>
+            <PublicNavbar />
 
             {/* Hero Section */}
             <section className="relative min-h-screen flex items-center overflow-hidden">
@@ -190,9 +86,9 @@ const LandingPage = () => {
                     {/* Header - Center Aligned */}
                     <div className="text-center mb-8 lg:mb-16 space-y-3">
                         <div className="inline-flex items-center px-4 py-1.5 bg-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                            <span>Tentang kami</span>
+                            <span>Tentang Kami</span>
                         </div>
-                        <h2 className="text-3xl md:text-5xl lg:text-6xl font-normal text-gray-900 tracking-tight leading-tight">
+                        <h2 className="text-4xl md:text-6xl lg:text-7xl font-normal text-gray-900 tracking-tight leading-tight">
                             Pertanian Cerdas untuk Masa Depan
                         </h2>
                     </div>
@@ -218,7 +114,7 @@ const LandingPage = () => {
                                     className="group flex items-center justify-between py-4 border-b border-gray-200 hover:border-primary transition-all"
                                 >
                                     <span className="text-lg md:text-xl font-normal text-gray-900 group-hover:text-primary transition-colors">
-                                        Selengkapnya tentang kami
+                                        Selengkapnya Tentang Kami
                                     </span>
                                     <div className="p-2 bg-primary-50 rounded-full group-hover:bg-primary group-hover:text-white transition-all transform group-hover:translate-x-1">
                                         <ArrowRight size={20} weight="bold" />
@@ -237,9 +133,9 @@ const LandingPage = () => {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12 lg:mb-20 space-y-3">
                         <div className="inline-flex items-center px-4 py-1.5 bg-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                            <span>Tim kami</span>
+                            <span>Tim Kami</span>
                         </div>
-                        <h2 className="text-3xl md:text-5xl lg:text-6xl font-normal text-gray-900 tracking-tight leading-tight">
+                        <h2 className="text-4xl md:text-6xl lg:text-7xl font-normal text-gray-900 tracking-tight leading-tight">
                             Yang Muda Yang Bertani
                         </h2>
                     </div>
@@ -271,10 +167,10 @@ const LandingPage = () => {
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center mb-12 lg:mb-20 space-y-3">
                             <div className="inline-flex items-center px-4 py-1.5 bg-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                                <span>Berita & kegiatan</span>
+                                <span>Berita & Kegiatan</span>
                             </div>
-                            <h2 className="text-3xl md:text-5xl lg:text-6xl font-normal text-gray-900 tracking-tight leading-tight">
-                                Update terbaru dari kami
+                            <h2 className="text-4xl md:text-6xl lg:text-7xl font-normal text-gray-900 tracking-tight leading-tight">
+                                Update Terbaru dari Kami
                             </h2>
                         </div>
                         <div className="grid md:grid-cols-3 gap-10">
@@ -295,13 +191,13 @@ const LandingPage = () => {
                                         <Newspaper size={16} weight="duotone" />
                                         <span>{item.published_at ? format(new Date(item.published_at), 'dd MMMM yyyy', { locale: id }) : 'Baru saja'}</span>
                                     </div>
-                                    <h3 className="text-xl font-normal text-gray-900 tracking-tight line-clamp-2 mb-3 group-hover:text-primary transition-colors">
+                                    <h3 className="text-2xl font-normal text-gray-900 tracking-tight line-clamp-2 mb-3 group-hover:text-primary transition-colors">
                                         {item.title}
                                     </h3>
-                                    <p className="text-xs text-gray-500 font-medium line-clamp-3 mb-5 leading-relaxed">
+                                    <p className="text-sm text-gray-500 font-medium line-clamp-3 mb-5 leading-relaxed">
                                         {item.content}
                                     </p>
-                                    <div className="flex items-center space-x-2 text-xs font-medium text-primary">
+                                    <div className="flex items-center space-x-2 text-sm font-medium text-primary">
                                         <span>Selengkapnya</span>
                                         <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
                                     </div>
@@ -310,7 +206,7 @@ const LandingPage = () => {
                         </div>
                         <div className="mt-8 lg:mt-12 w-full max-w-md mx-auto">
                             <Link to="/news" className="flex items-center justify-between w-full py-4 border-b border-gray-200 hover:border-primary transition-all group">
-                                <span className="text-lg font-normal text-gray-900 group-hover:text-primary transition-colors">Lihat semua berita</span>
+                                <span className="text-lg font-normal text-gray-900 group-hover:text-primary transition-colors">Lihat Semua Berita</span>
                                 <div className="p-2 bg-gray-50 rounded-full group-hover:bg-primary group-hover:text-white transition-all transform group-hover:translate-x-1">
                                     <ArrowRight size={20} weight="bold" />
                                 </div>
@@ -325,10 +221,10 @@ const LandingPage = () => {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12 lg:mb-20 space-y-3">
                         <div className="inline-flex items-center px-4 py-1.5 bg-white border border-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                            <span>Momen berharga</span>
+                            <span>Momen Berharga</span>
                         </div>
-                        <h2 className="text-3xl md:text-5xl lg:text-6xl font-normal text-gray-900 tracking-tight leading-tight">
-                            Galeri kegiatan
+                        <h2 className="text-4xl md:text-6xl lg:text-7xl font-normal text-gray-900 tracking-tight leading-tight">
+                            Galeri Kegiatan
                         </h2>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -355,7 +251,7 @@ const LandingPage = () => {
                     </div>
                     <div className="mt-8 lg:mt-12 w-full max-w-md mx-auto">
                         <Link to="/gallery" className="flex items-center justify-between w-full py-4 border-b border-gray-200 hover:border-primary transition-all group">
-                            <span className="text-lg font-normal text-gray-900 group-hover:text-primary transition-colors">Lihat semua foto</span>
+                            <span className="text-lg font-normal text-gray-900 group-hover:text-primary transition-colors">Lihat Semua Foto</span>
                             <div className="p-2 bg-gray-50 rounded-full group-hover:bg-primary group-hover:text-white transition-all transform group-hover:translate-x-1">
                                 <ArrowRight size={20} weight="bold" />
                             </div>
@@ -387,30 +283,7 @@ const LandingPage = () => {
             </section>
 
             {/* Footer */}
-            <footer className="py-10 px-6 bg-gray-900 text-white">
-                <div className="max-w-6xl mx-auto">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                        <img src="/images/logo-white.png" alt="Thangun Afa White" className="h-10 w-auto opacity-80" />
-                        <div className="flex items-center space-x-3 text-gray-400">
-                            <MapPin size={16} weight="fill" />
-                            <span className="text-sm">{settings?.address || 'Desa Besmarak, Kec. Nekamese, Kab. Kupang, NTT'}</span>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                            {settings?.instagram_url && (
-                                <a href={settings.instagram_url} target="_blank" rel="noopener noreferrer" className="p-3 bg-gray-800 rounded-xl hover:bg-primary transition-colors">
-                                    <InstagramLogo size={20} weight="fill" />
-                                </a>
-                            )}
-                            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="p-3 bg-gray-800 rounded-xl hover:bg-primary transition-colors">
-                                <WhatsappLogo size={20} weight="fill" />
-                            </a>
-                        </div>
-                    </div>
-                    <div className="border-t border-gray-800 mt-6 pt-6 text-center text-gray-500 text-xs">
-                        <p>© 2026 Thangun Afa Besmarak. Hak Cipta Dilindungi.</p>
-                    </div>
-                </div>
-            </footer>
+            <PublicFooter />
         </div>
     )
 }

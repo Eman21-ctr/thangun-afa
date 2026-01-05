@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useContent } from '../hooks/useContent'
-import { ArrowLeft, CircleNotch, EnvelopeSimple, LockKey, MapPin, WhatsappLogo, InstagramLogo } from '@phosphor-icons/react'
+import { EnvelopeSimple, LockKey } from '@phosphor-icons/react'
+import PublicFooter from '../components/layout/PublicFooter'
+import PublicNavbar from '../components/layout/PublicNavbar'
 
 const AboutUs = () => {
     const { settings, isLoading } = useContent()
@@ -8,26 +10,17 @@ const AboutUs = () => {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-cream">
-                <CircleNotch className="animate-spin text-primary" size={40} weight="bold" />
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-cream font-sans">
-            {/* Header / Nav */}
-            <nav className="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-xl border-b border-primary-100/30">
-                <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <Link to="/" className="flex items-center space-x-2 text-primary group">
-                        <ArrowLeft size={20} weight="bold" className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="text-xs font-bold">Kembali</span>
-                    </Link>
-                    <h1 className="text-sm font-bold text-gray-800">Tentang Thangun Afa</h1>
-                    <img src="/images/logo-color.png" alt="Thangun Afa" className="h-8 w-auto hidden md:block" />
-                </div>
-            </nav>
+        <div className="min-h-screen flex flex-col bg-cream font-sans">
+            {/* Navigation */}
+            <PublicNavbar />
 
-            <main className="pt-28">
+            <main className="pt-28 flex-grow">
                 <div className="max-w-4xl mx-auto px-6 mb-20">
                     {/* Perjalanan Kami Title */}
                     <div className="text-center mb-8">
@@ -77,39 +70,8 @@ const AboutUs = () => {
                 </div>
             </main>
 
-            {/* Footer - Exactly like LandingPage, no margin top */}
-            <footer className="bg-gray-900 text-white py-16 px-6">
-                <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-2 gap-12">
-                        <div className="space-y-6">
-                            <img src="/images/logo-icon.png" alt="Thangun Afa" className="h-12 w-auto brightness-0 invert" />
-                            <p className="text-gray-400 text-sm max-w-sm leading-relaxed">
-                                Kelompok Tani Thangun Afa Desa Besmarak. Memberdayakan petani lokal melalui teknologi dan kolaborasi.
-                            </p>
-                        </div>
-                        <div className="space-y-6">
-                            <h4 className="text-sm font-black uppercase tracking-widest text-white">Hubungi kami</h4>
-                            <div className="flex items-center space-x-3 text-gray-400">
-                                <MapPin size={16} weight="fill" />
-                                <span className="text-sm">{settings?.address || 'Desa Besmarak, Kec. Nekamese, Kab. Kupang, NTT'}</span>
-                            </div>
-                            <div className="flex items-center space-x-3">
-                                {settings?.instagram_url && (
-                                    <a href={settings.instagram_url} target="_blank" rel="noopener noreferrer" className="p-3 bg-gray-800 rounded-xl hover:bg-primary transition-colors">
-                                        <InstagramLogo size={20} weight="fill" />
-                                    </a>
-                                )}
-                                <a href={`https://wa.me/${settings?.whatsapp_number}`} target="_blank" rel="noopener noreferrer" className="p-3 bg-gray-800 rounded-xl hover:bg-primary transition-colors">
-                                    <WhatsappLogo size={20} weight="fill" />
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500 text-xs">
-                        <p>© 2026 Thangun Afa Besmarak. Hak Cipta Dilindungi.</p>
-                    </div>
-                </div>
-            </footer>
+            {/* Footer */}
+            <PublicFooter />
         </div>
     )
 }
