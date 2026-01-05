@@ -155,7 +155,7 @@ const LandingPage = () => {
                             <span>Tim Kami</span>
                         </div>
                         <h2 className="text-4xl md:text-6xl lg:text-7xl font-normal text-gray-900 tracking-tight leading-tight">
-                            Yang Muda Yang Bertani
+                            Yang Muda, Yang Bertani
                         </h2>
                     </div>
 
@@ -216,15 +216,14 @@ const LandingPage = () => {
                         )}
 
                         {/* Navigation Dots */}
-                        <div className="flex justify-center items-center mt-8 space-x-2">
+                        <div className="flex flex-row justify-center items-center mt-10 gap-3">
                             {team.map((_, i) => (
                                 <button
                                     key={i}
                                     onClick={() => setCurrentSlide(i)}
-                                    className={clsx(
-                                        "w-2 h-2 rounded-full transition-all duration-300 shrink-0",
-                                        currentSlide === i ? "bg-primary" : "bg-primary/20"
-                                    )}
+                                    className={`block w-2.5 h-2.5 rounded-full transition-all duration-500 shrink-0 ${currentSlide === i ? "bg-primary" : "bg-primary/20"
+                                        }`}
+                                    aria-label={`Go to slide ${i + 1}`}
                                 />
                             ))}
                         </div>
