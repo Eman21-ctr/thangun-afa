@@ -222,8 +222,8 @@ const LandingPage = () => {
                                     key={i}
                                     onClick={() => setCurrentSlide(i)}
                                     className={clsx(
-                                        "w-2 h-2 rounded-full transition-all duration-300",
-                                        currentSlide === i ? "w-8 bg-primary" : "bg-primary/20"
+                                        "w-1.5 h-1.5 rounded-full transition-all duration-300",
+                                        currentSlide === i ? "bg-primary" : "bg-primary/20"
                                     )}
                                 />
                             ))}
