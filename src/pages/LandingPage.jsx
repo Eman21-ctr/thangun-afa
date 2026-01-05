@@ -4,7 +4,7 @@ import { useContent } from '../hooks/useContent'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
 import { clsx } from 'clsx'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const iconMap = {
     Drop: Drop,
@@ -18,6 +18,15 @@ const LandingPage = () => {
     const { settings, gallery, team, news, isLoading } = useContent()
     const navigate = useNavigate()
     const [menuOpen, setMenuOpen] = useState(false)
+    const [scrolled, setScrolled] = useState(false)
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 20)
+        }
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
 
     if (isLoading) {
         return (
@@ -40,48 +49,89 @@ const LandingPage = () => {
     return (
         <div className="min-h-screen bg-cream font-sans">
             {/* Navigation */}
-            <nav className="fixed top-0 inset-x-0 z-[60] bg-white/80 backdrop-blur-xl border-b border-primary-100/20">
-                <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                        <img src="/images/logo-color.png" alt="Thangun Afa" className="h-10 w-auto" />
+            <nav className={clsx(
+                "fixed top-0 inset-x-0 z-[100] transition-all duration-500",
+                scrolled
+                    ? "bg-white/90 backdrop-blur-xl border-b border-primary-100/20 py-3 shadow-sm"
+                    : "bg-transparent py-5"
+            )}>
+                <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+                    <div className="flex items-center space-x-12">
+                        <Link to="/" className="flex items-center">
+                            <img
+                                src="/images/logo-color.png"
+                                alt="Thangun Afa"
+                                className={clsx(
+                                    "h-9 w-auto transition-all duration-500",
+                                    !scrolled && "brightness-0 invert"
+                                )}
+                            />
+                        </Link>
+
+                        {/* Desktop Links */}
+                        <div className="hidden lg:flex items-center space-x-8">
+                            {navLinks.map((link) => (
+                                <a
+                                    key={link.name}
+                                    href={link.href}
+                                    className={clsx(
+                                        "text-sm font-bold transition-colors duration-300",
+                                        scrolled ? "text-gray-600 hover:text-primary" : "text-white/90 hover:text-accent"
+                                    )}
+                                >
+                                    {link.name}
+                                </a>
+                            ))}
+                        </div>
                     </div>
 
-                    {/* Hamburger Button */}
-                    <button
-                        onClick={() => setMenuOpen(!menuOpen)}
-                        className="p-2 text-primary hover:bg-primary-50 rounded-xl transition-all"
-                    >
-                        {menuOpen ? <X size={28} weight="bold" /> : <List size={28} weight="bold" />}
-                    </button>
+                    <div className="flex items-center space-x-4">
+                        <Link
+                            to="/login"
+                            className={clsx(
+                                "hidden lg:block px-6 py-2 text-xs font-bold rounded-xl transition-all duration-500",
+                                scrolled
+                                    ? "bg-primary text-white shadow-lg shadow-primary/20 hover:scale-105"
+                                    : "bg-white/20 text-white backdrop-blur-md border border-white/20 hover:bg-white hover:text-primary"
+                            )}
+                        >
+                            Masuk
+                        </Link>
+
+                        {/* Hamburger for mobile */}
+                        <button
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            className={clsx(
+                                "lg:hidden p-2 transition-colors duration-500",
+                                scrolled ? "text-primary" : "text-white"
+                            )}
+                        >
+                            {menuOpen ? <X size={28} weight="bold" /> : <List size={28} weight="bold" />}
+                        </button>
+                    </div>
                 </div>
 
-                {/* Navigation Menu Overlay */}
+                {/* Mobile Navigation Menu */}
                 {menuOpen && (
-                    <div className="absolute top-full left-0 right-0 bg-white border-b border-primary-100 shadow-2xl animate-in slide-in-from-top duration-300">
-                        <div className="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div className="space-y-4">
-                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-2">Navigasi</p>
-                                <div className="grid grid-cols-2 gap-2">
-                                    {navLinks.map((link) => (
-                                        <a
-                                            key={link.name}
-                                            href={link.href}
-                                            onClick={() => setMenuOpen(false)}
-                                            className="px-4 py-3 text-sm font-bold text-gray-700 hover:bg-primary-50 hover:text-primary rounded-xl transition-all"
-                                        >
-                                            {link.name}
-                                        </a>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="space-y-4 border-t md:border-t-0 md:border-l border-gray-100 pt-6 md:pt-0 md:pl-8">
-                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-2">Personal</p>
+                    <div className="absolute top-full left-0 right-0 bg-white border-b border-primary-100 shadow-2xl lg:hidden">
+                        <div className="p-6 space-y-6">
+                            <div className="grid grid-cols-1 gap-4">
+                                {navLinks.map((link) => (
+                                    <a
+                                        key={link.name}
+                                        href={link.href}
+                                        onClick={() => setMenuOpen(false)}
+                                        className="px-4 py-3 text-sm font-bold text-gray-700 hover:bg-primary-50 hover:text-primary rounded-xl transition-all"
+                                    >
+                                        {link.name}
+                                    </a>
+                                ))}
                                 <Link
                                     to="/login"
-                                    className="flex items-center justify-between px-4 py-3 bg-primary text-white text-sm font-bold rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all"
+                                    onClick={() => setMenuOpen(false)}
+                                    className="px-4 py-4 bg-primary text-white text-sm font-bold rounded-xl text-center shadow-lg shadow-primary/20"
                                 >
-                                    <span>Masuk ke dashboard</span>
-                                    <ArrowRight size={18} weight="bold" />
+                                    Masuk Ke Dashboard
                                 </Link>
                             </div>
                         </div>
@@ -90,76 +140,91 @@ const LandingPage = () => {
             </nav>
 
             {/* Hero Section */}
-            <section className="relative min-h-[90vh] flex items-start pt-28 md:pt-32 overflow-hidden">
-                {/* Background Image */}
+            <section className="relative min-h-screen flex items-center overflow-hidden">
+                {/* Background Image with Dark Overlay */}
                 <div className="absolute inset-0">
                     <img
                         src="/images/hero-2.jpg"
                         alt="Kelompok Tani Thangun Afa"
                         className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-cream"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
+                    <div className="absolute inset-0 bg-black/20"></div>
                 </div>
 
                 {/* Content */}
-                <div className="relative z-10 text-center px-6 w-full">
-                    <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-white/80 text-xs font-bold uppercase tracking-widest mb-4">
-                        <Leaf size={14} weight="fill" />
-                        <span>{settings?.address?.split(',')[0] || 'Desa Besmarak'}, Kupang, NTT</span>
-                    </div>
-                    <h1 className="text-4xl md:text-6xl font-black text-white leading-tight tracking-tighter mb-4">
-                        {settings?.hero_title}
-                    </h1>
-                    <p className="text-base md:text-lg text-white/80 font-medium max-w-2xl mx-auto mb-8 leading-relaxed">
-                        {settings?.hero_description}
-                    </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                        <a
-                            href={whatsappLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center space-x-3 px-10 py-5 bg-white text-primary text-base font-bold rounded-2xl shadow-2xl hover:scale-105 active:scale-95 transition-all"
-                        >
-                            <WhatsappLogo size={24} weight="fill" />
-                            <span>Hubungi kami</span>
-                        </a>
+                <div className="relative z-10 max-w-7xl mx-auto px-6 w-full py-20">
+                    <div className="max-w-3xl space-y-8">
+                        <div className="inline-flex items-center space-x-2 px-4 py-2 bg-accent/20 backdrop-blur-md rounded-full text-accent text-xs font-bold uppercase tracking-widest">
+                            <Leaf size={14} weight="fill" />
+                            <span>{settings?.address?.split(',')[0] || 'Desa Besmarak'}, NTT</span>
+                        </div>
+
+                        <div className="space-y-4">
+                            <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold text-white leading-[0.9] tracking-tighter">
+                                {settings?.hero_title}
+                            </h1>
+                            <p className="text-lg md:text-xl text-white/80 font-medium max-w-xl leading-relaxed">
+                                {settings?.hero_description}
+                            </p>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row items-start gap-4 pt-4">
+                            <a
+                                href={whatsappLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center space-x-3 px-8 py-3.5 bg-accent text-primary text-base font-bold rounded-xl shadow-xl shadow-accent/20 hover:scale-105 active:scale-95 transition-all"
+                            >
+                                <WhatsappLogo size={22} weight="fill" />
+                                <span>Hubungi kami sekarang</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* About Section */}
-            <section id="tentang" className="py-12 px-6">
-                <div className="max-w-6xl mx-auto">
-                    <div className="grid md:grid-cols-2 gap-10 items-center">
-                        <div className="relative">
+            <section id="tentang" className="py-12 lg:py-24 px-6 bg-white">
+                <div className="max-w-7xl mx-auto">
+                    {/* Header - Center Aligned */}
+                    <div className="text-center mb-8 lg:mb-16 space-y-3">
+                        <div className="inline-flex items-center px-4 py-1.5 bg-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
+                            <span>Tentang kami</span>
+                        </div>
+                        <h2 className="text-3xl md:text-5xl lg:text-6xl font-normal text-gray-900 tracking-tight leading-tight">
+                            Pertanian Cerdas untuk Masa Depan
+                        </h2>
+                    </div>
+
+                    {/* Content Area - Side by Side on Desktop */}
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-20 items-center">
+                        <div className="relative h-full">
                             <img
                                 src="/images/hero-1.jpg"
                                 alt="Tim Thangun Afa di ladang"
-                                className="rounded-[2rem] shadow-2xl shadow-primary/10"
+                                className="w-full aspect-[4/3] lg:aspect-[5/4] object-cover rounded-none shadow-xl"
                             />
-                            <div className="absolute -bottom-4 -right-4 bg-accent p-5 rounded-2xl shadow-xl hidden md:block border-4 border-white">
-                                <p className="text-3xl font-black text-primary">30+</p>
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-primary/70">Petani muda</p>
-                            </div>
                         </div>
-                        <div className="space-y-5">
-                            <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white border border-accent-100 rounded-full text-primary text-xs font-bold shadow-sm">
-                                <Plant size={14} weight="fill" className="text-accent" />
-                                <span>Tentang kami</span>
-                            </div>
-                            <h2 className="text-3xl md:text-4xl font-black text-gray-800 tracking-tighter leading-tight">
-                                Pertanian Cerdas<br />untuk Masa Depan
-                            </h2>
-                            <div className="space-y-4 text-gray-500 leading-relaxed whitespace-pre-line line-clamp-[8]">
+
+                        <div className="space-y-6 lg:space-y-10">
+                            <div className="text-base md:text-xl text-gray-600 leading-relaxed font-medium">
                                 {settings?.about_text}
                             </div>
-                            <Link
-                                to="/about"
-                                className="inline-flex items-center space-x-2 text-xs font-bold text-primary hover:text-accent transition-colors group"
-                            >
-                                <span>Selengkapnya tentang kami</span>
-                                <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
-                            </Link>
+
+                            <div className="pt-2">
+                                <Link
+                                    to="/about"
+                                    className="group flex items-center justify-between py-4 border-b border-gray-200 hover:border-primary transition-all"
+                                >
+                                    <span className="text-lg md:text-xl font-normal text-gray-900 group-hover:text-primary transition-colors">
+                                        Selengkapnya tentang kami
+                                    </span>
+                                    <div className="p-2 bg-primary-50 rounded-full group-hover:bg-primary group-hover:text-white transition-all transform group-hover:translate-x-1">
+                                        <ArrowRight size={20} weight="bold" />
+                                    </div>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -167,13 +232,16 @@ const LandingPage = () => {
 
 
             {/* Tim Kami Section */}
-            <section id="tim" className="py-12 px-6">
-                <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-12">
-                        <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white border border-accent-100 rounded-full text-primary text-xs font-bold mb-3 shadow-sm">
+            {/* Tim Kami Section */}
+            <section id="tim" className="py-12 lg:py-24 px-6">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-12 lg:mb-20 space-y-3">
+                        <div className="inline-flex items-center px-4 py-1.5 bg-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
                             <span>Tim kami</span>
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-black text-gray-800 tracking-tighter">Orang di balik layar</h2>
+                        <h2 className="text-3xl md:text-5xl lg:text-6xl font-normal text-gray-900 tracking-tight leading-tight">
+                            Yang Muda Yang Bertani
+                        </h2>
                     </div>
                     <div className="grid grid-cols-4 md:grid-cols-8 gap-2 md:gap-6">
                         {(team.length > 0 ? team : [1, 2, 3, 4]).map((m, i) => (
@@ -199,19 +267,15 @@ const LandingPage = () => {
 
             {/* News/Activity Section */}
             {news.filter(a => a.is_published).length > 0 && (
-                <section id="berita" className="py-12 px-6 bg-white">
-                    <div className="max-w-6xl mx-auto">
-                        <div className="flex items-center justify-between mb-12">
-                            <div className="text-left">
-                                <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white border border-accent-100 rounded-full text-primary text-xs font-bold mb-3 shadow-sm">
-                                    <span>Berita & kegiatan</span>
-                                </div>
-                                <h2 className="text-3xl md:text-4xl font-black text-gray-800 tracking-tighter">Update terbaru kami</h2>
+                <section id="berita" className="py-12 lg:py-24 px-6 bg-white">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="text-center mb-12 lg:mb-20 space-y-3">
+                            <div className="inline-flex items-center px-4 py-1.5 bg-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
+                                <span>Berita & kegiatan</span>
                             </div>
-                            <Link to="/news" className="hidden md:flex items-center space-x-2 px-6 py-3 bg-accent text-primary text-xs font-bold rounded-2xl shadow-lg shadow-accent/20 hover:scale-105 transition-all">
-                                <span>Lihat semua berita</span>
-                                <ArrowRight size={14} weight="bold" />
-                            </Link>
+                            <h2 className="text-3xl md:text-5xl lg:text-6xl font-normal text-gray-900 tracking-tight leading-tight">
+                                Update terbaru dari kami
+                            </h2>
                         </div>
                         <div className="grid md:grid-cols-3 gap-10">
                             {news.filter(a => a.is_published).slice(0, 3).map((item) => (
@@ -231,23 +295,25 @@ const LandingPage = () => {
                                         <Newspaper size={16} weight="duotone" />
                                         <span>{item.published_at ? format(new Date(item.published_at), 'dd MMMM yyyy', { locale: id }) : 'Baru saja'}</span>
                                     </div>
-                                    <h3 className="text-xl font-black text-gray-800 tracking-tight line-clamp-2 mb-3 group-hover:text-primary transition-colors">
+                                    <h3 className="text-xl font-normal text-gray-900 tracking-tight line-clamp-2 mb-3 group-hover:text-primary transition-colors">
                                         {item.title}
                                     </h3>
                                     <p className="text-xs text-gray-500 font-medium line-clamp-3 mb-5 leading-relaxed">
                                         {item.content}
                                     </p>
-                                    <div className="flex items-center space-x-2 text-xs font-bold text-primary">
+                                    <div className="flex items-center space-x-2 text-xs font-medium text-primary">
                                         <span>Selengkapnya</span>
                                         <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
                                     </div>
                                 </Link>
                             ))}
                         </div>
-                        <div className="mt-10 text-center md:hidden">
-                            <Link to="/news" className="inline-flex items-center space-x-2 px-8 py-4 bg-accent text-primary text-xs font-bold rounded-2xl shadow-xl shadow-accent/20">
-                                <span>Lihat semua berita</span>
-                                <ArrowRight size={14} weight="bold" />
+                        <div className="mt-8 lg:mt-12 w-full max-w-md mx-auto">
+                            <Link to="/news" className="flex items-center justify-between w-full py-4 border-b border-gray-200 hover:border-primary transition-all group">
+                                <span className="text-lg font-normal text-gray-900 group-hover:text-primary transition-colors">Lihat semua berita</span>
+                                <div className="p-2 bg-gray-50 rounded-full group-hover:bg-primary group-hover:text-white transition-all transform group-hover:translate-x-1">
+                                    <ArrowRight size={20} weight="bold" />
+                                </div>
                             </Link>
                         </div>
                     </div>
@@ -255,19 +321,15 @@ const LandingPage = () => {
             )}
 
             {/* Momen Berharga - Gallery */}
-            <section id="galeri" className="py-12 px-6">
-                <div className="max-w-6xl mx-auto">
-                    <div className="flex items-center justify-between mb-12">
-                        <div className="text-left">
-                            <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white border border-accent-100 rounded-full text-primary text-xs font-bold mb-3 shadow-sm">
-                                <span>Momen berharga</span>
-                            </div>
-                            <h2 className="text-3xl md:text-4xl font-black text-gray-800 tracking-tighter">Galeri kegiatan</h2>
+            <section id="galeri" className="py-12 lg:py-24 px-6 bg-gray-50/50">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-12 lg:mb-20 space-y-3">
+                        <div className="inline-flex items-center px-4 py-1.5 bg-white border border-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
+                            <span>Momen berharga</span>
                         </div>
-                        <Link to="/gallery" className="hidden md:flex items-center space-x-2 px-6 py-3 bg-accent text-primary text-xs font-bold rounded-2xl shadow-lg shadow-accent/20 hover:scale-105 transition-all">
-                            <span>Lihat semua foto</span>
-                            <ArrowRight size={14} weight="bold" />
-                        </Link>
+                        <h2 className="text-3xl md:text-5xl lg:text-6xl font-normal text-gray-900 tracking-tight leading-tight">
+                            Galeri kegiatan
+                        </h2>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {(gallery.length > 0 ? gallery.slice(0, 8) : [1, 2, 3, 4, 5, 6, 7, 8]).map((photo, i) => {
@@ -275,7 +337,7 @@ const LandingPage = () => {
                             return (
                                 <div key={photo.id || i} className={clsx("space-y-3", isLandscape ? "col-span-2" : "col-span-1")}>
                                     <div className={clsx(
-                                        "bg-white rounded-[2.5rem] overflow-hidden border border-primary-100/50 shadow-sm group",
+                                        "bg-white border border-primary-100/50 shadow-sm group",
                                         isLandscape ? "aspect-video" : "aspect-[4/5]"
                                     )}>
                                         <img
@@ -291,10 +353,12 @@ const LandingPage = () => {
                             )
                         })}
                     </div>
-                    <div className="mt-10 text-center md:hidden">
-                        <Link to="/gallery" className="inline-flex items-center space-x-2 px-8 py-4 bg-accent text-primary text-xs font-bold rounded-2xl shadow-xl shadow-accent/20">
-                            <span>Lihat semua foto</span>
-                            <ArrowRight size={14} weight="bold" />
+                    <div className="mt-8 lg:mt-12 w-full max-w-md mx-auto">
+                        <Link to="/gallery" className="flex items-center justify-between w-full py-4 border-b border-gray-200 hover:border-primary transition-all group">
+                            <span className="text-lg font-normal text-gray-900 group-hover:text-primary transition-colors">Lihat semua foto</span>
+                            <div className="p-2 bg-gray-50 rounded-full group-hover:bg-primary group-hover:text-white transition-all transform group-hover:translate-x-1">
+                                <ArrowRight size={20} weight="bold" />
+                            </div>
                         </Link>
                     </div>
                 </div>
@@ -303,7 +367,7 @@ const LandingPage = () => {
             {/* CTA Section */}
             <section className="py-12 px-6 bg-primary">
                 <div className="max-w-4xl mx-auto text-center">
-                    <h2 className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-4">
+                    <h2 className="text-3xl md:text-4xl font-normal text-white tracking-tighter mb-4">
                         Tertarik Bermitra?
                     </h2>
                     <p className="text-primary-100 text-base mb-8 max-w-xl mx-auto">

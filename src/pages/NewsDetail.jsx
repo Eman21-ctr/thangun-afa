@@ -29,7 +29,7 @@ const NewsDetail = () => {
     const whatsappLink = `https://wa.me/${settings?.whatsapp_number || '6281234567890'}`
 
     return (
-        <div className="min-h-screen bg-cream font-sans pb-20">
+        <div className="min-h-screen bg-white font-sans pb-20">
             {/* Header / Nav */}
             <nav className="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-xl border-b border-primary-100/30">
                 <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -45,17 +45,18 @@ const NewsDetail = () => {
             <main className="pt-24 px-6">
                 <div className="max-w-3xl mx-auto">
                     {/* Meta */}
-                    <div className="flex items-center space-x-3 text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-4">
-                        <div className="px-3 py-1 bg-primary-50 rounded-full flex items-center space-x-2">
-                            <Calendar size={14} weight="fill" />
+                    {/* Meta */}
+                    <div className="flex items-center justify-between text-xs font-medium text-gray-500 mb-6">
+                        <div className="flex items-center space-x-2 text-primary">
+                            <Calendar size={18} weight="duotone" />
                             <span>{article.published_at ? format(new Date(article.published_at), 'dd MMMM yyyy', { locale: id }) : 'Baru Saja'}</span>
                         </div>
-                        <div className="px-3 py-1 bg-gray-100 text-gray-400 rounded-full">
+                        <div className="px-4 py-1.5 bg-gray-100 rounded-full text-gray-600">
                             <span>Kegiatan</span>
                         </div>
                     </div>
 
-                    <h1 className="text-3xl md:text-5xl font-black text-gray-800 leading-tight tracking-tighter mb-8">
+                    <h1 className="text-3xl md:text-5xl font-normal text-gray-800 leading-tight tracking-tighter mb-8">
                         {article.title}
                     </h1>
 
