@@ -3,7 +3,7 @@ import { useContent } from '../hooks/useContent'
 import {
     DeviceMobile, MapPin, Info, Desktop, FloppyDisk,
     CircleNotch, InstagramLogo, TextT, Users,
-    Image as ImageIcon, Newspaper, Plus, Trash,
+    Image as ImageIcon, Newspaper, Plus, Trash, PencilSimple,
     Drop, Sun, Star
 } from '@phosphor-icons/react'
 import { toast } from 'react-hot-toast'
@@ -12,10 +12,12 @@ import { clsx } from 'clsx'
 const ContentManagement = () => {
     const {
         settings, isLoading, updateSettings,
-        gallery, addGallery, deleteGallery,
-        team, addTeamMember, deleteTeamMember,
-        news, addNews, deleteNews
+        gallery, addGallery, updateGallery, deleteGallery,
+        team, addTeamMember, updateTeamMember, deleteTeamMember,
+        news, addNews, updateNews, deleteNews
     } = useContent()
+
+    const [editingId, setEditingId] = useState(null)
 
     const [activeTab, setActiveTab] = useState('umum')
     const [formData, setFormData] = useState({
@@ -70,27 +72,57 @@ const ContentManagement = () => {
         setFormData({ ...formData, features: newFeatures })
     }
 
-    const handleAddPhoto = async (e) => {
+    const handlePhotoSubmit = async (e) => {
         e.preventDefault()
         if (!newPhoto.photo_url) return toast.error('URL Foto wajib diisi')
         try {
-            await addGallery.mutateAsync(newPhoto)
+            if (editingId) {
+                await updateGallery.mutateAsync({ ...newPhoto, id: editingId })
+                toast.success('Foto berhasil diperbarui')
+            } else {
+                await addGallery.mutateAsync(newPhoto)
+                toast.success('Foto berhasil ditambahkan')
+            }
             setNewPhoto({ photo_url: '', caption: '', display_type: 'square' })
-            toast.success('Foto berhasil ditambahkan')
+            setEditingId(null)
         } catch (error) {
-            toast.error('Gagal menambahkan foto')
+            toast.error('Gagal menyimpan foto')
         }
     }
 
-    const handleAddMember = async (e) => {
+    const handleMemberSubmit = async (e) => {
         e.preventDefault()
         if (!newMember.name || !newMember.position) return toast.error('Nama dan Jabatan wajib diisi')
         try {
-            await addTeamMember.mutateAsync(newMember)
+            if (editingId) {
+                await updateTeamMember.mutateAsync({ ...newMember, id: editingId })
+                toast.success('Anggota berhasil diperbarui')
+            } else {
+                await addTeamMember.mutateAsync(newMember)
+                toast.success('Anggota berhasil ditambahkan')
+            }
             setNewMember({ name: '', position: '', photo_url: '' })
-            toast.success('Anggota berhasil ditambahkan')
+            setEditingId(null)
         } catch (error) {
-            toast.error('Gagal menambahkan anggota')
+            toast.error('Gagal menyimpan anggota')
+        }
+    }
+
+    const handleNewsSubmit = async (e) => {
+        e.preventDefault()
+        if (!newNews.title || !newNews.content) return toast.error('Judul dan Konten wajib diisi')
+        try {
+            if (editingId) {
+                await updateNews.mutateAsync({ ...newNews, id: editingId })
+                toast.success('Berita berhasil diperbarui')
+            } else {
+                await addNews.mutateAsync(newNews)
+                toast.success('Berita berhasil dipublikasikan')
+            }
+            setNewNews({ title: '', content: '', thumbnail_url: '', is_published: true })
+            setEditingId(null)
+        } catch (error) {
+            toast.error('Gagal menyimpan berita')
         }
     }
 
@@ -275,9 +307,23 @@ const ContentManagement = () => {
 
                 {activeTab === 'galeri' && (
                     <div className="space-y-6">
-                        {/* Add New Photo */}
-                        <form onSubmit={handleAddPhoto} className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-4">
-                            <h2 className="text-sm font-black uppercase tracking-widest text-primary">Tambah Foto Baru</h2>
+                        {/* Photo Form */}
+                        <form onSubmit={handlePhotoSubmit} className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-4">
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-sm font-black uppercase tracking-widest text-primary">
+                                    {editingId ? 'Edit Foto' : 'Tambah Foto Baru'}
+                                </h2>
+                                {editingId && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setEditingId(null)
+                                            setNewPhoto({ photo_url: '', caption: '', display_type: 'square' })
+                                        }}
+                                        className="text-[10px] font-black uppercase text-gray-400 hover:text-red-500"
+                                    >Batal Edit</button>
+                                )}
+                            </div>
                             <div className="space-y-4">
                                 <div className="p-4 bg-primary-50 rounded-2xl border border-primary-100/30">
                                     <p className="text-[10px] font-black text-primary uppercase tracking-widest mb-2 flex items-center gap-2">
@@ -327,7 +373,7 @@ const ContentManagement = () => {
                                     className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
                                 />
                                 <button type="submit" className="w-full py-4 bg-primary text-white font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20">
-                                    Tambah ke Galeri
+                                    {editingId ? 'Simpan Perubahan' : 'Tambah ke Galeri'}
                                 </button>
                             </div>
                         </form>
@@ -338,13 +384,25 @@ const ContentManagement = () => {
                                 <div key={photo.id} className="relative group overflow-hidden rounded-[2rem] border border-primary-100/10">
                                     <img src={photo.photo_url} alt={photo.caption} className="w-full h-40 object-cover" />
                                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4 text-center">
-                                        <p className="text-white text-[10px] font-bold mb-2">{photo.caption}</p>
-                                        <button
-                                            onClick={() => deleteGallery.mutate(photo.id)}
-                                            className="p-2 bg-red-500 text-white rounded-xl"
-                                        >
-                                            <Trash size={16} />
-                                        </button>
+                                        <p className="text-white text-[10px] font-bold mb-3">{photo.caption}</p>
+                                        <div className="flex items-center space-x-2">
+                                            <button
+                                                onClick={() => {
+                                                    setEditingId(photo.id)
+                                                    setNewPhoto({ photo_url: photo.photo_url, caption: photo.caption, display_type: photo.display_type })
+                                                    window.scrollTo({ top: 0, behavior: 'smooth' })
+                                                }}
+                                                className="p-2 bg-white text-primary rounded-xl"
+                                            >
+                                                <PencilSimple size={16} weight="bold" />
+                                            </button>
+                                            <button
+                                                onClick={() => deleteGallery.mutate(photo.id)}
+                                                className="p-2 bg-red-500 text-white rounded-xl"
+                                            >
+                                                <Trash size={16} weight="bold" />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
@@ -354,9 +412,23 @@ const ContentManagement = () => {
 
                 {activeTab === 'tim' && (
                     <div className="space-y-6">
-                        {/* Add New Member */}
-                        <form onSubmit={handleAddMember} className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-4">
-                            <h2 className="text-sm font-black uppercase tracking-widest text-primary">Tambah Anggota Tim</h2>
+                        {/* Member Form */}
+                        <form onSubmit={handleMemberSubmit} className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-4">
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-sm font-black uppercase tracking-widest text-primary">
+                                    {editingId ? 'Edit Anggota' : 'Tambah Anggota Tim'}
+                                </h2>
+                                {editingId && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setEditingId(null)
+                                            setNewMember({ name: '', position: '', photo_url: '' })
+                                        }}
+                                        className="text-[10px] font-black uppercase text-gray-400 hover:text-red-500"
+                                    >Batal Edit</button>
+                                )}
+                            </div>
                             <div className="space-y-4">
                                 <input
                                     type="text"
@@ -380,7 +452,7 @@ const ContentManagement = () => {
                                     className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
                                 />
                                 <button type="submit" className="w-full py-4 bg-primary text-white font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20">
-                                    Tambah Anggota
+                                    {editingId ? 'Simpan Perubahan' : 'Tambah Anggota'}
                                 </button>
                             </div>
                         </form>
@@ -394,12 +466,24 @@ const ContentManagement = () => {
                                     </div>
                                     <h3 className="text-[9px] font-black text-gray-800 line-clamp-1 leading-none">{m.name}</h3>
                                     <p className="text-[7px] font-bold text-primary/60 uppercase mt-0.5 leading-none">{m.position}</p>
-                                    <button
-                                        onClick={() => deleteTeamMember.mutate(m.id)}
-                                        className="absolute -top-1 -right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
-                                    >
-                                        <Trash size={10} weight="bold" />
-                                    </button>
+                                    <div className="absolute -top-1 -right-1 flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button
+                                            onClick={() => {
+                                                setEditingId(m.id)
+                                                setNewMember({ name: m.name, position: m.position, photo_url: m.photo_url })
+                                                window.scrollTo({ top: 0, behavior: 'smooth' })
+                                            }}
+                                            className="p-1.5 bg-white text-primary rounded-full shadow-lg"
+                                        >
+                                            <PencilSimple size={10} weight="bold" />
+                                        </button>
+                                        <button
+                                            onClick={() => deleteTeamMember.mutate(m.id)}
+                                            className="p-1.5 bg-red-500 text-white rounded-full shadow-lg"
+                                        >
+                                            <Trash size={10} weight="bold" />
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -407,17 +491,23 @@ const ContentManagement = () => {
                 )}
                 {activeTab === 'berita' && (
                     <div className="space-y-6">
-                        {/* Add News Form */}
-                        <form onSubmit={async (e) => {
-                            e.preventDefault()
-                            if (!newNews.title || !newNews.content) return toast.error('Judul dan Konten wajib diisi')
-                            try {
-                                await addNews.mutateAsync(newNews)
-                                setNewNews({ title: '', content: '', thumbnail_url: '', is_published: true })
-                                toast.success('Berita berhasil dipublikasikan')
-                            } catch (error) { toast.error('Gagal mempublikasikan berita') }
-                        }} className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-4">
-                            <h2 className="text-sm font-black uppercase tracking-widest text-primary">Buat Berita / Kegiatan Baru</h2>
+                        {/* News Form */}
+                        <form onSubmit={handleNewsSubmit} className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-4">
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-sm font-black uppercase tracking-widest text-primary">
+                                    {editingId ? 'Edit Berita' : 'Buat Berita / Kegiatan Baru'}
+                                </h2>
+                                {editingId && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setEditingId(null)
+                                            setNewNews({ title: '', content: '', thumbnail_url: '', is_published: true })
+                                        }}
+                                        className="text-[10px] font-black uppercase text-gray-400 hover:text-red-500"
+                                    >Batal Edit</button>
+                                )}
+                            </div>
                             <div className="space-y-4">
                                 <input
                                     type="text"
@@ -441,8 +531,8 @@ const ContentManagement = () => {
                                     className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700 leading-relaxed"
                                 ></textarea>
                                 <button type="submit" className="w-full py-4 bg-primary text-white font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20 flex items-center justify-center space-x-2">
-                                    <Plus size={20} weight="bold" />
-                                    <span>Posting Berita</span>
+                                    <PencilSimple size={20} weight="bold" />
+                                    <span>{editingId ? 'Simpan Perubahan Berita' : 'Posting Berita'}</span>
                                 </button>
                             </div>
                         </form>
@@ -461,12 +551,29 @@ const ContentManagement = () => {
                                             <p className="text-[10px] font-bold text-gray-400 px-1">{new Date(item.published_at).toLocaleDateString('id-ID')}</p>
                                         </div>
                                     </div>
-                                    <button
-                                        onClick={() => deleteNews.mutate(item.id)}
-                                        className="p-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors"
-                                    >
-                                        <Trash size={18} weight="bold" />
-                                    </button>
+                                    <div className="flex items-center space-x-1">
+                                        <button
+                                            onClick={() => {
+                                                setEditingId(item.id)
+                                                setNewNews({
+                                                    title: item.title,
+                                                    content: item.content,
+                                                    thumbnail_url: item.thumbnail_url,
+                                                    is_published: item.is_published
+                                                })
+                                                window.scrollTo({ top: 0, behavior: 'smooth' })
+                                            }}
+                                            className="p-3 text-primary hover:bg-primary-50 rounded-xl transition-colors"
+                                        >
+                                            <PencilSimple size={18} weight="bold" />
+                                        </button>
+                                        <button
+                                            onClick={() => deleteNews.mutate(item.id)}
+                                            className="p-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+                                        >
+                                            <Trash size={18} weight="bold" />
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </div>

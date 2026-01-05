@@ -130,12 +130,40 @@ export const useContent = () => {
         enabled: !!slug
     })
 
-    const deleteNews = useMutation({
-        mutationFn: async (id) => {
-            const { error } = await supabase.from('news_articles').delete().eq('id', id)
+    const updateNews = useMutation({
+        mutationFn: async (article) => {
+            const { data, error } = await supabase
+                .from('news_articles')
+                .update({ ...article, slug: article.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') })
+                .eq('id', article.id)
             if (error) throw error
+            return data
         },
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['news'] })
+    })
+
+    const updateGallery = useMutation({
+        mutationFn: async (photo) => {
+            const { data, error } = await supabase
+                .from('gallery_photos')
+                .update(photo)
+                .eq('id', photo.id)
+            if (error) throw error
+            return data
+        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['gallery'] })
+    })
+
+    const updateTeamMember = useMutation({
+        mutationFn: async (member) => {
+            const { data, error } = await supabase
+                .from('team_members')
+                .update(member)
+                .eq('id', member.id)
+            if (error) throw error
+            return data
+        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['team'] })
     })
 
     return {
@@ -145,14 +173,17 @@ export const useContent = () => {
         gallery: galleryQuery.data || [],
         isLoadingGallery: galleryQuery.isLoading,
         addGallery,
+        updateGallery,
         deleteGallery,
         team: teamQuery.data || [],
         isLoadingTeam: teamQuery.isLoading,
         addTeamMember,
+        updateTeamMember,
         deleteTeamMember,
         news: newsQuery.data || [],
         isLoadingNews: newsQuery.isLoading,
         addNews,
+        updateNews,
         deleteNews,
         useNewsArticle
     }
