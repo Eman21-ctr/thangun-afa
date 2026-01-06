@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useContent } from '../hooks/useContent'
 import {
     DeviceMobile, MapPin, Info, Desktop, FloppyDisk,
-    CircleNotch, InstagramLogo, TextT, Users,
+    CircleNotch, InstagramLogo, TextT, Users, Leaf,
     Image as ImageIcon, Newspaper, Plus, Trash, PencilSimple,
     Drop, Sun, Star
 } from '@phosphor-icons/react'
