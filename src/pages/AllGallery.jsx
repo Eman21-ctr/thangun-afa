@@ -28,7 +28,7 @@ const AllGallery = () => {
                             return (
                                 <div key={photo.id || i} className={clsx("space-y-3", isLandscape ? "col-span-2" : "col-span-1")}>
                                     <div className={clsx(
-                                        "bg-white rounded-[2.5rem] overflow-hidden border border-primary-100/50 shadow-sm group",
+                                        "bg-white overflow-hidden border border-primary-100/50 shadow-sm group",
                                         isLandscape ? "aspect-video" : "aspect-[4/5]"
                                     )}>
                                         <img
@@ -37,7 +37,7 @@ const AllGallery = () => {
                                             className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700"
                                         />
                                     </div>
-                                    <p className="text-[10px] font-bold text-gray-500 text-center px-4 leading-relaxed">
+                                    <p className="text-[10px] font-normal text-gray-500 text-center px-4 leading-relaxed">
                                         {photo.caption}
                                     </p>
                                 </div>

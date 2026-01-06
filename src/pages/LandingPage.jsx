@@ -312,7 +312,7 @@ const LandingPage = () => {
                                             className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700"
                                         />
                                     </div>
-                                    <p className="text-[10px] font-bold text-gray-500 text-center px-4 leading-relaxed">
+                                    <p className="text-[10px] font-normal text-gray-500 text-center px-4 leading-relaxed">
                                         {photo.caption || 'Momen kegiatan kelompok tani Thangun Afa.'}
                                     </p>
                                 </div>
