@@ -297,14 +297,14 @@ const LandingPage = () => {
                             {settings?.gallery_title || 'Galeri Kegiatan'}
                         </h2>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                         {(gallery.length > 0 ? gallery.slice(0, 8) : [1, 2, 3, 4, 5, 6, 7, 8]).map((photo, i) => {
                             const isLandscape = photo.display_type === 'landscape'
                             return (
                                 <div key={photo.id || i} className={clsx("space-y-3", isLandscape ? "col-span-2" : "col-span-1")}>
                                     <div className={clsx(
-                                        "bg-white border border-primary-100/50 shadow-sm group",
-                                        isLandscape ? "aspect-video" : "aspect-[4/5]"
+                                        "bg-white overflow-hidden border border-primary-100/50 shadow-sm group",
+                                        isLandscape ? "aspect-[3/2]" : "aspect-[3/4]"
                                     )}>
                                         <img
                                             src={photo.photo_url || `/images/activity-1.jpg`}

@@ -22,14 +22,14 @@ const AllGallery = () => {
 
             <main className="pt-28 px-6 flex-grow">
                 <div className="max-w-6xl mx-auto mb-20">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                         {gallery.map((photo, i) => {
                             const isLandscape = photo.display_type === 'landscape'
                             return (
                                 <div key={photo.id || i} className={clsx("space-y-3", isLandscape ? "col-span-2" : "col-span-1")}>
                                     <div className={clsx(
                                         "bg-white overflow-hidden border border-primary-100/50 shadow-sm group",
-                                        isLandscape ? "aspect-video" : "aspect-[4/5]"
+                                        isLandscape ? "aspect-[3/2]" : "aspect-[3/4]"
                                     )}>
                                         <img
                                             src={photo.photo_url || `/images/activity-1.jpg`}
