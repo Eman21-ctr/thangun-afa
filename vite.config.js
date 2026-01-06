@@ -18,7 +18,7 @@ export default defineConfig({
                 short_name: 'Thangun Afa',
                 description: 'Aplikasi Manajemen Kelompok Tani Thangun Afa Besmarak',
                 theme_color: '#2D4F1E',
-                background_color: '#F8F9F4',
+                background_color: '#FFFFFF',
                 display: 'standalone',
                 icons: [
                     {
