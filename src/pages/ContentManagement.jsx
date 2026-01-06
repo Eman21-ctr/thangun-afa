@@ -33,7 +33,15 @@ const ContentManagement = () => {
         whatsapp_number: '',
         address: '',
         instagram_url: '',
-        features: []
+        features: [],
+        about_subtitle: '',
+        about_title: '',
+        team_subtitle: '',
+        team_title: '',
+        news_subtitle: '',
+        news_title: '',
+        gallery_subtitle: '',
+        gallery_title: ''
     })
 
     const [newPhoto, setNewPhoto] = useState({ photo_url: '', caption: '', display_type: 'square' })
@@ -54,7 +62,15 @@ const ContentManagement = () => {
                 whatsapp_number: settings.whatsapp_number || '',
                 address: settings.address || '',
                 instagram_url: settings.instagram_url || '',
-                features: settings.features || []
+                features: settings.features || [],
+                about_subtitle: settings.about_subtitle || '',
+                about_title: settings.about_title || '',
+                team_subtitle: settings.team_subtitle || '',
+                team_title: settings.team_title || '',
+                news_subtitle: settings.news_subtitle || '',
+                news_title: settings.news_title || '',
+                gallery_subtitle: settings.gallery_subtitle || '',
+                gallery_title: settings.gallery_title || ''
             })
         }
     }, [settings])
@@ -237,6 +253,76 @@ const ContentManagement = () => {
                                         onChange={(e) => setFormData({ ...formData, hero_description: e.target.value })}
                                         className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all resize-none"
                                     ></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Judul Konten Beranda */}
+                        <div className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-6">
+                            <div className="flex items-center space-x-2 text-primary">
+                                <Leaf size={20} weight="bold" />
+                                <h2 className="text-sm font-black uppercase tracking-widest">Judul Setiap Bagian</h2>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-6">
+                                {/* Tentang Kami */}
+                                <div className="space-y-4 p-4 bg-gray-50/50 rounded-2xl border border-primary-100/10">
+                                    <h3 className="text-[10px] font-black text-primary uppercase tracking-widest border-b pb-2">Bagian Tentang Kami</h3>
+                                    <div className="space-y-3">
+                                        <div className="space-y-1.5">
+                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Subtitle</label>
+                                            <input type="text" value={formData.about_subtitle} onChange={(e) => setFormData({ ...formData, about_subtitle: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Tentang Kami" />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Juduk Besar</label>
+                                            <input type="text" value={formData.about_title} onChange={(e) => setFormData({ ...formData, about_title: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Pertanian Cerdas..." />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Tim Kami */}
+                                <div className="space-y-4 p-4 bg-gray-50/50 rounded-2xl border border-primary-100/10">
+                                    <h3 className="text-[10px] font-black text-primary uppercase tracking-widest border-b pb-2">Bagian Tim Kami</h3>
+                                    <div className="space-y-3">
+                                        <div className="space-y-1.5">
+                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Subtitle</label>
+                                            <input type="text" value={formData.team_subtitle} onChange={(e) => setFormData({ ...formData, team_subtitle: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Tim Kami" />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Juduk Besar</label>
+                                            <input type="text" value={formData.team_title} onChange={(e) => setFormData({ ...formData, team_title: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Yang Muda..." />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Berita */}
+                                <div className="space-y-4 p-4 bg-gray-50/50 rounded-2xl border border-primary-100/10">
+                                    <h3 className="text-[10px] font-black text-primary uppercase tracking-widest border-b pb-2">Bagian Berita</h3>
+                                    <div className="space-y-3">
+                                        <div className="space-y-1.5">
+                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Subtitle</label>
+                                            <input type="text" value={formData.news_subtitle} onChange={(e) => setFormData({ ...formData, news_subtitle: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Berita & Kegiatan" />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Juduk Besar</label>
+                                            <input type="text" value={formData.news_title} onChange={(e) => setFormData({ ...formData, news_title: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Update Terbaru..." />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Galeri */}
+                                <div className="space-y-4 p-4 bg-gray-50/50 rounded-2xl border border-primary-100/10">
+                                    <h3 className="text-[10px] font-black text-primary uppercase tracking-widest border-b pb-2">Bagian Galeri</h3>
+                                    <div className="space-y-3">
+                                        <div className="space-y-1.5">
+                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Subtitle</label>
+                                            <input type="text" value={formData.gallery_subtitle} onChange={(e) => setFormData({ ...formData, gallery_subtitle: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Momen Berharga" />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Juduk Besar</label>
+                                            <input type="text" value={formData.gallery_title} onChange={(e) => setFormData({ ...formData, gallery_title: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Galeri Kegiatan" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

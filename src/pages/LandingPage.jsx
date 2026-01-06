@@ -106,10 +106,10 @@ const LandingPage = () => {
                     {/* Header - Center Aligned */}
                     <div className="text-center mb-8 lg:mb-16 space-y-3">
                         <div className="inline-flex items-center px-4 py-1.5 bg-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                            <span>Tentang Kami</span>
+                            <span>{settings?.about_subtitle || 'Tentang Kami'}</span>
                         </div>
                         <h2 className="text-4xl md:text-6xl lg:text-7xl font-normal text-gray-900 tracking-tight leading-tight">
-                            Pertanian Cerdas untuk Masa Depan
+                            {settings?.about_title || 'Pertanian Cerdas untuk Masa Depan'}
                         </h2>
                     </div>
 
@@ -152,10 +152,10 @@ const LandingPage = () => {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12 lg:mb-20 space-y-3">
                         <div className="inline-flex items-center px-4 py-1.5 bg-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                            <span>Tim Kami</span>
+                            <span>{settings?.team_subtitle || 'Tim Kami'}</span>
                         </div>
                         <h2 className="text-4xl md:text-6xl lg:text-7xl font-normal text-gray-900 tracking-tight leading-tight">
-                            Yang Muda, Yang Bertani
+                            {settings?.team_title || 'Yang Muda, Yang Bertani'}
                         </h2>
                     </div>
 
@@ -237,10 +237,10 @@ const LandingPage = () => {
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center mb-12 lg:mb-20 space-y-3">
                             <div className="inline-flex items-center px-4 py-1.5 bg-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                                <span>Berita & Kegiatan</span>
+                                <span>{settings?.news_subtitle || 'Berita & Kegiatan'}</span>
                             </div>
                             <h2 className="text-4xl md:text-6xl lg:text-7xl font-normal text-gray-900 tracking-tight leading-tight">
-                                Update Terbaru dari Kami
+                                {settings?.news_title || 'Update Terbaru dari Kami'}
                             </h2>
                         </div>
                         <div className="grid md:grid-cols-3 gap-10">
@@ -291,10 +291,10 @@ const LandingPage = () => {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12 lg:mb-20 space-y-3">
                         <div className="inline-flex items-center px-4 py-1.5 bg-white border border-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                            <span>Momen Berharga</span>
+                            <span>{settings?.gallery_subtitle || 'Momen Berharga'}</span>
                         </div>
                         <h2 className="text-4xl md:text-6xl lg:text-7xl font-normal text-gray-900 tracking-tight leading-tight">
-                            Galeri Kegiatan
+                            {settings?.gallery_title || 'Galeri Kegiatan'}
                         </h2>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
