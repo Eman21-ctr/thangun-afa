@@ -51,7 +51,7 @@ const LandingPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-cream font-sans">
+        <div className="min-h-screen bg-cream font-sans overflow-x-hidden">
             {/* Navigation */}
             <PublicNavbar />
 
