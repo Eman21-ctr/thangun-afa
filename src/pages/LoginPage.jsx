@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
@@ -14,6 +14,15 @@ const LoginPage = () => {
     const navigate = useNavigate()
     const location = useLocation()
 
+    useEffect(() => {
+        const savedEmail = localStorage.getItem('rememberedEmail')
+        const savedRememberMe = localStorage.getItem('rememberMe') === 'true'
+        if (savedRememberMe && savedEmail) {
+            setEmail(savedEmail)
+            setRememberMe(true)
+        }
+    }, [])
+
     const from = location.state?.from?.pathname || '/dashboard'
 
     const handleSubmit = async (e) => {
@@ -21,6 +30,16 @@ const LoginPage = () => {
         setLoading(true)
         try {
             await login(email, password)
+
+            // Handle Remember Me
+            if (rememberMe) {
+                localStorage.setItem('rememberedEmail', email)
+                localStorage.setItem('rememberMe', 'true')
+            } else {
+                localStorage.removeItem('rememberedEmail')
+                localStorage.removeItem('rememberMe')
+            }
+
             toast.success('Login berhasil')
             navigate(from, { replace: true })
         } catch (error) {
