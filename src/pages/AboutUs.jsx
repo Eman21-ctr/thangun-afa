@@ -24,7 +24,7 @@ const AboutUs = () => {
                 <div className="max-w-4xl mx-auto px-6 mb-20">
                     {/* Perjalanan Kami Title */}
                     <div className="text-center mb-8">
-                        <h2 className="text-4xl md:text-5xl font-normal text-gray-900 tracking-tight">Perjalanan Kami</h2>
+                        <h2 className="text-4xl md:text-5xl font-normal text-gray-900 tracking-tight">Cerita Perjalanan Kami</h2>
                     </div>
 
                     {/* Hero Image */}
