@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useContent } from '../hooks/useContent'
-import { Newspaper, Calendar, ArrowRight } from '@phosphor-icons/react'
+import { Newspaper, Calendar, ArrowRight, CalendarBlank } from '@phosphor-icons/react'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
 import PublicFooter from '../components/layout/PublicFooter'
@@ -40,13 +40,13 @@ const AllNews = () => {
                                     />
                                 </div>
                                 <div className="flex items-center space-x-3 text-[10px] font-bold text-primary uppercase tracking-widest mb-3">
-                                    <Newspaper size={16} weight="duotone" />
+                                    <CalendarBlank size={16} weight="duotone" />
                                     <span>{item.published_at ? format(new Date(item.published_at), 'dd MMMM yyyy', { locale: id }) : 'Baru Saja'}</span>
                                 </div>
-                                <h3 className="text-lg font-normal text-gray-800 tracking-tight line-clamp-2 mb-3 group-hover:text-primary transition-colors">
+                                <h3 className="text-2xl font-normal text-gray-800 tracking-tight line-clamp-2 mb-3 group-hover:text-primary transition-colors">
                                     {item.title}
                                 </h3>
-                                <p className="text-xs text-gray-500 font-medium line-clamp-3 mb-5 leading-relaxed">
+                                <p className="text-sm text-gray-500 font-medium line-clamp-3 mb-5 leading-relaxed">
                                     {item.content}
                                 </p>
                                 <div className="flex items-center space-x-2 text-xs font-normal text-primary">
