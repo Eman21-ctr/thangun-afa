@@ -124,7 +124,7 @@ const LandingPage = () => {
                         </div>
 
                         <div className="space-y-6 lg:space-y-10">
-                            <div className="text-base md:text-xl text-gray-600 leading-relaxed font-normal">
+                            <div className="text-lg md:text-[22px] text-gray-600 leading-relaxed font-normal">
                                 {settings?.about_text}
                             </div>
 
