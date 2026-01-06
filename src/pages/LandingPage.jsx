@@ -148,13 +148,13 @@ const LandingPage = () => {
 
 
             {/* Tim Kami Section */}
-            <section id="tim" className="py-12 lg:py-24 px-6 bg-gray-100/80">
+            <section id="tim" className="py-12 lg:py-24 px-6 bg-accent">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12 lg:mb-20 space-y-3">
-                        <div className="inline-flex items-center px-4 py-1.5 bg-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
+                        <div className="inline-flex items-center px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-white text-[10px] font-black uppercase tracking-[0.2em]">
                             <span>{settings?.team_subtitle || 'Tim Kami'}</span>
                         </div>
-                        <h2 className="text-4xl md:text-6xl lg:text-7xl font-normal text-gray-900 tracking-tight leading-tight">
+                        <h2 className="text-4xl md:text-6xl lg:text-7xl font-normal text-white tracking-tight leading-tight">
                             {settings?.team_title || 'Yang Muda, Yang Bertani'}
                         </h2>
                     </div>
