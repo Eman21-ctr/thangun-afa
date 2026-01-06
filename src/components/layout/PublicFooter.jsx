@@ -32,7 +32,7 @@ const PublicFooter = () => {
                     <div className="space-y-6 text-center md:text-left">
                         <img src="/images/logo-white.png" alt="Thangun Afa" className="h-10 w-auto mx-auto md:mx-0 opacity-80" />
                         <p className="text-gray-400 text-sm leading-relaxed max-w-sm mx-auto md:mx-0">
-                            Memberdayakan petani muda Besmarak melalui teknologi dan kolaborasi untuk masa depan pertanian Indonesia yang lebih cerdas.
+                            Bersama-sama membangun pertanian di Besmarak. Dari petani muda, untuk bumi yang lebih hijau dan kehidupan yang lebih mandiri.
                         </p>
                     </div>
 
