@@ -148,7 +148,7 @@ const LandingPage = () => {
 
 
             {/* Tim Kami Section */}
-            <section id="tim" className="py-12 lg:py-24 px-6 bg-accent">
+            <section id="tim" className="py-12 lg:py-24 px-6 bg-primary">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12 lg:mb-20 space-y-3">
                         <div className="inline-flex items-center px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-white text-[10px] font-black uppercase tracking-[0.2em]">
