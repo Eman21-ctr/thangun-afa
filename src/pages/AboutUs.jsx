@@ -37,7 +37,7 @@ const AboutUs = () => {
                     </div>
 
                     {/* Content Text */}
-                    <div className="prose prose-xl max-w-none text-gray-500 font-normal leading-relaxed whitespace-pre-line text-center lg:text-left">
+                    <div className="prose prose-xl max-w-none text-gray-500 font-normal leading-relaxed whitespace-pre-line text-left">
                         {settings?.about_history || settings?.about_text}
                     </div>
                 </div>
