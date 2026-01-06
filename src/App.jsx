@@ -19,6 +19,7 @@ import AllGallery from './pages/AllGallery'
 import AboutUs from './pages/AboutUs'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import MainLayout from './components/layout/MainLayout'
+import ScrollToTop from './components/layout/ScrollToTop'
 
 const queryClient = new QueryClient()
 
@@ -27,6 +28,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
                 <Router>
+                    <ScrollToTop />
                     <div className="min-h-screen flex flex-col">
                         <Routes>
                             <Route path="/login" element={<LoginPage />} />
