@@ -60,7 +60,7 @@ const NewsDetail = () => {
                         />
                     </div>
 
-                    <div className="prose prose-lg max-w-none text-gray-600 font-medium leading-relaxed whitespace-pre-line">
+                    <div className="prose prose-lg max-w-none text-gray-600 font-normal leading-relaxed whitespace-pre-line">
                         {article.content}
                     </div>
                 </div>
