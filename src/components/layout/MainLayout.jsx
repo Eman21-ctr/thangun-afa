@@ -75,12 +75,12 @@ const MainLayout = ({ children }) => {
 
                     {/* Drawer Profile - Compacter */}
                     <div className="flex items-center space-x-3 p-5 bg-primary-50/30">
-                        <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white text-lg font-semibold shadow-sm flex-shrink-0" style={{ backgroundColor: '#cbae11' }}>
+                        <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white text-lg font-semibold shadow-sm flex-shrink-0">
                             {profile?.full_name?.charAt(0) || 'U'}
                         </div>
                         <div className="min-w-0">
                             <h3 className="font-semibold text-gray-800 tracking-tight text-sm truncate">{profile?.full_name}</h3>
-                            <span className="text-[9px] font-medium px-2 py-0.5 text-white rounded-full uppercase tracking-wider" style={{ backgroundColor: '#cbae11' }}>
+                            <span className="text-[9px] font-medium px-2 py-0.5 bg-primary text-white rounded-full uppercase tracking-wider">
                                 {profile?.role?.replace('_', ' ')}
                             </span>
                         </div>
