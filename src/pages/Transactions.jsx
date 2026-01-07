@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { Plus, MagnifyingGlass, Funnel, ArrowUpRight, ArrowDownLeft, CircleNotch, Receipt, X, CalendarBlank, CaretDown, PencilSimple, Trash, Tag, Package, Scales, CurrencyDollar, Notepad, User, Check, FloppyDisk } from '@phosphor-icons/react'
+import { Plus, MagnifyingGlass, Funnel, ArrowUpRight, ArrowDownLeft, CircleNotch, Receipt, X, CalendarBlank, CaretDown, PencilSimple, Trash, Tag, Package, Scales, CurrencyDollar, Notepad, User, Check, FloppyDisk, DownloadSimple } from '@phosphor-icons/react'
 import { Link } from 'react-router-dom'
 import { format, startOfMonth, endOfMonth, startOfYear, endOfYear, isWithinInterval, parse } from 'date-fns'
 import { id } from 'date-fns/locale'
@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { supabase } from '../lib/supabase'
 import { toast } from 'react-hot-toast'
+import * as XLSX from 'xlsx'
 
 const TransactionCard = ({ transaction, onEdit, onDelete }) => (
     <div className="bg-white p-3 rounded-xl shadow-sm border border-primary-100/30 flex items-center justify-between active:scale-[0.98] transition-all group">
@@ -431,12 +432,40 @@ const Transactions = () => {
         return 'Filter Tanggal'
     }
 
+    const exportToExcel = () => {
+        const dataToExport = filteredTransactions.map(t => ({
+            Tanggal: format(new Date(t.date), 'dd/MM/yyyy'),
+            Tipe: t.type === 'income' ? 'Pemasukan' : 'Pengeluaran',
+            Kategori: t.commodity || t.category,
+            Deskripsi: t.description,
+            Jumlah: t.quantity,
+            Satuan: t.unit,
+            'Harga Satuan': t.unit_price,
+            Total: t.total_amount,
+            Catatan: t.notes || ''
+        }))
+
+        const ws = XLSX.utils.json_to_sheet(dataToExport)
+        const wb = XLSX.utils.book_new()
+        XLSX.utils.book_append_sheet(wb, ws, "Daftar Transaksi")
+        XLSX.writeFile(wb, `Transaksi_ThangunAfa_${format(new Date(), 'yyyyMMdd')}.xlsx`)
+    }
+
     return (
         <div className="p-5 space-y-6 font-sans">
             <div className="flex items-center justify-between px-1">
                 <h1 className="text-2xl font-semibold text-gray-800 tracking-tight">Riwayat Transaksi</h1>
-                <div className="p-2 bg-primary-50 rounded-xl text-primary">
-                    <Receipt size={20} weight="duotone" />
+                <div className="flex items-center space-x-2">
+                    <button
+                        onClick={exportToExcel}
+                        disabled={!filteredTransactions || filteredTransactions.length === 0}
+                        className="p-2 text-primary hover:text-primary-600 transition-all active:scale-90 disabled:opacity-30 rounded-xl hover:bg-primary-50"
+                    >
+                        <DownloadSimple size={24} weight="bold" />
+                    </button>
+                    <div className="p-2 bg-primary-50 rounded-xl text-primary">
+                        <Receipt size={20} weight="duotone" />
+                    </div>
                 </div>
             </div>
 
