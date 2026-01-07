@@ -90,7 +90,7 @@ const LandingPage = () => {
                     <div className="max-w-3xl space-y-8">
 
                         <div className="space-y-4">
-                            <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold text-white leading-[0.9] tracking-tighter">
+                            <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold text-white leading-[1.1] tracking-tighter">
                                 {settings?.hero_title}
                             </h1>
                             <p className="text-lg md:text-xl text-white/80 font-medium max-w-xl leading-relaxed">
