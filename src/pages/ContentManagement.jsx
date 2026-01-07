@@ -601,11 +601,17 @@ const ContentManagement = () => {
                                 </div>
                                 <input
                                     type="text"
-                                    placeholder="Keterangan Foto"
+                                    placeholder="Keterangan Foto (Momen)"
                                     value={newPhoto.caption}
                                     onChange={(e) => setNewPhoto({ ...newPhoto, caption: e.target.value })}
                                     className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm"
+                                    list="existing-captions"
                                 />
+                                <datalist id="existing-captions">
+                                    {[...new Set(gallery.map(p => p.caption))].filter(Boolean).map(caption => (
+                                        <option key={caption} value={caption} />
+                                    ))}
+                                </datalist>
                                 <button type="submit" className="w-full py-3 bg-primary text-white font-semibold uppercase tracking-wider rounded-lg shadow-lg shadow-primary/10">
                                     {editingId ? 'Simpan' : 'Tambah ke Galeri'}
                                 </button>
