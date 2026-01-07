@@ -1,9 +1,11 @@
 import { Wallet, Plus, Minus } from '@phosphor-icons/react'
 import { useAuth } from '../context/AuthContext'
 import { useDashboardStats } from '../hooks/useTransactions'
+import { useContent } from '../hooks/useContent'
 
 const Dashboard = () => {
     const { profile } = useAuth()
+    const { settings } = useContent()
     const { data: stats, isLoading } = useDashboardStats(
         profile?.role === 'member' ? profile.id : null
     )
@@ -16,7 +18,7 @@ const Dashboard = () => {
             <div
                 className="relative h-64 bg-cover bg-center"
                 style={{
-                    backgroundImage: `url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80')`
+                    backgroundImage: `url('${settings?.dashboard_hero_url || 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80'}')`
                 }}
             >
                 {/* Dark overlay */}
