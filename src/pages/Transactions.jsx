@@ -511,11 +511,12 @@ const Transactions = () => {
                                 key={mode.id}
                                 onClick={() => setDateFilterMode(mode.id)}
                                 className={clsx(
-                                    "flex-1 py-2 text-xs font-medium rounded-lg transition-all",
+                                    "flex-1 py-2 text-xs font-medium rounded-lg transition-all text-white",
                                     dateFilterMode === mode.id
-                                        ? "bg-primary text-white shadow"
-                                        : "text-gray-500 hover:text-gray-700"
+                                        ? "shadow-sm"
+                                        : "bg-transparent text-gray-500 hover:text-gray-700"
                                 )}
+                                style={dateFilterMode === mode.id ? { backgroundColor: '#8DA994' } : {}}
                             >
                                 {mode.label}
                             </button>
@@ -610,9 +611,10 @@ const Transactions = () => {
                         key={type.id}
                         onClick={() => setFilterType(type.id)}
                         className={clsx(
-                            "flex-1 py-2.5 text-xs font-medium uppercase tracking-widest rounded-[1rem] transition-all",
-                            filterType === type.id ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-gray-400 hover:text-gray-600"
+                            "flex-1 py-2.5 text-xs font-medium uppercase tracking-widest rounded-[1rem] transition-all text-white",
+                            filterType === type.id ? "shadow-lg" : "bg-transparent text-gray-400 hover:text-gray-600"
                         )}
+                        style={filterType === type.id ? { backgroundColor: '#8DA994', boxShadow: '0 10px 15px -3px rgba(141, 169, 148, 0.3)' } : {}}
                     >
                         {type.label}
                     </button>
