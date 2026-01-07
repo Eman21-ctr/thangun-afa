@@ -70,13 +70,13 @@ const Profile = () => {
 
             {/* Compact Profile Header Card */}
             <div className="bg-white p-5 rounded-2xl border border-primary-100/50 shadow-sm flex items-center space-x-4">
-                <div className="w-14 h-14 bg-primary-50 rounded-xl flex items-center justify-center text-primary text-xl font-semibold border-2 border-white shadow-lg flex-shrink-0">
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white text-xl font-semibold border-2 border-white shadow-lg flex-shrink-0" style={{ backgroundColor: '#cbae11' }}>
                     {profile?.full_name?.charAt(0) || 'U'}
                 </div>
                 <div className="flex-1 min-w-0">
                     <h2 className="text-lg font-semibold text-gray-800 tracking-tight truncate">{profile?.full_name}</h2>
                     <div className="flex items-center space-x-2 mt-1">
-                        <span className="text-[9px] font-medium px-2.5 py-0.5 bg-primary text-white rounded-full uppercase tracking-wider">
+                        <span className="text-[9px] font-medium px-2.5 py-0.5 text-white rounded-full uppercase tracking-wider" style={{ backgroundColor: '#cbae11' }}>
                             {profile?.role?.replace('_', ' ')}
                         </span>
                         {profile?.position && (

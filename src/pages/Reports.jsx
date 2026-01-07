@@ -144,10 +144,9 @@ const Reports = () => {
                 <button
                     onClick={exportToExcel}
                     disabled={filteredData.length === 0}
-                    className="flex items-center space-x-2 px-5 py-2.5 bg-primary text-white text-xs font-medium uppercase tracking-widest rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 disabled:opacity-50 transition-all"
+                    className="p-2 text-primary hover:text-primary-600 transition-all active:scale-90 disabled:opacity-30 flex items-center justify-center rounded-xl hover:bg-primary-50"
                 >
-                    <DownloadSimple size={18} weight="duotone" />
-                    <span>Ekspor</span>
+                    <DownloadSimple size={24} weight="duotone" />
                 </button>
             </div>
 
