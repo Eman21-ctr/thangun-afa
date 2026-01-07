@@ -259,19 +259,19 @@ const Reports = () => {
                         <ArrowUpRight size={18} weight="bold" className="mr-1.5" />
                         <span className="text-[10px] font-medium uppercase tracking-widest">Pemasukan</span>
                     </div>
-                    <p className="text-lg font-semibold text-gray-800 tracking-tight">Rp {stats.income.toLocaleString('id-ID')}</p>
+                    <p className="text-sm font-semibold text-gray-800 tracking-tight">Rp {stats.income.toLocaleString('id-ID')}</p>
                 </div>
                 <div className="bg-white p-5 rounded-2xl border border-primary-100/40">
                     <div className="flex items-center text-red-500 mb-2">
                         <ArrowDownLeft size={18} weight="bold" className="mr-1.5" />
                         <span className="text-[10px] font-medium uppercase tracking-widest">Pengeluaran</span>
                     </div>
-                    <p className="text-lg font-semibold text-gray-800 tracking-tight">Rp {stats.expense.toLocaleString('id-ID')}</p>
+                    <p className="text-sm font-semibold text-gray-800 tracking-tight">Rp {stats.expense.toLocaleString('id-ID')}</p>
                 </div>
-                <div className="col-span-2 relative overflow-hidden p-6 rounded-[2rem] text-white shadow-xl shadow-[#cbae11]/20" style={{ backgroundColor: '#cbae11' }}>
-                    <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/80 mb-1">Saldo Bersih</p>
-                    <p className="text-3xl font-semibold tracking-tight">Rp {stats.balance.toLocaleString('id-ID')}</p>
-                    <div className="absolute right-0 top-0 w-24 h-24 bg-white/5 rounded-full -mr-8 -mt-8"></div>
+                <div className="col-span-2 relative overflow-hidden p-6 rounded-[2rem] bg-white border border-primary-100/40 shadow-sm">
+                    <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-gray-400 mb-1">Saldo Bersih</p>
+                    <p className="text-3xl font-semibold tracking-tight text-gray-800">Rp {stats.balance.toLocaleString('id-ID')}</p>
+                    <div className="absolute right-0 top-0 w-24 h-24 bg-primary-50/50 rounded-full -mr-8 -mt-8"></div>
                 </div>
             </div>
 
