@@ -1,14 +1,19 @@
-import { useState, useMemo } from 'react'
-import { Plus, MagnifyingGlass, Funnel, ArrowUpRight, ArrowDownLeft, CircleNotch, Receipt, X, CalendarBlank, CaretDown } from '@phosphor-icons/react'
+import { useState, useMemo, useEffect } from 'react'
+import { Plus, MagnifyingGlass, Funnel, ArrowUpRight, ArrowDownLeft, CircleNotch, Receipt, X, CalendarBlank, CaretDown, PencilSimple, Trash, Tag, Package, Scales, CurrencyDollar, Notepad, User, Check, FloppyDisk } from '@phosphor-icons/react'
 import { Link } from 'react-router-dom'
 import { format, startOfMonth, endOfMonth, startOfYear, endOfYear, isWithinInterval, parse } from 'date-fns'
 import { id } from 'date-fns/locale'
 import { clsx } from 'clsx'
-import { useTransactions } from '../hooks/useTransactions'
+import { useTransactions, useTransactionMutations } from '../hooks/useTransactions'
 import { useAuth } from '../context/AuthContext'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { supabase } from '../lib/supabase'
+import { toast } from 'react-hot-toast'
 
-const TransactionCard = ({ transaction }) => (
-    <div className="bg-white p-3 rounded-xl shadow-sm border border-primary-100/30 flex items-center justify-between active:scale-[0.98] transition-all">
+const TransactionCard = ({ transaction, onEdit, onDelete }) => (
+    <div className="bg-white p-3 rounded-xl shadow-sm border border-primary-100/30 flex items-center justify-between active:scale-[0.98] transition-all group">
         <div className="flex items-center space-x-3 min-w-0 flex-1">
             <div className={clsx(
                 "w-9 h-9 rounded-lg flex items-center justify-center transition-colors flex-shrink-0",
@@ -25,17 +30,286 @@ const TransactionCard = ({ transaction }) => (
                 </div>
             </div>
         </div>
-        <div className="text-right">
-            <p className={clsx(
-                "font-semibold text-[14px] tracking-tight",
-                transaction.type === 'income' ? "text-primary" : "text-red-500"
-            )}>
-                {transaction.type === 'income' ? "+" : "-"} Rp {transaction.total_amount.toLocaleString('id-ID')}
-            </p>
-            <p className="text-[10px] text-gray-400 font-medium uppercase">{transaction.quantity} {transaction.unit}</p>
+
+        <div className="flex items-center space-x-3 ml-4">
+            <div className="text-right">
+                <p className={clsx(
+                    "font-semibold text-[14px] tracking-tight",
+                    transaction.type === 'income' ? "text-primary" : "text-red-500"
+                )}>
+                    {transaction.type === 'income' ? "+" : "-"} Rp {transaction.total_amount.toLocaleString('id-ID')}
+                </p>
+                <p className="text-[10px] text-gray-400 font-medium uppercase">{transaction.quantity} {transaction.unit}</p>
+            </div>
+
+            <div className="flex flex-col space-y-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                    onClick={(e) => { e.stopPropagation(); onEdit(transaction); }}
+                    className="p-1.5 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
+                >
+                    <PencilSimple size={14} weight="bold" />
+                </button>
+                <button
+                    onClick={(e) => { e.stopPropagation(); onDelete(transaction.id); }}
+                    className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                >
+                    <Trash size={14} weight="bold" />
+                </button>
+            </div>
         </div>
     </div>
 )
+
+const transactionSchema = z.object({
+    type: z.enum(['income', 'expense']),
+    date: z.string().min(1, 'Tanggal wajib diisi'),
+    category: z.string().optional().nullable(),
+    commodity: z.string().optional().nullable(),
+    description: z.string().min(3, 'Deskripsi minimal 3 karakter'),
+    quantity: z.number({ invalid_type_error: 'Harus berupa angka' }).positive('Jumlah harus positif'),
+    unit: z.string().min(1, 'Satuan wajib diisi'),
+    unit_price: z.number({ invalid_type_error: 'Harus berupa angka' }).positive('Harga satuan harus positif'),
+    total_amount: z.number().positive(),
+    buyer: z.string().optional().nullable(),
+    notes: z.string().optional().nullable(),
+})
+
+const EditTransactionModal = ({ transaction, onClose, onSave }) => {
+    const [categories, setCategories] = useState([])
+    const [commodities, setCommodities] = useState([])
+    const [loading, setLoading] = useState(false)
+
+    const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+        resolver: zodResolver(transactionSchema),
+        defaultValues: {
+            ...transaction,
+            date: format(new Date(transaction.date), 'yyyy-MM-dd')
+        }
+    })
+
+    const type = watch('type')
+    const quantity = watch('quantity')
+    const unitPrice = watch('unit_price')
+
+    useEffect(() => {
+        const calculatedTotal = (quantity || 0) * (unitPrice || 0)
+        setValue('total_amount', calculatedTotal, { shouldValidate: true })
+    }, [quantity, unitPrice, setValue])
+
+    useEffect(() => {
+        fetchMetadata()
+    }, [])
+
+    const fetchMetadata = async () => {
+        const { data: catData } = await supabase.from('expense_categories').select('*').eq('is_active', true)
+        const { data: comData } = await supabase.from('commodities').select('*').eq('is_active', true)
+        setCategories(catData || [])
+        setCommodities(comData || [])
+    }
+
+    const onSubmit = async (data) => {
+        setLoading(true)
+        try {
+            const cleanData = {
+                type: data.type,
+                date: data.date,
+                category: data.category || null,
+                commodity: data.commodity || null,
+                description: data.description,
+                quantity: Number(data.quantity),
+                unit: data.unit,
+                unit_price: Number(data.unit_price),
+                total_amount: Number(data.total_amount),
+                buyer: data.buyer || null,
+                notes: data.notes || null,
+            }
+
+            await onSave(transaction.id, cleanData)
+            onClose()
+        } catch (error) {
+            toast.error(error.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm transition-all">
+            <div className="bg-white w-full max-w-lg rounded-t-[2.5rem] sm:rounded-[2.5rem] p-8 shadow-2xl animate-in slide-in-from-bottom duration-300 max-h-[90vh] overflow-y-auto">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-semibold text-gray-800 tracking-tight">Edit Transaksi</h2>
+                    <button onClick={onClose} className="p-2 bg-gray-50 text-gray-400 rounded-xl hover:text-gray-600 transition-colors">
+                        <X size={20} weight="bold" />
+                    </button>
+                </div>
+
+                <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="space-y-4"
+                >
+                    {/* Type Toggle */}
+                    <div className="bg-gray-50 p-1 rounded-xl border border-primary-100/30 flex">
+                        <button
+                            type="button"
+                            onClick={() => setValue('type', 'income')}
+                            className={clsx(
+                                "flex-1 py-2 text-xs font-medium uppercase tracking-wide rounded-lg transition-all",
+                                type === 'income' ? "bg-primary text-white shadow" : "text-gray-400"
+                            )}
+                        >
+                            Pemasukan
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setValue('type', 'expense')}
+                            className={clsx(
+                                "flex-1 py-2 text-xs font-medium uppercase tracking-wide rounded-lg transition-all",
+                                type === 'expense' ? "bg-red-500 text-white shadow" : "text-gray-400"
+                            )}
+                        >
+                            Pengeluaran
+                        </button>
+                    </div>
+
+                    <div className="space-y-3">
+                        {/* Date */}
+                        <div className="relative">
+                            <CalendarBlank className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                            <input
+                                type="date"
+                                {...register('date')}
+                                className={clsx(
+                                    "w-full pl-10 pr-3 py-3 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm",
+                                    errors.date ? "border-red-500" : "border-primary-100/30"
+                                )}
+                            />
+                            {errors.date && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.date.message}</p>}
+                        </div>
+
+                        {/* Commodity/Category */}
+                        {type === 'income' ? (
+                            <div className="relative">
+                                <Package className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                                <select
+                                    {...register('commodity')}
+                                    className={clsx(
+                                        "w-full pl-10 pr-3 py-3 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm appearance-none",
+                                        errors.commodity ? "border-red-500" : "border-primary-100/30"
+                                    )}
+                                >
+                                    <option value="">Pilih Komoditas</option>
+                                    {commodities.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
+                                </select>
+                                {errors.commodity && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.commodity.message}</p>}
+                            </div>
+                        ) : (
+                            <div className="relative">
+                                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                                <select
+                                    {...register('category')}
+                                    className={clsx(
+                                        "w-full pl-10 pr-3 py-3 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm appearance-none",
+                                        errors.category ? "border-red-500" : "border-primary-100/30"
+                                    )}
+                                >
+                                    <option value="">Pilih Kategori</option>
+                                    {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
+                                </select>
+                                {errors.category && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.category.message}</p>}
+                            </div>
+                        )}
+
+                        {/* Description */}
+                        <div className="relative">
+                            <Notepad className="absolute left-3 top-3 text-gray-400" size={18} weight="duotone" />
+                            <input
+                                type="text"
+                                placeholder="Deskripsi transaksi"
+                                {...register('description')}
+                                className={clsx(
+                                    "w-full pl-10 pr-3 py-3 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm placeholder:text-gray-300",
+                                    errors.description ? "border-red-500" : "border-primary-100/30"
+                                )}
+                            />
+                            {errors.description && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.description.message}</p>}
+                        </div>
+
+                        {/* Quantity & Unit */}
+                        <div className="grid grid-cols-2 gap-3">
+                            <div className="relative">
+                                <Scales className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                                <input
+                                    type="number"
+                                    step="0.1"
+                                    placeholder="Jumlah"
+                                    {...register('quantity', { valueAsNumber: true })}
+                                    className={clsx(
+                                        "w-full pl-10 pr-3 py-3 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm",
+                                        errors.quantity ? "border-red-500" : "border-primary-100/30"
+                                    )}
+                                />
+                                {errors.quantity && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.quantity.message}</p>}
+                            </div>
+                            <div className="flex flex-col">
+                                <input
+                                    type="text"
+                                    placeholder="Satuan (kg, bok)"
+                                    {...register('unit')}
+                                    className={clsx(
+                                        "w-full px-3 py-3 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm placeholder:text-gray-300",
+                                        errors.unit ? "border-red-500" : "border-primary-100/30"
+                                    )}
+                                />
+                                {errors.unit && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.unit.message}</p>}
+                            </div>
+                        </div>
+
+                        {/* Unit Price */}
+                        <div className="relative">
+                            <CurrencyDollar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                            <input
+                                type="number"
+                                placeholder="Harga satuan (Rp)"
+                                {...register('unit_price', { valueAsNumber: true })}
+                                className={clsx(
+                                    "w-full pl-10 pr-3 py-3 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm",
+                                    errors.unit_price ? "border-red-500" : "border-primary-100/30"
+                                )}
+                            />
+                            {errors.unit_price && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.unit_price.message}</p>}
+                        </div>
+
+                        {/* Total Display */}
+                        <div className="p-4 bg-primary-50 rounded-xl border border-dashed border-primary-200 flex items-center justify-between">
+                            <span className="text-xs text-primary/60 font-medium">Total</span>
+                            <span className="text-xl font-semibold text-primary">
+                                Rp {((quantity || 0) * (unitPrice || 0)).toLocaleString('id-ID')}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="flex space-x-3 pt-4">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="flex-1 py-4 bg-gray-50 text-gray-500 font-medium rounded-2xl hover:bg-gray-100 transition-all"
+                        >
+                            Batal
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="flex-1 py-4 bg-primary text-white font-medium rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 disabled:opacity-50"
+                        >
+                            {loading ? <CircleNotch className="animate-spin" size={20} /> : <FloppyDisk size={20} weight="duotone" />}
+                            <span>Simpan</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    )
+}
 
 const Transactions = () => {
     const { profile } = useAuth()
@@ -48,10 +322,38 @@ const Transactions = () => {
     const [customStartDate, setCustomStartDate] = useState('')
     const [customEndDate, setCustomEndDate] = useState('')
 
+    const [editingTransaction, setEditingTransaction] = useState(null)
+    const { updateTransaction, deleteTransaction } = useTransactionMutations()
+
     const { data: transactions, isLoading } = useTransactions({
         type: filterType,
         userId: profile?.role === 'member' ? profile.id : null
     })
+
+    const handleEdit = (transaction) => {
+        setEditingTransaction(transaction)
+    }
+
+    const handleDelete = async (id) => {
+        if (window.confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
+            try {
+                await deleteTransaction.mutateAsync(id)
+                toast.success('Transaksi berhasil dihapus')
+            } catch (error) {
+                toast.error(error.message)
+            }
+        }
+    }
+
+    const handleSaveEdit = async (id, updates) => {
+        try {
+            await updateTransaction.mutateAsync({ id, ...updates })
+            toast.success('Transaksi berhasil diperbarui')
+            setEditingTransaction(null)
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
 
     // Generate month options (last 24 months)
     const monthOptions = useMemo(() => {
@@ -301,7 +603,14 @@ const Transactions = () => {
                         <p className="text-xs font-medium uppercase tracking-widest">Memproses Data...</p>
                     </div>
                 ) : filteredTransactions && filteredTransactions.length > 0 ? (
-                    filteredTransactions.map((tx) => <TransactionCard key={tx.id} transaction={tx} />)
+                    filteredTransactions.map((tx) => (
+                        <TransactionCard
+                            key={tx.id}
+                            transaction={tx}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                        />
+                    ))
                 ) : (
                     <div className="py-24 flex flex-col items-center justify-center text-center space-y-4">
                         <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-gray-200">
@@ -324,6 +633,15 @@ const Transactions = () => {
             >
                 <Plus size={32} weight="bold" />
             </Link>
+
+            {/* Edit Modal */}
+            {editingTransaction && (
+                <EditTransactionModal
+                    transaction={editingTransaction}
+                    onClose={() => setEditingTransaction(null)}
+                    onSave={handleSaveEdit}
+                />
+            )}
         </div>
     )
 }

@@ -57,3 +57,38 @@ export const useDashboardStats = (userId = null) => {
         }
     })
 }
+
+export const useTransactionMutations = () => {
+    const queryClient = useQueryClient()
+
+    const updateTransaction = useMutation({
+        mutationFn: async ({ id, ...updates }) => {
+            const { data, error } = await supabase
+                .from('transactions')
+                .update(updates)
+                .eq('id', id)
+            if (error) throw error
+            return data
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['transactions'] })
+            queryClient.invalidateQueries({ queryKey: ['dashboard-stats'] })
+        }
+    })
+
+    const deleteTransaction = useMutation({
+        mutationFn: async (id) => {
+            const { error } = await supabase
+                .from('transactions')
+                .delete()
+                .eq('id', id)
+            if (error) throw error
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['transactions'] })
+            queryClient.invalidateQueries({ queryKey: ['dashboard-stats'] })
+        }
+    })
+
+    return { updateTransaction, deleteTransaction }
+}
