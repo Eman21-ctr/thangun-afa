@@ -64,37 +64,33 @@ const Dashboard = () => {
                 {/* Income & Expense Summary - Angka Kecil dengan Ikon + dan - */}
                 <div className="grid grid-cols-2 gap-4">
                     {/* Pemasukan */}
-                    <div className="flex items-center space-x-3 p-3 bg-green-50/50 rounded-xl">
-                        <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-white shadow-md shadow-green-500/20 flex-shrink-0">
-                            <Plus size={16} weight="duotone" />
+                    <div className="p-4 bg-green-50/50 rounded-2xl border border-green-100/30">
+                        <div className="flex items-center space-x-1 mb-1">
+                            <Plus size={12} weight="bold" className="text-green-600" />
+                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wide">Pemasukan</p>
                         </div>
-                        <div className="min-w-0 flex-1">
-                            <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wide">Pemasukan</p>
-                            {isLoading ? (
-                                <div className="h-5 w-20 bg-gray-100 animate-pulse rounded"></div>
-                            ) : (
-                                <p className="text-base font-medium text-gray-800">
-                                    {formatCurrency(stats?.income)}
-                                </p>
-                            )}
-                        </div>
+                        {isLoading ? (
+                            <div className="h-5 w-20 bg-gray-100 animate-pulse rounded"></div>
+                        ) : (
+                            <p className="text-[15px] font-semibold text-gray-800 tracking-tight truncate">
+                                {formatCurrency(stats?.income)}
+                            </p>
+                        )}
                     </div>
 
                     {/* Pengeluaran */}
-                    <div className="flex items-center space-x-3 p-3 bg-red-50/50 rounded-xl">
-                        <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-white shadow-md shadow-red-500/20 flex-shrink-0">
-                            <Minus size={16} weight="duotone" />
+                    <div className="p-4 bg-red-50/50 rounded-2xl border border-red-100/30">
+                        <div className="flex items-center space-x-1 mb-1">
+                            <Minus size={12} weight="bold" className="text-red-500" />
+                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wide">Pengeluaran</p>
                         </div>
-                        <div className="min-w-0 flex-1">
-                            <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wide">Pengeluaran</p>
-                            {isLoading ? (
-                                <div className="h-5 w-20 bg-gray-100 animate-pulse rounded"></div>
-                            ) : (
-                                <p className="text-base font-medium text-gray-800">
-                                    {formatCurrency(stats?.expense)}
-                                </p>
-                            )}
-                        </div>
+                        {isLoading ? (
+                            <div className="h-5 w-20 bg-gray-100 animate-pulse rounded"></div>
+                        ) : (
+                            <p className="text-[15px] font-semibold text-gray-800 tracking-tight truncate">
+                                {formatCurrency(stats?.expense)}
+                            </p>
+                        )}
                     </div>
                 </div>
 

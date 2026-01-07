@@ -90,7 +90,8 @@ const LandingPage = () => {
                                 href={whatsappLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center space-x-3 px-8 py-3.5 bg-accent text-primary text-base font-bold rounded-xl shadow-xl shadow-accent/20 hover:scale-105 active:scale-95 transition-all"
+                                className="flex items-center space-x-3 px-8 py-3.5 text-primary text-base font-bold rounded-xl shadow-xl shadow-[#cbae11]/20 hover:scale-105 active:scale-95 transition-all"
+                                style={{ backgroundColor: '#cbae11' }}
                             >
                                 <WhatsappLogo size={22} weight="fill" />
                                 <span>Hubungi kami sekarang</span>
@@ -343,7 +344,8 @@ const LandingPage = () => {
                         href={whatsappLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center space-x-3 px-10 py-5 bg-accent text-primary text-sm font-bold rounded-2xl shadow-xl shadow-accent/20 hover:scale-105 active:scale-95 transition-all"
+                        className="inline-flex items-center space-x-3 px-10 py-5 text-primary text-sm font-bold rounded-2xl shadow-xl shadow-[#cbae11]/20 hover:scale-105 active:scale-95 transition-all"
+                        style={{ backgroundColor: '#cbae11' }}
                     >
                         <WhatsappLogo size={24} weight="fill" />
                         <span>Hubungi via WhatsApp</span>

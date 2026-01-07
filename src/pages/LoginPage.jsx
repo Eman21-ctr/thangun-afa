@@ -89,7 +89,7 @@ const LoginPage = () => {
                                     type={showPassword ? "text" : "password"}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-12 pr-12 py-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all placeholder:text-gray-300"
+                                    className="w-full pl-12 pr-12 py-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-normal text-gray-700 transition-all placeholder:text-gray-300"
                                     placeholder="••••••••"
                                     required
                                 />
@@ -128,12 +128,13 @@ const LoginPage = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-5 bg-primary text-white font-medium rounded-[1.5rem] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-3 disabled:opacity-50 mt-4"
+                            className="w-full py-5 text-white font-medium rounded-[1.5rem] shadow-xl shadow-[#cbae11]/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-3 disabled:opacity-50 mt-4"
+                            style={{ backgroundColor: '#cbae11' }}
                         >
                             {loading ? (
                                 <CircleNotch className="animate-spin" size={20} weight="bold" />
                             ) : (
-                                <span>Masuk sekarang</span>
+                                <span>Masuk</span>
                             )}
                         </button>
                     </form>
