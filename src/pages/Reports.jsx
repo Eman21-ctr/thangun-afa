@@ -144,9 +144,9 @@ const Reports = () => {
                 <button
                     onClick={exportToExcel}
                     disabled={filteredData.length === 0}
-                    className="p-2 text-primary hover:text-primary-600 transition-all active:scale-90 disabled:opacity-30 flex items-center justify-center rounded-xl hover:bg-primary-50"
+                    className="p-2 text-primary hover:text-primary-600 transition-all active:scale-90 disabled:opacity-30 flex items-center justify-center"
                 >
-                    <DownloadSimple size={24} weight="duotone" />
+                    <DownloadSimple size={24} weight="bold" />
                 </button>
             </div>
 

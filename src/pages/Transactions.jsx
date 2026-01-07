@@ -455,18 +455,13 @@ const Transactions = () => {
         <div className="p-5 space-y-6 font-sans">
             <div className="flex items-center justify-between px-1">
                 <h1 className="text-2xl font-semibold text-gray-800 tracking-tight">Riwayat Transaksi</h1>
-                <div className="flex items-center space-x-2">
-                    <button
-                        onClick={exportToExcel}
-                        disabled={!filteredTransactions || filteredTransactions.length === 0}
-                        className="p-2 text-primary hover:text-primary-600 transition-all active:scale-90 disabled:opacity-30 rounded-xl hover:bg-primary-50"
-                    >
-                        <DownloadSimple size={24} weight="bold" />
-                    </button>
-                    <div className="p-2 bg-primary-50 rounded-xl text-primary">
-                        <Receipt size={20} weight="duotone" />
-                    </div>
-                </div>
+                <button
+                    onClick={exportToExcel}
+                    disabled={!filteredTransactions || filteredTransactions.length === 0}
+                    className="p-2 text-primary hover:text-primary-600 transition-all active:scale-90 disabled:opacity-30"
+                >
+                    <DownloadSimple size={24} weight="bold" />
+                </button>
             </div>
 
             {/* Search & Filter */}
