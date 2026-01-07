@@ -94,8 +94,8 @@ const Dashboard = () => {
 
                 {/* Info Note */}
                 <div className="bg-primary-50/50 p-4 rounded-2xl border border-dashed border-primary-200/50 text-center">
-                    <p className="text-xs text-primary-900/60 font-normal leading-relaxed">
-                        Pencatatan keuangan Thangun Afa diperbarui secara real-time berdasarkan data transaksi anggota.
+                    <p className="text-xs text-primary-900/60 font-medium italic leading-relaxed">
+                        "Pencatatan yang jujur dan teliti adalah fondasi utama menuju kemandirian serta transparansi dalam bertani."
                     </p>
                 </div>
 
