@@ -30,8 +30,26 @@ export const useMembers = () => {
         }
     })
 
+    const createMember = useMutation({
+        mutationFn: async (userData) => {
+            const { data, error } = await supabase.rpc('admin_create_member', {
+                target_email: userData.email,
+                target_password: userData.password,
+                target_full_name: userData.full_name,
+                target_role: userData.role,
+                target_position: userData.position
+            })
+            if (error) throw error
+            return data
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['members'] })
+        }
+    })
+
     return {
         ...membersQuery,
-        updateMember
+        updateMember,
+        createMember
     }
 }
