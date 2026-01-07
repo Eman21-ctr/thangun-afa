@@ -17,10 +17,10 @@ const TransactionCard = ({ transaction, onEdit, onDelete }) => (
     <div className="bg-white p-3 rounded-xl shadow-sm border border-primary-100/30 flex items-center justify-between active:scale-[0.98] transition-all group">
         <div className="flex items-center space-x-3 min-w-0 flex-1">
             <div className={clsx(
-                "w-9 h-9 rounded-lg flex items-center justify-center transition-colors flex-shrink-0",
-                transaction.type === 'income' ? "bg-primary-50 text-primary" : "bg-red-50 text-red-500"
+                "flex items-center justify-center flex-shrink-0 transition-colors",
+                transaction.type === 'income' ? "text-primary" : "text-red-500"
             )}>
-                {transaction.type === 'income' ? <ArrowUpRight size={18} weight="duotone" /> : <ArrowDownLeft size={18} weight="duotone" />}
+                {transaction.type === 'income' ? <ArrowUpRight size={18} weight="bold" /> : <ArrowDownLeft size={18} weight="bold" />}
             </div>
             <div className="min-w-0 flex-1">
                 <p className="font-medium text-gray-800 line-clamp-1 tracking-tight text-[13px]">{transaction.description}</p>

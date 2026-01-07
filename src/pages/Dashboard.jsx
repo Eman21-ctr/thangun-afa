@@ -39,9 +39,7 @@ const Dashboard = () => {
                 {/* Balance Card - Angka Besar Saldo */}
                 <div className="text-center py-6">
                     <div className="flex items-center justify-center mb-2">
-                        <div className="p-2 bg-primary-50 rounded-xl text-primary mr-2">
-                            <Wallet size={20} weight="duotone" />
-                        </div>
+                        <Wallet size={20} weight="bold" className="text-primary mr-2" />
                         <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">
                             Saldo Bersih
                         </span>
