@@ -23,9 +23,9 @@ const MomentSlider = ({ moment, className }) => {
     const currentPhoto = photos[currentIndex]
 
     return (
-        <div className={clsx("flex flex-col space-y-6 w-full max-w-sm mx-auto", className)}>
+        <div className={clsx("flex flex-col space-y-6 w-full max-w-md mx-auto", className)}>
             {/* Image Container */}
-            <div className="relative group aspect-square overflow-hidden rounded-[1.5rem] bg-gray-100 shadow-md border border-gray-100/50">
+            <div className="relative group aspect-square overflow-hidden rounded-xl bg-gray-100 shadow-md border border-gray-100/50">
                 {photos.map((photo, index) => (
                     <img
                         key={photo.id || index}
@@ -40,20 +40,20 @@ const MomentSlider = ({ moment, className }) => {
             </div>
 
             {/* Navigation & Caption */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
                 <button
                     onClick={handlePrev}
                     disabled={photos.length <= 1}
                     className={clsx(
-                        "w-14 h-14 flex items-center justify-center rounded-full border border-gray-100 bg-white shadow-sm transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed shrink-0",
+                        "w-12 h-12 flex items-center justify-center rounded-full border border-gray-100 bg-white shadow-sm transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed shrink-0",
                         photos.length > 1 && "hover:border-primary/30 hover:shadow-md"
                     )}
                 >
-                    <CaretLeft size={28} className="text-gray-300" weight="bold" />
+                    <CaretLeft size={24} className="text-gray-300" weight="bold" />
                 </button>
 
-                <div className="flex-1 text-center">
-                    <p className="text-[13px] font-normal text-gray-500 leading-relaxed px-4">
+                <div className="flex-1 text-center min-w-0">
+                    <p className="text-[13px] font-normal text-gray-500 leading-relaxed px-1 break-words">
                         {moment.caption || 'Momen kegiatan kelompok tani Thangun Afa.'}
                     </p>
                 </div>
@@ -62,11 +62,11 @@ const MomentSlider = ({ moment, className }) => {
                     onClick={handleNext}
                     disabled={photos.length <= 1}
                     className={clsx(
-                        "w-14 h-14 flex items-center justify-center rounded-full border border-gray-100 bg-white shadow-sm transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed shrink-0",
+                        "w-12 h-12 flex items-center justify-center rounded-full border border-gray-100 bg-white shadow-sm transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed shrink-0",
                         photos.length > 1 && "hover:border-primary/30 hover:shadow-md"
                     )}
                 >
-                    <CaretRight size={28} className="text-primary" weight="bold" />
+                    <CaretRight size={24} className="text-primary" weight="bold" />
                 </button>
             </div>
         </div>
