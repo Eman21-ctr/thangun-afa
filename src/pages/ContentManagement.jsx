@@ -201,8 +201,8 @@ const ContentManagement = () => {
         <div className="p-5 space-y-8 font-sans pb-32">
             <div className="flex items-center justify-between px-1">
                 <div>
-                    <h1 className="text-2xl font-black text-gray-800 tracking-tight">Kelola Konten</h1>
-                    <p className="text-xs text-gray-400 font-medium mt-1">Sesuaikan informasi publik di landing page.</p>
+                    <h1 className="text-xl font-semibold text-gray-800 tracking-tight">Kelola Konten</h1>
+                    <p className="text-xs text-gray-400 font-normal mt-0.5">Sesuaikan informasi publik di landing page.</p>
                 </div>
             </div>
 
@@ -213,13 +213,13 @@ const ContentManagement = () => {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={clsx(
-                            "flex items-center space-x-2 px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shrink-0",
+                            "flex items-center space-x-2 px-4 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all shrink-0 border",
                             activeTab === tab.id
-                                ? "bg-primary text-white shadow-lg shadow-primary/20"
-                                : "bg-white text-gray-400 border border-primary-100/30"
+                                ? "bg-primary text-white border-primary shadow-md"
+                                : "bg-white text-gray-400 border-gray-100"
                         )}
                     >
-                        <tab.icon size={18} weight={activeTab === tab.id ? "fill" : "bold"} />
+                        <tab.icon size={16} weight={activeTab === tab.id ? "fill" : "duotone"} />
                         <span>{tab.label}</span>
                     </button>
                 ))}
@@ -230,97 +230,97 @@ const ContentManagement = () => {
                 {activeTab === 'umum' && (
                     <form onSubmit={handleUpdateSettings} className="space-y-6">
                         {/* Hero Section */}
-                        <div className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-4">
-                            <div className="flex items-center space-x-2 text-primary">
-                                <TextT size={20} weight="bold" />
-                                <h2 className="text-sm font-black uppercase tracking-widest">Bagian Hero</h2>
+                        <div className="bg-white p-4 rounded-none border border-primary-100/30 shadow-sm space-y-4">
+                            <div className="flex items-center space-x-2 text-primary border-b border-gray-50 pb-2">
+                                <TextT size={18} weight="duotone" />
+                                <h2 className="text-xs font-semibold uppercase tracking-wider">Bagian Hero</h2>
                             </div>
                             <div className="space-y-4">
                                 <div className="space-y-1.5">
-                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Judul Utama</label>
+                                    <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Judul Utama</label>
                                     <input
                                         type="text"
                                         value={formData.hero_title}
                                         onChange={(e) => setFormData({ ...formData, hero_title: e.target.value })}
-                                        className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all"
+                                        className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm transition-all"
                                     />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Deskripsi Singkat</label>
+                                    <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Deskripsi Singkat</label>
                                     <textarea
-                                        rows="3"
+                                        rows="2"
                                         value={formData.hero_description}
                                         onChange={(e) => setFormData({ ...formData, hero_description: e.target.value })}
-                                        className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all resize-none"
+                                        className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm transition-all resize-none"
                                     ></textarea>
                                 </div>
                             </div>
                         </div>
 
                         {/* Judul Konten Beranda */}
-                        <div className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-6">
-                            <div className="flex items-center space-x-2 text-primary">
-                                <Leaf size={20} weight="bold" />
-                                <h2 className="text-sm font-black uppercase tracking-widest">Judul Setiap Bagian</h2>
+                        <div className="bg-white p-4 rounded-none border border-primary-100/30 shadow-sm space-y-5">
+                            <div className="flex items-center space-x-2 text-primary border-b border-gray-50 pb-2">
+                                <Leaf size={18} weight="duotone" />
+                                <h2 className="text-xs font-semibold uppercase tracking-wider">Judul Setiap Bagian</h2>
                             </div>
 
                             <div className="grid md:grid-cols-2 gap-6">
                                 {/* Tentang Kami */}
-                                <div className="space-y-4 p-4 bg-gray-50/50 rounded-2xl border border-primary-100/10">
-                                    <h3 className="text-[10px] font-black text-primary uppercase tracking-widest border-b pb-2">Bagian Tentang Kami</h3>
+                                <div className="space-y-3 p-3 bg-gray-50/50 rounded-lg border border-primary-100/10">
+                                    <h3 className="text-[10px] font-semibold text-primary uppercase tracking-widest border-b border-white pb-2">Bagian {activeTab === 'tim' ? 'Tim Kami' : activeTab === 'berita' ? 'Berita' : 'Tentang Kami'}</h3>
                                     <div className="space-y-3">
-                                        <div className="space-y-1.5">
-                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Subtitle</label>
-                                            <input type="text" value={formData.about_subtitle} onChange={(e) => setFormData({ ...formData, about_subtitle: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Tentang Kami" />
+                                        <div className="space-y-1">
+                                            <label className="block text-[9px] font-medium text-gray-400 uppercase tracking-widest px-1">Subtitle</label>
+                                            <input type="text" value={formData.about_subtitle} onChange={(e) => setFormData({ ...formData, about_subtitle: e.target.value })} className="w-full p-2.5 bg-white border border-primary-100/30 rounded-md outline-none font-normal text-gray-700 text-sm" placeholder="Subtitle..." />
                                         </div>
-                                        <div className="space-y-1.5">
-                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Juduk Besar</label>
-                                            <input type="text" value={formData.about_title} onChange={(e) => setFormData({ ...formData, about_title: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Pertanian Cerdas..." />
+                                        <div className="space-y-1">
+                                            <label className="block text-[9px] font-medium text-gray-400 uppercase tracking-widest px-1">Judul Besar</label>
+                                            <input type="text" value={formData.about_title} onChange={(e) => setFormData({ ...formData, about_title: e.target.value })} className="w-full p-2.5 bg-white border border-primary-100/30 rounded-md outline-none font-normal text-gray-700 text-sm" placeholder="Judul..." />
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Tim Kami */}
-                                <div className="space-y-4 p-4 bg-gray-50/50 rounded-2xl border border-primary-100/10">
-                                    <h3 className="text-[10px] font-black text-primary uppercase tracking-widest border-b pb-2">Bagian Tim Kami</h3>
+                                <div className="space-y-3 p-3 bg-gray-50/50 rounded-lg border border-primary-100/10">
+                                    <h3 className="text-[10px] font-semibold text-primary uppercase tracking-widest border-b border-white pb-2">Bagian Tim Kami</h3>
                                     <div className="space-y-3">
-                                        <div className="space-y-1.5">
-                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Subtitle</label>
-                                            <input type="text" value={formData.team_subtitle} onChange={(e) => setFormData({ ...formData, team_subtitle: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Tim Kami" />
+                                        <div className="space-y-1">
+                                            <label className="block text-[9px] font-medium text-gray-400 uppercase tracking-widest px-1">Subtitle</label>
+                                            <input type="text" value={formData.team_subtitle} onChange={(e) => setFormData({ ...formData, team_subtitle: e.target.value })} className="w-full p-2.5 bg-white border border-primary-100/30 rounded-md outline-none font-normal text-gray-700 text-sm" placeholder="Tim Kami" />
                                         </div>
-                                        <div className="space-y-1.5">
-                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Juduk Besar</label>
-                                            <input type="text" value={formData.team_title} onChange={(e) => setFormData({ ...formData, team_title: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Yang Muda..." />
+                                        <div className="space-y-1">
+                                            <label className="block text-[9px] font-medium text-gray-400 uppercase tracking-widest px-1">Judul Besar</label>
+                                            <input type="text" value={formData.team_title} onChange={(e) => setFormData({ ...formData, team_title: e.target.value })} className="w-full p-2.5 bg-white border border-primary-100/30 rounded-md outline-none font-normal text-gray-700 text-sm" placeholder="Yang Muda..." />
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Berita */}
-                                <div className="space-y-4 p-4 bg-gray-50/50 rounded-2xl border border-primary-100/10">
-                                    <h3 className="text-[10px] font-black text-primary uppercase tracking-widest border-b pb-2">Bagian Berita</h3>
+                                <div className="space-y-3 p-3 bg-gray-50/50 rounded-lg border border-primary-100/10">
+                                    <h3 className="text-[10px] font-semibold text-primary uppercase tracking-widest border-b border-white pb-2">Bagian Berita</h3>
                                     <div className="space-y-3">
-                                        <div className="space-y-1.5">
-                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Subtitle</label>
-                                            <input type="text" value={formData.news_subtitle} onChange={(e) => setFormData({ ...formData, news_subtitle: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Berita & Kegiatan" />
+                                        <div className="space-y-1">
+                                            <label className="block text-[9px] font-medium text-gray-400 uppercase tracking-widest px-1">Subtitle</label>
+                                            <input type="text" value={formData.news_subtitle} onChange={(e) => setFormData({ ...formData, news_subtitle: e.target.value })} className="w-full p-2.5 bg-white border border-primary-100/30 rounded-md outline-none font-normal text-gray-700 text-sm" placeholder="Berita & Kegiatan" />
                                         </div>
-                                        <div className="space-y-1.5">
-                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Juduk Besar</label>
-                                            <input type="text" value={formData.news_title} onChange={(e) => setFormData({ ...formData, news_title: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Update Terbaru..." />
+                                        <div className="space-y-1">
+                                            <label className="block text-[9px] font-medium text-gray-400 uppercase tracking-widest px-1">Judul Besar</label>
+                                            <input type="text" value={formData.news_title} onChange={(e) => setFormData({ ...formData, news_title: e.target.value })} className="w-full p-2.5 bg-white border border-primary-100/30 rounded-md outline-none font-normal text-gray-700 text-sm" placeholder="Update Terbaru..." />
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Galeri */}
-                                <div className="space-y-4 p-4 bg-gray-50/50 rounded-2xl border border-primary-100/10">
-                                    <h3 className="text-[10px] font-black text-primary uppercase tracking-widest border-b pb-2">Bagian Galeri</h3>
+                                <div className="space-y-3 p-3 bg-gray-50/50 rounded-lg border border-primary-100/10">
+                                    <h3 className="text-[10px] font-semibold text-primary uppercase tracking-widest border-b border-white pb-2">Bagian Galeri</h3>
                                     <div className="space-y-3">
-                                        <div className="space-y-1.5">
-                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Subtitle</label>
-                                            <input type="text" value={formData.gallery_subtitle} onChange={(e) => setFormData({ ...formData, gallery_subtitle: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Momen Berharga" />
+                                        <div className="space-y-1">
+                                            <label className="block text-[9px] font-medium text-gray-400 uppercase tracking-widest px-1">Subtitle</label>
+                                            <input type="text" value={formData.gallery_subtitle} onChange={(e) => setFormData({ ...formData, gallery_subtitle: e.target.value })} className="w-full p-2.5 bg-white border border-primary-100/30 rounded-md outline-none font-normal text-gray-700 text-sm" placeholder="Momen Berharga" />
                                         </div>
-                                        <div className="space-y-1.5">
-                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Juduk Besar</label>
-                                            <input type="text" value={formData.gallery_title} onChange={(e) => setFormData({ ...formData, gallery_title: e.target.value })} className="w-full p-3 bg-white border border-primary-100/30 rounded-xl outline-none font-bold text-gray-700" placeholder="Galeri Kegiatan" />
+                                        <div className="space-y-1">
+                                            <label className="block text-[9px] font-medium text-gray-400 uppercase tracking-widest px-1">Judul Besar</label>
+                                            <input type="text" value={formData.gallery_title} onChange={(e) => setFormData({ ...formData, gallery_title: e.target.value })} className="w-full p-2.5 bg-white border border-primary-100/30 rounded-md outline-none font-normal text-gray-700 text-sm" placeholder="Galeri Kegiatan" />
                                         </div>
                                     </div>
                                 </div>
@@ -328,28 +328,28 @@ const ContentManagement = () => {
                         </div>
 
                         {/* Contact */}
-                        <div className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-4">
-                            <div className="flex items-center space-x-2 text-primary">
-                                <MapPin size={20} weight="bold" />
-                                <h2 className="text-sm font-black uppercase tracking-widest">Kontak & Lokasi</h2>
+                        <div className="bg-white p-4 rounded-none border border-primary-100/30 shadow-sm space-y-4">
+                            <div className="flex items-center space-x-2 text-primary border-b border-gray-50 pb-2">
+                                <MapPin size={18} weight="duotone" />
+                                <h2 className="text-xs font-semibold uppercase tracking-wider">Kontak & Lokasi</h2>
                             </div>
                             <div className="space-y-4">
                                 <div className="space-y-1.5">
-                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Nomor WhatsApp</label>
+                                    <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Nomor WhatsApp</label>
                                     <input
                                         type="text"
                                         value={formData.whatsapp_number}
                                         onChange={(e) => setFormData({ ...formData, whatsapp_number: e.target.value })}
-                                        className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700"
+                                        className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm"
                                     />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Alamat</label>
+                                    <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Alamat</label>
                                     <input
                                         type="text"
                                         value={formData.address}
                                         onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                                        className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700"
+                                        className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm"
                                     />
                                 </div>
                             </div>
@@ -357,73 +357,64 @@ const ContentManagement = () => {
 
                         <button
                             type="submit"
-                            className="w-full py-5 bg-primary text-white font-black uppercase tracking-widest rounded-[1.5rem] shadow-xl shadow-primary/20 transition-all"
+                            className="w-full py-4 bg-primary text-white font-semibold uppercase tracking-wider rounded-lg shadow-lg shadow-primary/10 transition-all active:scale-95"
                         >
-                            Simpan Perubahan Umum
+                            Simpan Perubahan
                         </button>
                     </form>
                 )}
 
                 {activeTab === 'tentang' && (
                     <form onSubmit={handleUpdateSettings} className="space-y-6">
-                        <div className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-4">
-                            <div className="flex items-center space-x-2 text-primary">
-                                <Info size={20} weight="bold" />
-                                <h2 className="text-sm font-black uppercase tracking-widest">Halaman Tentang Kami</h2>
+                        <div className="bg-white p-4 rounded-none border border-primary-100/30 shadow-sm space-y-4">
+                            <div className="flex items-center space-x-2 text-primary border-b border-gray-50 pb-2">
+                                <Info size={18} weight="duotone" />
+                                <h2 className="text-xs font-semibold uppercase tracking-wider">Halaman Tentang Kami</h2>
                             </div>
                             <div className="space-y-4">
                                 <div className="space-y-1.5">
-                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Ringkasan (Tampil di Beranda)</label>
+                                    <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Ringkasan (Beranda)</label>
                                     <textarea
-                                        rows="4"
+                                        rows="3"
                                         value={formData.about_text}
                                         onChange={(e) => setFormData({ ...formData, about_text: e.target.value })}
-                                        className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all font-sans"
+                                        className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm transition-all resize-none"
                                     ></textarea>
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Sejarah Lengkap</label>
+                                    <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Sejarah Lengkap</label>
                                     <textarea
-                                        rows="6"
+                                        rows="4"
                                         value={formData.about_history}
                                         onChange={(e) => setFormData({ ...formData, about_history: e.target.value })}
-                                        className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all font-sans"
+                                        className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm transition-all resize-none"
                                     ></textarea>
                                 </div>
                                 <div className="grid md:grid-cols-2 gap-4">
                                     <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Visi</label>
+                                        <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Visi</label>
                                         <textarea
-                                            rows="3"
+                                            rows="2"
                                             value={formData.about_vision}
                                             onChange={(e) => setFormData({ ...formData, about_vision: e.target.value })}
-                                            className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all font-sans"
+                                            className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm transition-all resize-none"
                                         ></textarea>
                                     </div>
                                     <div className="space-y-1.5">
-                                        <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Misi</label>
+                                        <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Misi</label>
                                         <textarea
-                                            rows="3"
+                                            rows="2"
                                             value={formData.about_mission}
                                             onChange={(e) => setFormData({ ...formData, about_mission: e.target.value })}
-                                            className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all font-sans"
+                                            className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm transition-all resize-none"
                                         ></textarea>
                                     </div>
-                                </div>
-                                <div className="space-y-1.5">
-                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest px-1">Filosofi</label>
-                                    <textarea
-                                        rows="3"
-                                        value={formData.about_philosophy}
-                                        onChange={(e) => setFormData({ ...formData, about_philosophy: e.target.value })}
-                                        className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all font-sans"
-                                    ></textarea>
                                 </div>
                             </div>
                         </div>
                         <button
                             type="submit"
-                            className="w-full py-5 bg-primary text-white font-black uppercase tracking-widest rounded-[1.5rem] shadow-xl shadow-primary/20 transition-all"
+                            className="w-full py-4 bg-primary text-white font-semibold uppercase tracking-wider rounded-lg shadow-lg shadow-primary/10 transition-all active:scale-95"
                         >
                             Simpan Tentang Kami
                         </button>
@@ -433,10 +424,11 @@ const ContentManagement = () => {
                 {activeTab === 'galeri' && (
                     <div className="space-y-6">
                         {/* Photo Form */}
-                        <form onSubmit={handlePhotoSubmit} className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-4">
-                            <div className="flex items-center justify-between">
-                                <h2 className="text-sm font-black uppercase tracking-widest text-primary">
-                                    {editingId ? 'Edit Foto' : 'Tambah Foto Baru'}
+                        <form onSubmit={handlePhotoSubmit} className="bg-white p-4 rounded-none border border-primary-100/30 shadow-sm space-y-4">
+                            <div className="flex items-center justify-between border-b border-gray-50 pb-2">
+                                <h2 className="text-xs font-semibold uppercase tracking-wider text-primary flex items-center gap-2">
+                                    <ImageIcon size={18} weight="duotone" />
+                                    {editingId ? 'Edit Foto' : 'Tambah Foto'}
                                 </h2>
                                 {editingId && (
                                     <button
@@ -445,35 +437,20 @@ const ContentManagement = () => {
                                             setEditingId(null)
                                             setNewPhoto({ photo_url: '', caption: '', display_type: 'square' })
                                         }}
-                                        className="text-[10px] font-black uppercase text-gray-400 hover:text-red-500"
-                                    >Batal Edit</button>
+                                        className="text-[9px] font-semibold uppercase text-gray-400 hover:text-red-500"
+                                    >Batal</button>
                                 )}
                             </div>
-                            <div className="space-y-4">
-                                <div className="p-4 bg-primary-50 rounded-2xl border border-primary-100/30">
-                                    <p className="text-[10px] font-black text-primary uppercase tracking-widest mb-2 flex items-center gap-2">
-                                        <Info size={14} weight="fill" /> Rekomendasi Ukuran
-                                    </p>
-                                    <div className="grid grid-cols-2 gap-4 text-[9px] font-bold text-gray-500">
-                                        <div>
-                                            <span className="text-primary block">Persegi/Portrait:</span>
-                                            1080 x 1350 px (4:5)
-                                        </div>
-                                        <div>
-                                            <span className="text-primary block">Landscape:</span>
-                                            1200 x 675 px (16:9)
-                                        </div>
-                                    </div>
-                                </div>
+                            <div className="space-y-3">
                                 <div className="flex gap-2">
                                     <input
                                         type="text"
-                                        placeholder="URL Foto (Contoh: /images/activity-1.jpg)"
+                                        placeholder="URL Foto..."
                                         value={newPhoto.photo_url}
                                         onChange={(e) => setNewPhoto({ ...newPhoto, photo_url: e.target.value })}
-                                        className="flex-grow p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
+                                        className="flex-grow p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm"
                                     />
-                                    <label className="shrink-0 flex items-center justify-center w-14 h-14 bg-primary text-white rounded-2xl cursor-pointer hover:bg-primary-600 transition-colors">
+                                    <label className="shrink-0 flex items-center justify-center w-12 h-12 bg-primary text-white rounded-lg cursor-pointer hover:bg-primary-600 transition-colors">
                                         <input
                                             type="file"
                                             accept="image/*"
@@ -483,7 +460,7 @@ const ContentManagement = () => {
                                                 if (url) setNewPhoto({ ...newPhoto, photo_url: url })
                                             }}
                                         />
-                                        {isUploading ? <CircleNotch size={24} className="animate-spin" /> : <Plus size={24} weight="bold" />}
+                                        {isUploading ? <CircleNotch size={20} className="animate-spin" /> : <Plus size={20} weight="bold" />}
                                     </label>
                                 </div>
                                 <div className="grid grid-cols-2 gap-3">
@@ -491,16 +468,16 @@ const ContentManagement = () => {
                                         type="button"
                                         onClick={() => setNewPhoto({ ...newPhoto, display_type: 'square' })}
                                         className={clsx(
-                                            "p-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all",
-                                            newPhoto.display_type === 'square' ? "bg-primary text-white border-primary" : "bg-white text-gray-400 border-primary-100"
+                                            "py-2 rounded-lg border text-[10px] font-semibold uppercase tracking-wider transition-all",
+                                            newPhoto.display_type === 'square' ? "bg-primary text-white border-primary shadow-sm" : "bg-white text-gray-400 border-gray-100"
                                         )}
                                     >Persegi</button>
                                     <button
                                         type="button"
                                         onClick={() => setNewPhoto({ ...newPhoto, display_type: 'landscape' })}
                                         className={clsx(
-                                            "p-3 rounded-xl border text-[10px] font-black uppercase tracking-widest transition-all",
-                                            newPhoto.display_type === 'landscape' ? "bg-primary text-white border-primary" : "bg-white text-gray-400 border-primary-100"
+                                            "py-2 rounded-lg border text-[10px] font-semibold uppercase tracking-wider transition-all",
+                                            newPhoto.display_type === 'landscape' ? "bg-primary text-white border-primary shadow-sm" : "bg-white text-gray-400 border-gray-100"
                                         )}
                                     >Landscape</button>
                                 </div>
@@ -509,10 +486,10 @@ const ContentManagement = () => {
                                     placeholder="Keterangan Foto"
                                     value={newPhoto.caption}
                                     onChange={(e) => setNewPhoto({ ...newPhoto, caption: e.target.value })}
-                                    className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
+                                    className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm"
                                 />
-                                <button type="submit" className="w-full py-4 bg-primary text-white font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20">
-                                    {editingId ? 'Simpan Perubahan' : 'Tambah ke Galeri'}
+                                <button type="submit" className="w-full py-3 bg-primary text-white font-semibold uppercase tracking-wider rounded-lg shadow-lg shadow-primary/10">
+                                    {editingId ? 'Simpan' : 'Tambah ke Galeri'}
                                 </button>
                             </div>
                         </form>
@@ -552,46 +529,49 @@ const ContentManagement = () => {
                 {activeTab === 'tim' && (
                     <div className="space-y-6">
                         {/* Member Form */}
-                        <form onSubmit={handleMemberSubmit} className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-4">
-                            <div className="flex items-center justify-between">
-                                <h2 className="text-sm font-black uppercase tracking-widest text-primary">
-                                    {editingId ? 'Edit Anggota' : 'Tambah Anggota Tim'}
+                        <form onSubmit={handleMemberSubmit} className="bg-white p-4 rounded-none border border-primary-100/30 shadow-sm space-y-4">
+                            <div className="flex items-center justify-between border-b border-gray-50 pb-2">
+                                <h2 className="text-xs font-semibold uppercase tracking-wider text-primary flex items-center gap-2">
+                                    <Users size={18} weight="duotone" />
+                                    {editingId ? 'Edit Anggota' : 'Tambah Anggota'}
                                 </h2>
                                 {editingId && (
                                     <button
                                         type="button"
                                         onClick={() => {
                                             setEditingId(null)
-                                            setNewMember({ name: '', position: '', photo_url: '' })
+                                            setNewMember({ name: '', position: '', photo_url: '', quote: '' })
                                         }}
-                                        className="text-[10px] font-black uppercase text-gray-400 hover:text-red-500"
-                                    >Batal Edit</button>
+                                        className="text-[9px] font-semibold uppercase text-gray-400 hover:text-red-500"
+                                    >Batal</button>
                                 )}
                             </div>
-                            <div className="space-y-4">
-                                <input
-                                    type="text"
-                                    placeholder="Nama Lengkap"
-                                    value={newMember.name}
-                                    onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
-                                    className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Jabatan"
-                                    value={newMember.position}
-                                    onChange={(e) => setNewMember({ ...newMember, position: e.target.value })}
-                                    className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
-                                />
+                            <div className="space-y-3">
+                                <div className="grid grid-cols-2 gap-3">
+                                    <input
+                                        type="text"
+                                        placeholder="Nama Lengkap"
+                                        value={newMember.name}
+                                        onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
+                                        className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Jabatan"
+                                        value={newMember.position}
+                                        onChange={(e) => setNewMember({ ...newMember, position: e.target.value })}
+                                        className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm"
+                                    />
+                                </div>
                                 <div className="flex gap-2">
                                     <input
                                         type="text"
                                         placeholder="URL Foto Profil"
                                         value={newMember.photo_url}
                                         onChange={(e) => setNewMember({ ...newMember, photo_url: e.target.value })}
-                                        className="flex-grow p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
+                                        className="flex-grow p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm"
                                     />
-                                    <label className="shrink-0 flex items-center justify-center w-14 h-14 bg-primary text-white rounded-2xl cursor-pointer hover:bg-primary-600 transition-colors">
+                                    <label className="shrink-0 flex items-center justify-center w-12 h-12 bg-primary text-white rounded-lg cursor-pointer hover:bg-primary-600 transition-colors">
                                         <input
                                             type="file"
                                             accept="image/*"
@@ -601,18 +581,11 @@ const ContentManagement = () => {
                                                 if (url) setNewMember({ ...newMember, photo_url: url })
                                             }}
                                         />
-                                        {isUploading ? <CircleNotch size={24} className="animate-spin" /> : <Plus size={24} weight="bold" />}
+                                        {isUploading ? <CircleNotch size={20} className="animate-spin" /> : <Plus size={20} weight="bold" />}
                                     </label>
                                 </div>
-                                <textarea
-                                    rows="2"
-                                    placeholder="Kutipan / Testimoni Singkat"
-                                    value={newMember.quote}
-                                    onChange={(e) => setNewMember({ ...newMember, quote: e.target.value })}
-                                    className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700 resize-none"
-                                ></textarea>
-                                <button type="submit" className="w-full py-4 bg-primary text-white font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20">
-                                    {editingId ? 'Simpan Perubahan' : 'Tambah Anggota'}
+                                <button type="submit" className="w-full py-3 bg-primary text-white font-semibold uppercase tracking-wider rounded-lg shadow-lg shadow-primary/10">
+                                    {editingId ? 'Simpan' : 'Tambah Anggota'}
                                 </button>
                             </div>
                         </form>
@@ -652,10 +625,11 @@ const ContentManagement = () => {
                 {activeTab === 'berita' && (
                     <div className="space-y-6">
                         {/* News Form */}
-                        <form onSubmit={handleNewsSubmit} className="bg-white p-6 rounded-[2.5rem] border border-primary-100/30 shadow-sm space-y-4">
-                            <div className="flex items-center justify-between">
-                                <h2 className="text-sm font-black uppercase tracking-widest text-primary">
-                                    {editingId ? 'Edit Berita' : 'Buat Berita / Kegiatan Baru'}
+                        <form onSubmit={handleNewsSubmit} className="bg-white p-4 rounded-none border border-primary-100/30 shadow-sm space-y-4">
+                            <div className="flex items-center justify-between border-b border-gray-50 pb-2">
+                                <h2 className="text-xs font-semibold uppercase tracking-wider text-primary flex items-center gap-2">
+                                    <Newspaper size={18} weight="duotone" />
+                                    {editingId ? 'Edit Berita' : 'Buat Berita'}
                                 </h2>
                                 {editingId && (
                                     <button
@@ -664,27 +638,27 @@ const ContentManagement = () => {
                                             setEditingId(null)
                                             setNewNews({ title: '', content: '', thumbnail_url: '', is_published: true })
                                         }}
-                                        className="text-[10px] font-black uppercase text-gray-400 hover:text-red-500"
-                                    >Batal Edit</button>
+                                        className="text-[9px] font-semibold uppercase text-gray-400 hover:text-red-500"
+                                    >Batal</button>
                                 )}
                             </div>
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 <input
                                     type="text"
                                     placeholder="Judul Berita"
                                     value={newNews.title}
                                     onChange={(e) => setNewNews({ ...newNews, title: e.target.value })}
-                                    className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
+                                    className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm"
                                 />
                                 <div className="flex gap-2">
                                     <input
                                         type="text"
-                                        placeholder="URL Gambar Sampul (Optional)"
+                                        placeholder="URL Gambar Sampul (Opsional)"
                                         value={newNews.thumbnail_url}
                                         onChange={(e) => setNewNews({ ...newNews, thumbnail_url: e.target.value })}
-                                        className="flex-grow p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700"
+                                        className="flex-grow p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm"
                                     />
-                                    <label className="shrink-0 flex items-center justify-center w-14 h-14 bg-primary text-white rounded-2xl cursor-pointer hover:bg-primary-600 transition-colors">
+                                    <label className="shrink-0 flex items-center justify-center w-12 h-12 bg-primary text-white rounded-lg cursor-pointer hover:bg-primary-600 transition-colors">
                                         <input
                                             type="file"
                                             accept="image/*"
@@ -694,19 +668,19 @@ const ContentManagement = () => {
                                                 if (url) setNewNews({ ...newNews, thumbnail_url: url })
                                             }}
                                         />
-                                        {isUploading ? <CircleNotch size={24} className="animate-spin" /> : <Plus size={24} weight="bold" />}
+                                        {isUploading ? <CircleNotch size={20} className="animate-spin" /> : <Plus size={20} weight="bold" />}
                                     </label>
                                 </div>
                                 <textarea
-                                    rows="5"
+                                    rows="4"
                                     placeholder="Isi Berita..."
                                     value={newNews.content}
                                     onChange={(e) => setNewNews({ ...newNews, content: e.target.value })}
-                                    className="w-full p-4 bg-gray-50 border border-primary-100/30 rounded-2xl outline-none font-bold text-gray-700 leading-relaxed"
+                                    className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm leading-relaxed resize-none"
                                 ></textarea>
-                                <button type="submit" className="w-full py-4 bg-primary text-white font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-primary/20 flex items-center justify-center space-x-2">
-                                    <PencilSimple size={20} weight="bold" />
-                                    <span>{editingId ? 'Simpan Perubahan Berita' : 'Posting Berita'}</span>
+                                <button type="submit" className="w-full py-3 bg-primary text-white font-semibold uppercase tracking-wider rounded-lg shadow-lg shadow-primary/10 flex items-center justify-center space-x-2">
+                                    <FloppyDisk size={18} weight="duotone" />
+                                    <span>{editingId ? 'Simpan' : 'Posting Berita'}</span>
                                 </button>
                             </div>
                         </form>

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { ArrowLeft, FloppyDisk, Sparkle } from '@phosphor-icons/react'
+import { ArrowLeft, FloppyDisk, CalendarBlank, Tag, Package, Scales, CurrencyDollar, Notepad, User } from '@phosphor-icons/react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-hot-toast'
@@ -89,23 +89,23 @@ const AddTransaction = () => {
     return (
         <div className="bg-cream min-h-screen font-sans">
             {/* Header */}
-            <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-4 bg-white/80 backdrop-blur-lg border-b border-primary-100/50">
-                <button type="button" onClick={() => navigate(-1)} className="p-2.5 bg-gray-50 text-gray-400 rounded-xl hover:text-gray-600 transition-colors">
-                    <ArrowLeft size={20} weight="bold" />
+            <div className="sticky top-0 z-20 flex items-center justify-between px-4 py-3 bg-white/80 backdrop-blur-lg border-b border-primary-100/50">
+                <button type="button" onClick={() => navigate(-1)} className="p-2 bg-gray-50 text-gray-400 rounded-lg hover:text-gray-600 transition-colors">
+                    <ArrowLeft size={18} weight="bold" />
                 </button>
-                <h1 className="text-lg font-black text-gray-800 tracking-tight">Catat Transaksi</h1>
-                <div className="w-10"></div>
+                <h1 className="text-base font-medium text-gray-800">Catat Transaksi</h1>
+                <div className="w-8"></div>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="p-5 space-y-8 pb-32">
-                {/* Type Toggle Container */}
-                <div className="bg-white p-1.5 rounded-2xl border border-primary-100/30 flex shadow-sm">
+            <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-4 pb-28">
+                {/* Type Toggle */}
+                <div className="bg-white p-1 rounded-xl border border-primary-100/30 flex">
                     <button
                         type="button"
                         onClick={() => setValue('type', 'income')}
                         className={clsx(
-                            "flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-xl transition-all",
-                            type === 'income' ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-gray-400"
+                            "flex-1 py-2.5 text-xs font-medium uppercase tracking-wide rounded-lg transition-all",
+                            type === 'income' ? "bg-primary text-white shadow" : "text-gray-400"
                         )}
                     >
                         Pemasukan
@@ -114,160 +114,136 @@ const AddTransaction = () => {
                         type="button"
                         onClick={() => setValue('type', 'expense')}
                         className={clsx(
-                            "flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-xl transition-all",
-                            type === 'expense' ? "bg-red-500 text-white shadow-lg shadow-red-500/20" : "text-gray-400"
+                            "flex-1 py-2.5 text-xs font-medium uppercase tracking-wide rounded-lg transition-all",
+                            type === 'expense' ? "bg-red-500 text-white shadow" : "text-gray-400"
                         )}
                     >
                         Pengeluaran
                     </button>
                 </div>
 
-                {/* Form Sections */}
-                <div className="space-y-6">
-                    <div className="bg-white p-6 rounded-[2rem] border border-primary-100/30 shadow-sm space-y-5">
-                        <div className="flex items-center space-x-2 px-1 mb-2">
-                            <Sparkle size={16} weight="fill" className="text-primary/60" />
-                            <h2 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Detail Utama</h2>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="col-span-2">
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Tanggal</label>
-                                <input
-                                    type="date"
-                                    {...register('date')}
-                                    className="w-full p-4 bg-gray-50/50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all"
-                                />
-                                {errors.date && <p className="text-[10px] text-red-500 font-bold mt-1 px-1 uppercase">{errors.date.message}</p>}
-                            </div>
-
-                            {type === 'income' ? (
-                                <div className="col-span-2">
-                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Komoditas</label>
-                                    <select
-                                        {...register('commodity')}
-                                        className="w-full p-4 bg-gray-50/50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all appearance-none"
-                                    >
-                                        <option value="">Pilih Komoditas</option>
-                                        {commodities.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-                                    </select>
-                                    {errors.commodity && <p className="text-[10px] text-red-500 font-bold mt-1 px-1 uppercase">{errors.commodity.message}</p>}
-                                </div>
-                            ) : (
-                                <div className="col-span-2">
-                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Kategori Biaya</label>
-                                    <select
-                                        {...register('category')}
-                                        className="w-full p-4 bg-gray-50/50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all appearance-none"
-                                    >
-                                        <option value="">Pilih Kategori</option>
-                                        {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-                                    </select>
-                                    {errors.category && <p className="text-[10px] text-red-500 font-bold mt-1 px-1 uppercase">{errors.category.message}</p>}
-                                </div>
-                            )}
-
-                            <div className="col-span-2">
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Deskripsi/Keterangan</label>
-                                <input
-                                    type="text"
-                                    placeholder="Misal: Hasil panen petak B"
-                                    {...register('description')}
-                                    className="w-full p-4 bg-gray-50/50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all placeholder:text-gray-300"
-                                />
-                                {errors.description && <p className="text-[10px] text-red-500 font-bold mt-1 px-1 uppercase">{errors.description.message}</p>}
-                            </div>
-                        </div>
+                {/* Compact Form */}
+                <div className="bg-white p-4 rounded-xl border border-primary-100/30 space-y-3">
+                    {/* Date */}
+                    <div className="relative">
+                        <CalendarBlank className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                        <input
+                            type="date"
+                            {...register('date')}
+                            className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm"
+                        />
                     </div>
 
-                    <div className="bg-white p-6 rounded-[2rem] border border-primary-100/30 shadow-sm space-y-5">
-                        <div className="flex items-center space-x-2 px-1 mb-2">
-                            <h2 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Kuantitas & Harga</h2>
+                    {/* Commodity/Category */}
+                    {type === 'income' ? (
+                        <div className="relative">
+                            <Package className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                            <select
+                                {...register('commodity')}
+                                className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm appearance-none"
+                            >
+                                <option value="">Pilih Komoditas</option>
+                                {commodities.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
+                            </select>
                         </div>
+                    ) : (
+                        <div className="relative">
+                            <Tag className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                            <select
+                                {...register('category')}
+                                className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm appearance-none"
+                            >
+                                <option value="">Pilih Kategori</option>
+                                {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
+                            </select>
+                        </div>
+                    )}
 
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Jumlah</label>
-                                <input
-                                    type="number"
-                                    step="0.1"
-                                    {...register('quantity', { valueAsNumber: true })}
-                                    className="w-full p-4 bg-gray-50/50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-extrabold text-gray-700 transition-all"
-                                />
-                                {errors.quantity && <p className="text-[10px] text-red-500 font-bold mt-1 px-1 uppercase">{errors.quantity.message}</p>}
-                            </div>
-                            <div>
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Satuan</label>
-                                <input
-                                    type="text"
-                                    placeholder="kg, bok, dll"
-                                    {...register('unit')}
-                                    className="w-full p-4 bg-gray-50/50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all placeholder:text-gray-300"
-                                />
-                                {errors.unit && <p className="text-[10px] text-red-500 font-bold mt-1 px-1 uppercase">{errors.unit.message}</p>}
-                            </div>
-                            <div className="col-span-2">
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Harga Satuan (Rp)</label>
-                                <input
-                                    type="number"
-                                    {...register('unit_price', { valueAsNumber: true })}
-                                    className="w-full p-4 bg-gray-50/50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-extrabold text-gray-700 transition-all"
-                                />
-                                {errors.unit_price && <p className="text-[10px] text-red-500 font-bold mt-1 px-1 uppercase">{errors.unit_price.message}</p>}
-                            </div>
-                        </div>
-
-                        <div className="p-6 bg-primary-50/50 rounded-2xl border border-dashed border-primary-200 flex flex-col items-center">
-                            <span className="text-[10px] font-black text-primary/60 uppercase tracking-[0.3em] mb-1">Estimasi Total</span>
-                            <span className="text-3xl font-black text-primary tracking-tighter">
-                                Rp {((quantity || 0) * (unitPrice || 0)).toLocaleString('id-ID')}
-                            </span>
-                        </div>
+                    {/* Description */}
+                    <div className="relative">
+                        <Notepad className="absolute left-3 top-3 text-gray-400" size={18} weight="duotone" />
+                        <input
+                            type="text"
+                            placeholder="Deskripsi transaksi"
+                            {...register('description')}
+                            className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm placeholder:text-gray-300"
+                        />
                     </div>
 
-                    <div className="bg-white p-6 rounded-[2rem] border border-primary-100/30 shadow-sm space-y-5">
-                        <div className="flex items-center space-x-2 px-1 mb-2">
-                            <h2 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Informasi Tambahan</h2>
+                    {/* Quantity & Unit */}
+                    <div className="grid grid-cols-2 gap-3">
+                        <div className="relative">
+                            <Scales className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                            <input
+                                type="number"
+                                step="0.1"
+                                placeholder="Jumlah"
+                                {...register('quantity', { valueAsNumber: true })}
+                                className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm"
+                            />
                         </div>
+                        <input
+                            type="text"
+                            placeholder="Satuan (kg, bok)"
+                            {...register('unit')}
+                            className="w-full px-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm placeholder:text-gray-300"
+                        />
+                    </div>
 
-                        <div className="space-y-4">
-                            {type === 'income' && (
-                                <div>
-                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Pembeli (Opsional)</label>
-                                    <input
-                                        type="text"
-                                        placeholder="Nama pembeli/tengkulak"
-                                        {...register('buyer')}
-                                        className="w-full p-4 bg-gray-50/50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all placeholder:text-gray-300"
-                                    />
-                                </div>
-                            )}
+                    {/* Unit Price */}
+                    <div className="relative">
+                        <CurrencyDollar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                        <input
+                            type="number"
+                            placeholder="Harga satuan (Rp)"
+                            {...register('unit_price', { valueAsNumber: true })}
+                            className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm"
+                        />
+                    </div>
 
-                            <div>
-                                <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Catatan</label>
-                                <textarea
-                                    rows="3"
-                                    placeholder="Tambahkan catatan jika perlu..."
-                                    {...register('notes')}
-                                    className="w-full p-4 bg-gray-50/50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all placeholder:text-gray-300"
-                                ></textarea>
-                            </div>
-                        </div>
+                    {/* Total Display */}
+                    <div className="p-4 bg-primary-50/50 rounded-xl border border-dashed border-primary-200 flex items-center justify-between">
+                        <span className="text-xs text-primary/60 font-medium">Estimasi Total</span>
+                        <span className="text-xl font-semibold text-primary">
+                            Rp {((quantity || 0) * (unitPrice || 0)).toLocaleString('id-ID')}
+                        </span>
                     </div>
                 </div>
 
-                <div className="fixed bottom-0 inset-x-0 p-5 bg-white/80 backdrop-blur-xl border-t border-primary-100/50">
+                {/* Additional Info (Collapsible-like) */}
+                <div className="bg-white p-4 rounded-xl border border-primary-100/30 space-y-3">
+                    {type === 'income' && (
+                        <div className="relative">
+                            <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                            <input
+                                type="text"
+                                placeholder="Nama pembeli (opsional)"
+                                {...register('buyer')}
+                                className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm placeholder:text-gray-300"
+                            />
+                        </div>
+                    )}
+                    <textarea
+                        rows="2"
+                        placeholder="Catatan tambahan (opsional)"
+                        {...register('notes')}
+                        className="w-full px-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm placeholder:text-gray-300 resize-none"
+                    ></textarea>
+                </div>
+
+                {/* Submit Button */}
+                <div className="fixed bottom-0 inset-x-0 p-4 bg-white/80 backdrop-blur-xl border-t border-primary-100/50">
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-5 bg-primary text-white font-black uppercase tracking-[0.2em] rounded-[1.5rem] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-3 disabled:opacity-50"
+                        className="w-full py-4 bg-primary text-white font-medium rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2 disabled:opacity-50"
                     >
                         {loading ? (
                             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                         ) : (
                             <>
-                                <FloppyDisk size={20} weight="bold" />
-                                <span>Simpan Catatan</span>
+                                <FloppyDisk size={18} weight="duotone" />
+                                <span>Simpan</span>
                             </>
                         )}
                     </button>

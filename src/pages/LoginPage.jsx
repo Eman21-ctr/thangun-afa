@@ -60,21 +60,21 @@ const LoginPage = () => {
                             className="w-full h-full object-contain"
                         />
                     </div>
-                    <h1 className="text-3xl font-black text-gray-800 tracking-tighter">Selamat datang</h1>
+                    <h1 className="text-3xl font-semibold text-gray-800 tracking-tight">Selamat datang</h1>
                     <p className="text-sm text-gray-400 font-medium mt-1">Sistem manajemen Thangun Afa</p>
                 </div>
 
                 <div className="p-8 bg-white rounded-[2.5rem] border border-primary-100/30 shadow-2xl shadow-primary/5">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-1.5">
-                            <label className="block text-xs font-bold text-gray-400 px-1">Alamat email</label>
+                            <label className="block text-xs font-medium text-gray-400 px-1">Alamat email</label>
                             <div className="relative group">
-                                <Envelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} weight="bold" />
+                                <Envelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} weight="duotone" />
                                 <input
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-bold text-gray-700 transition-all placeholder:text-gray-300"
+                                    className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-normal text-gray-700 transition-all placeholder:text-gray-300"
                                     placeholder="email@contoh.com"
                                     required
                                 />
@@ -82,9 +82,9 @@ const LoginPage = () => {
                         </div>
 
                         <div className="space-y-1.5">
-                            <label className="block text-xs font-bold text-gray-400 px-1">Kata sandi</label>
+                            <label className="block text-xs font-medium text-gray-400 px-1">Kata sandi</label>
                             <div className="relative group">
-                                <LockSimple className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} weight="bold" />
+                                <LockSimple className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} weight="duotone" />
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     value={password}
@@ -120,15 +120,15 @@ const LoginPage = () => {
                                         )}
                                     </div>
                                 </div>
-                                <span className="text-xs font-bold text-gray-400 group-hover:text-gray-600 transition-colors">Ingat saya</span>
+                                <span className="text-xs font-medium text-gray-400 group-hover:text-gray-600 transition-colors">Ingat saya</span>
                             </label>
-                            <button type="button" className="text-xs font-bold text-primary hover:underline">Lupa password?</button>
+                            <button type="button" className="text-xs font-medium text-primary hover:underline">Lupa password?</button>
                         </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-5 bg-primary text-white font-bold rounded-[1.5rem] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-3 disabled:opacity-50 mt-4"
+                            className="w-full py-5 bg-primary text-white font-medium rounded-[1.5rem] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-3 disabled:opacity-50 mt-4"
                         >
                             {loading ? (
                                 <CircleNotch className="animate-spin" size={20} weight="bold" />
@@ -142,7 +142,7 @@ const LoginPage = () => {
                 <div className="text-center">
                     <button
                         onClick={() => navigate('/')}
-                        className="text-xs font-bold text-gray-300 hover:text-primary transition-colors"
+                        className="text-xs font-medium text-gray-300 hover:text-primary transition-colors"
                     >
                         Kembali ke beranda
                     </button>

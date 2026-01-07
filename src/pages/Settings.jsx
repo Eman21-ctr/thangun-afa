@@ -5,29 +5,29 @@ import { toast } from 'react-hot-toast'
 import { clsx } from 'clsx'
 
 const SettingItem = ({ item, table, onToggle }) => (
-    <div className="flex items-center justify-between p-5 bg-white rounded-[1.5rem] border border-primary-100/40 shadow-sm active:scale-[0.98] transition-all">
+    <div className="flex items-center justify-between p-4 bg-white rounded-none border border-primary-100/40 shadow-sm active:scale-[0.99] transition-all">
         <div className="flex items-center space-x-4">
             <div className={clsx(
-                "p-3 rounded-xl transition-all border-2",
+                "p-2.5 rounded-lg transition-all border",
                 item.is_active
-                    ? "bg-primary-50 text-primary border-white shadow-sm"
-                    : "bg-gray-50 text-gray-300 border-transparent"
+                    ? "bg-primary-50 text-primary border-primary-100 shadow-sm"
+                    : "bg-gray-50 text-gray-300 border-gray-100"
             )}>
-                {table === 'commodities' ? <Plant size={20} weight="duotone" /> : <Tag size={20} weight="duotone" />}
+                {table === 'commodities' ? <Plant size={18} weight="duotone" /> : <Tag size={18} weight="duotone" />}
             </div>
             <div>
                 <p className={clsx(
-                    "font-extrabold tracking-tight transition-all",
+                    "font-semibold text-sm tracking-tight transition-all",
                     item.is_active ? "text-gray-800" : "text-gray-300 line-through"
                 )}>
                     {item.name}
                 </p>
                 <div className="flex items-center space-x-1.5 mt-0.5">
                     <div className={clsx(
-                        "w-1.5 h-1.5 rounded-full",
+                        "w-1 h-1 rounded-full",
                         item.is_active ? "bg-primary" : "bg-gray-300"
                     )}></div>
-                    <p className="text-[9px] font-black uppercase tracking-[0.1em] text-gray-400">
+                    <p className="text-[8px] font-medium uppercase tracking-wider text-gray-400">
                         {item.is_active ? 'Aktif' : 'Nonaktif'}
                     </p>
                 </div>
@@ -36,11 +36,11 @@ const SettingItem = ({ item, table, onToggle }) => (
         <button
             onClick={() => onToggle(table, item.id, !item.is_active)}
             className={clsx(
-                "transition-all active:scale-125 p-1",
+                "transition-all active:scale-110 p-1",
                 item.is_active ? "text-primary" : "text-gray-200"
             )}
         >
-            {item.is_active ? <ToggleRight size={32} weight="fill" /> : <ToggleLeft size={32} weight="regular" />}
+            {item.is_active ? <ToggleRight size={28} weight="fill" /> : <ToggleLeft size={28} weight="regular" />}
         </button>
     </div>
 )
@@ -85,11 +85,11 @@ const Settings = () => {
         <div className="p-5 space-y-8 font-sans pb-28">
             <div className="flex items-center justify-between px-1">
                 <div>
-                    <h1 className="text-2xl font-extrabold text-gray-800 tracking-tight">Pengaturan Grup</h1>
-                    <p className="text-xs text-gray-400 font-medium">Manajemen kategori dan komoditas.</p>
+                    <h1 className="text-xl font-semibold text-gray-800 tracking-tight">Pengaturan Kelompok</h1>
+                    <p className="text-xs text-gray-400 font-normal mt-0.5">Manajemen kategori dan komoditas.</p>
                 </div>
-                <div className="p-3 bg-primary text-white rounded-2xl shadow-lg shadow-primary/20">
-                    <Tag size={24} weight="duotone" />
+                <div className="p-2.5 bg-primary text-white rounded-lg shadow-md shadow-primary/10">
+                    <Tag size={20} weight="duotone" />
                 </div>
             </div>
 
@@ -116,22 +116,22 @@ const Settings = () => {
             </div>
 
             {/* Add Form */}
-            <div className="flex space-x-3 group px-1">
+            <div className="flex space-x-2 px-1">
                 <input
                     type="text"
-                    placeholder={`Tambah ${activeTab === 'commodities' ? 'komoditas' : 'biaya'} baru...`}
+                    placeholder={`Tambah ${activeTab === 'commodities' ? 'komoditas' : 'biaya'}...`}
                     value={newName}
                     onChange={e => setNewName(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && handleAdd(e)}
-                    className="flex-1 p-4 bg-white border border-primary-100/30 rounded-2xl outline-none focus:ring-4 focus:ring-primary/10 text-sm font-bold shadow-sm transition-all placeholder:text-gray-300"
+                    className="flex-1 p-3 bg-white border border-primary-100/30 rounded-lg outline-none focus:ring-4 focus:ring-primary/10 text-sm font-normal shadow-sm transition-all placeholder:text-gray-300"
                 />
                 <button
                     type="button"
                     onClick={handleAdd}
                     disabled={addCategory.isPending || addCommodity.isPending || !newName.trim()}
-                    className="p-4 bg-primary text-white rounded-2xl shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 disabled:opacity-50 transition-all"
+                    className="p-3 bg-primary text-white rounded-lg shadow-lg shadow-primary/10 hover:scale-105 active:scale-95 disabled:opacity-50 transition-all flex items-center justify-center min-w-[3rem]"
                 >
-                    <Plus size={20} weight="bold" />
+                    <Plus size={18} weight="bold" />
                 </button>
             </div>
 
@@ -155,9 +155,9 @@ const Settings = () => {
             </div>
 
             {/* Footer Tip */}
-            <div className="bg-primary-50/50 p-6 rounded-[2rem] border border-dashed border-primary-200/50 flex flex-col items-center text-center space-y-3">
-                <Sparkle size={32} weight="duotone" className="text-primary/40" />
-                <p className="text-[11px] text-primary-900/60 font-bold leading-relaxed px-4">
+            <div className="bg-primary-50/50 p-4 rounded-xl border border-dashed border-primary-200/50 flex flex-col items-center text-center space-y-2">
+                <Sparkle size={24} weight="duotone" className="text-primary/40" />
+                <p className="text-[10px] text-primary-900/60 font-medium leading-relaxed px-4">
                     Item yang dinonaktifkan tidak akan muncul pada pilihan transaksi baru, namun data lama tetap terjaga.
                 </p>
             </div>
