@@ -14,7 +14,7 @@ const Dashboard = () => {
         <div className="font-sans">
             {/* Hero Section - 1/3 dari atas dengan gambar hortikultura */}
             <div
-                className="relative h-48 bg-cover bg-center"
+                className="relative h-64 bg-cover bg-center"
                 style={{
                     backgroundImage: `url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80')`
                 }}
@@ -23,18 +23,18 @@ const Dashboard = () => {
                 <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60"></div>
 
                 {/* Greeting text on hero */}
-                <div className="relative z-10 h-full flex flex-col justify-end p-5 pb-8 pt-20">
-                    <h1 className="text-2xl font-semibold text-white tracking-tight">
+                <div className="relative z-10 h-full flex flex-col justify-end p-6 pb-12">
+                    <h1 className="text-2xl font-bold text-white tracking-tight">
                         Halo, {profile?.full_name?.split(' ')[0] || 'User'}!
                     </h1>
-                    <p className="text-sm text-white/80 font-normal mt-1">
+                    <p className="text-sm text-white/90 font-medium mt-1">
                         {profile?.role === 'member' ? 'Rangkuman keuangan Anda' : 'Rangkuman keuangan kelompok'}
                     </p>
                 </div>
             </div>
 
             {/* Main Content Area - White background */}
-            <div className="bg-white rounded-t-[2rem] -mt-6 relative z-10 p-6 space-y-6 min-h-[60vh]">
+            <div className="bg-white rounded-t-[2.5rem] -mt-8 relative z-10 p-6 space-y-6 min-h-[60vh]">
 
                 {/* Balance Card - Angka Besar Saldo */}
                 <div className="text-center py-6">
