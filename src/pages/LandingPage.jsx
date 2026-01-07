@@ -60,7 +60,7 @@ const LandingPage = () => {
                 {/* Background Image with Dark Overlay */}
                 <div className="absolute inset-0">
                     <img
-                        src="/images/hero-2.jpg"
+                        src={settings?.hero_image_url || "/images/hero-2.jpg"}
                         alt="Kelompok Tani Thangun Afa"
                         className="w-full h-full object-cover"
                     />
@@ -118,7 +118,7 @@ const LandingPage = () => {
                     <div className="grid lg:grid-cols-2 gap-8 lg:gap-20 items-center">
                         <div className="relative h-full">
                             <img
-                                src="/images/hero-1.jpg"
+                                src={settings?.about_image_url || "/images/hero-1.jpg"}
                                 alt="Tim Thangun Afa di ladang"
                                 className="w-full aspect-[4/3] lg:aspect-[5/4] object-cover rounded-none shadow-xl"
                             />
