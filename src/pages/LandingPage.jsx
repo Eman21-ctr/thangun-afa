@@ -344,12 +344,12 @@ const LandingPage = () => {
                         href={whatsappLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center space-x-3 px-10 py-5 text-primary text-sm font-bold rounded-2xl shadow-xl shadow-[#cbae11]/20 hover:scale-105 active:scale-95 transition-all"
+                        className="inline-flex items-center space-x-2 px-8 py-3 text-primary text-sm font-bold rounded-xl shadow-xl shadow-[#cbae11]/20 hover:scale-105 active:scale-95 transition-all"
                         style={{ backgroundColor: '#cbae11' }}
                     >
-                        <WhatsappLogo size={24} weight="fill" />
+                        <WhatsappLogo size={20} weight="fill" />
                         <span>Hubungi via WhatsApp</span>
-                        <ArrowRight size={20} weight="bold" />
+                        <ArrowRight size={18} weight="bold" />
                     </a>
                 </div>
             </section>
