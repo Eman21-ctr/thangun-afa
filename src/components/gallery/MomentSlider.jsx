@@ -25,7 +25,7 @@ const MomentSlider = ({ moment, className }) => {
     return (
         <div className={clsx("flex flex-col space-y-6 w-full max-w-sm mx-auto", className)}>
             {/* Image Container */}
-            <div className="relative group aspect-[3/4] overflow-hidden rounded-[2.5rem] bg-gray-100 shadow-md border border-gray-100/50">
+            <div className="relative group aspect-square overflow-hidden rounded-[1.5rem] bg-gray-100 shadow-md border border-gray-100/50">
                 {photos.map((photo, index) => (
                     <img
                         key={photo.id || index}
