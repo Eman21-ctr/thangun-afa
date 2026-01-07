@@ -88,10 +88,6 @@ const LandingPage = () => {
                 {/* Content */}
                 <div className="relative z-10 max-w-7xl mx-auto px-6 w-full py-20">
                     <div className="max-w-3xl space-y-8">
-                        <div className="inline-flex items-center space-x-2 px-4 py-2 bg-accent/20 backdrop-blur-md rounded-full text-accent text-xs font-bold uppercase tracking-widest">
-                            <Leaf size={14} weight="fill" />
-                            <span>{settings?.address?.split(',')[0] || 'Desa Besmarak'}, NTT</span>
-                        </div>
 
                         <div className="space-y-4">
                             <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold text-white leading-[0.9] tracking-tighter">
