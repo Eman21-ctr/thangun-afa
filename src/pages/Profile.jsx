@@ -94,8 +94,8 @@ const Profile = () => {
                 <div className="bg-white rounded-2xl border border-primary-100/40 divide-y divide-gray-50 overflow-hidden">
                     <div className="flex items-center justify-between p-4">
                         <div className="flex items-center space-x-3">
-                            <div className="text-gray-400">
-                                <Envelope size={20} weight="regular" />
+                            <div className="p-2 bg-gray-50 text-gray-400 rounded-xl border border-gray-100/50">
+                                <Envelope size={18} weight="regular" />
                             </div>
                             <div>
                                 <p className="text-[10px] font-medium text-gray-400 uppercase">Email</p>
@@ -105,8 +105,8 @@ const Profile = () => {
                     </div>
                     <div className="flex items-center justify-between p-4">
                         <div className="flex items-center space-x-3">
-                            <div className="text-gray-400">
-                                <ShieldCheck size={20} weight="regular" />
+                            <div className="p-2 bg-gray-50 text-gray-400 rounded-xl border border-gray-100/50">
+                                <ShieldCheck size={18} weight="regular" />
                             </div>
                             <div>
                                 <p className="text-[10px] font-medium text-gray-400 uppercase">Status Akun</p>
@@ -156,8 +156,8 @@ const Profile = () => {
                     {/* Land Area */}
                     <div className="p-4">
                         <div className="flex items-center space-x-3 mb-2">
-                            <div className="text-gray-400">
-                                <Ruler size={20} weight="regular" />
+                            <div className="p-2 bg-gray-50 text-gray-400 rounded-xl border border-gray-100/50">
+                                <Ruler size={18} weight="regular" />
                             </div>
                             <p className="text-[10px] font-medium text-gray-400 uppercase">Luas Lahan</p>
                         </div>
@@ -179,8 +179,8 @@ const Profile = () => {
                     {/* Cultivated Commodities */}
                     <div className="p-4">
                         <div className="flex items-center space-x-3 mb-2">
-                            <div className="text-gray-400">
-                                <Plant size={20} weight="regular" />
+                            <div className="p-2 bg-gray-50 text-gray-400 rounded-xl border border-gray-100/50">
+                                <Plant size={18} weight="regular" />
                             </div>
                             <p className="text-[10px] font-medium text-gray-400 uppercase">Komoditas yang Dibudidaya</p>
                         </div>
