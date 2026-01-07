@@ -165,10 +165,9 @@ const Reports = () => {
                             if (range.id !== 'month') setShowFilterPanel(true)
                         }}
                         className={clsx(
-                            "flex-1 py-2.5 text-[10px] font-medium uppercase tracking-[0.1em] rounded-[1rem] transition-all text-white",
-                            dateFilterMode === range.id ? "shadow-lg" : "bg-transparent text-gray-400 hover:text-gray-600"
+                            "flex-1 py-2.5 text-[10px] font-medium uppercase tracking-[0.1em] rounded-[1rem] transition-all",
+                            dateFilterMode === range.id ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-gray-400 hover:text-gray-600"
                         )}
-                        style={dateFilterMode === range.id ? { backgroundColor: '#8DA994', boxShadow: '0 10px 15px -3px rgba(141, 169, 148, 0.3)' } : {}}
                     >
                         {range.label}
                     </button>
