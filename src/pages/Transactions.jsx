@@ -13,8 +13,11 @@ import { supabase } from '../lib/supabase'
 import { toast } from 'react-hot-toast'
 import * as XLSX from 'xlsx'
 
-const TransactionCard = ({ transaction, onEdit, onDelete }) => (
-    <div className="bg-white p-3 rounded-xl shadow-sm border border-primary-100/30 flex items-center justify-between active:scale-[0.98] transition-all group">
+const TransactionCard = ({ transaction, onClick }) => (
+    <div
+        onClick={() => onClick(transaction)}
+        className="bg-white p-3 rounded-xl shadow-sm border border-primary-100/30 flex items-center justify-between active:scale-[0.98] transition-all group cursor-pointer"
+    >
         <div className="flex items-center space-x-3 min-w-0 flex-1">
             <div className={clsx(
                 "flex items-center justify-center flex-shrink-0 transition-colors",
@@ -42,21 +45,6 @@ const TransactionCard = ({ transaction, onEdit, onDelete }) => (
                 </p>
                 <p className="text-[10px] text-gray-400 font-medium uppercase">{transaction.quantity} {transaction.unit}</p>
             </div>
-
-            <div className="flex flex-col space-y-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button
-                    onClick={(e) => { e.stopPropagation(); onEdit(transaction); }}
-                    className="p-1.5 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
-                >
-                    <PencilSimple size={14} weight="bold" />
-                </button>
-                <button
-                    onClick={(e) => { e.stopPropagation(); onDelete(transaction.id); }}
-                    className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                >
-                    <Trash size={14} weight="bold" />
-                </button>
-            </div>
         </div>
     </div>
 )
@@ -74,6 +62,123 @@ const transactionSchema = z.object({
     buyer: z.string().optional().nullable(),
     notes: z.string().optional().nullable(),
 })
+
+const TransactionDetailModal = ({ transaction, onClose, onEdit, onDelete }) => {
+    return (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm transition-all">
+            <div className="bg-white w-full max-w-lg rounded-t-[2.5rem] sm:rounded-[2.5rem] p-8 shadow-2xl animate-in slide-in-from-bottom duration-300 max-h-[90vh] overflow-y-auto">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-semibold text-gray-800 tracking-tight">Detail Transaksi</h2>
+                    <button onClick={onClose} className="p-2 bg-gray-50 text-gray-400 rounded-xl hover:text-gray-600 transition-colors">
+                        <X size={20} weight="bold" />
+                    </button>
+                </div>
+
+                <div className="space-y-6">
+                    {/* Header Info */}
+                    <div className="flex items-start justify-between">
+                        <div className="space-y-1">
+                            <h3 className="text-2xl font-bold text-gray-900 tracking-tight">{transaction.description}</h3>
+                            <div className="flex items-center space-x-2 text-sm text-gray-500">
+                                <CalendarBlank size={16} weight="bold" />
+                                <span>{format(new Date(transaction.date), 'PPPP', { locale: id })}</span>
+                            </div>
+                        </div>
+                        <div className={clsx(
+                            "px-4 py-2 rounded-2xl text-xs font-bold uppercase tracking-widest shadow-sm",
+                            transaction.type === 'income' ? "bg-primary-50 text-primary" : "bg-red-50 text-red-500"
+                        )}>
+                            {transaction.type === 'income' ? 'Pemasukan' : 'Pengeluaran'}
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="p-4 bg-gray-50 rounded-[1.5rem] border border-gray-100">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                                <Package size={14} weight="duotone" />
+                                {transaction.type === 'income' ? 'Komoditas' : 'Kategori'}
+                            </p>
+                            <p className="text-sm font-semibold text-gray-800">{transaction.commodity || transaction.category}</p>
+                        </div>
+                        <div className="p-4 bg-gray-50 rounded-[1.5rem] border border-gray-100">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                                <Scales size={14} weight="duotone" />
+                                Kuantitas
+                            </p>
+                            <p className="text-sm font-semibold text-gray-800">{transaction.quantity} {transaction.unit}</p>
+                        </div>
+                        <div className="p-4 bg-gray-50 rounded-[1.5rem] border border-gray-100">
+                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                                <Coins size={14} weight="duotone" />
+                                Harga Satuan
+                            </p>
+                            <p className="text-sm font-semibold text-gray-800">Rp {transaction.unit_price.toLocaleString('id-ID')}</p>
+                        </div>
+                        <div className="p-4 bg-primary-50 rounded-[1.5rem] border border-primary-100/50">
+                            <p className="text-[10px] font-bold text-primary-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+                                <Receipt size={14} weight="duotone" />
+                                Total
+                            </p>
+                            <p className="text-lg font-bold text-primary">Rp {transaction.total_amount.toLocaleString('id-ID')}</p>
+                        </div>
+                    </div>
+
+                    {/* Additional Info */}
+                    {(transaction.buyer || transaction.notes) && (
+                        <div className="space-y-4 pt-2 border-t border-gray-100">
+                            {transaction.buyer && (
+                                <div className="flex items-center space-x-3">
+                                    <div className="w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center">
+                                        <User size={20} weight="duotone" />
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Pembeli</p>
+                                        <p className="text-sm font-semibold text-gray-800">{transaction.buyer}</p>
+                                    </div>
+                                </div>
+                            )}
+                            {transaction.notes && (
+                                <div className="flex items-start space-x-3">
+                                    <div className="w-10 h-10 bg-orange-50 text-orange-500 rounded-xl flex items-center justify-center mt-1">
+                                        <Notepad size={20} weight="duotone" />
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Catatan Tambahan</p>
+                                        <p className="text-sm font-medium text-gray-600 leading-relaxed">"{transaction.notes}"</p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Actions */}
+                    <div className="flex space-x-3 pt-4">
+                        <button
+                            onClick={() => {
+                                onDelete(transaction.id)
+                                onClose()
+                            }}
+                            className="flex-1 py-4 bg-red-50 text-red-500 font-bold rounded-2xl hover:bg-red-100 transition-all flex items-center justify-center space-x-2"
+                        >
+                            <Trash size={20} weight="bold" />
+                            <span>Hapus</span>
+                        </button>
+                        <button
+                            onClick={() => {
+                                onEdit(transaction)
+                                onClose()
+                            }}
+                            className="flex-[2] py-4 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center space-x-2"
+                        >
+                            <PencilSimple size={20} weight="bold" />
+                            <span>Edit Transaksi</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 const EditTransactionModal = ({ transaction, onClose, onSave }) => {
     const [categories, setCategories] = useState([])
@@ -324,6 +429,7 @@ const Transactions = () => {
     const [customEndDate, setCustomEndDate] = useState('')
 
     const [editingTransaction, setEditingTransaction] = useState(null)
+    const [selectedDetailTransaction, setSelectedDetailTransaction] = useState(null)
     const { updateTransaction, deleteTransaction } = useTransactionMutations()
 
     const { data: transactions, isLoading } = useTransactions({
@@ -631,8 +737,7 @@ const Transactions = () => {
                         <TransactionCard
                             key={tx.id}
                             transaction={tx}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
+                            onClick={(transaction) => setSelectedDetailTransaction(transaction)}
                         />
                     ))
                 ) : (
@@ -657,6 +762,16 @@ const Transactions = () => {
             >
                 <Plus size={32} weight="bold" />
             </Link>
+
+            {/* Detail Modal */}
+            {selectedDetailTransaction && (
+                <TransactionDetailModal
+                    transaction={selectedDetailTransaction}
+                    onClose={() => setSelectedDetailTransaction(null)}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                />
+            )}
 
             {/* Edit Modal */}
             {editingTransaction && (
