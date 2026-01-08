@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { Plus, MagnifyingGlass, Funnel, ArrowUpRight, ArrowDownLeft, CircleNotch, Receipt, X, CalendarBlank, CaretDown, PencilSimple, Trash, Tag, Package, Scales, CurrencyDollar, Notepad, User, Check, FloppyDisk, DownloadSimple } from '@phosphor-icons/react'
+import { Plus, MagnifyingGlass, Funnel, ArrowUpRight, ArrowDownLeft, CircleNotch, Receipt, X, CalendarBlank, CaretDown, PencilSimple, Trash, Tag, Package, Scales, Coins, Notepad, User, Check, FloppyDisk, DownloadSimple } from '@phosphor-icons/react'
 import { Link } from 'react-router-dom'
 import { format, startOfMonth, endOfMonth, startOfYear, endOfYear, isWithinInterval, parse } from 'date-fns'
 import { id } from 'date-fns/locale'
@@ -267,7 +267,7 @@ const EditTransactionModal = ({ transaction, onClose, onSave }) => {
 
                         {/* Unit Price */}
                         <div className="relative">
-                            <CurrencyDollar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                            <Coins className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
                             <input
                                 type="number"
                                 placeholder="Harga satuan (Rp)"

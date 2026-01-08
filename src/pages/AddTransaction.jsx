@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { ArrowLeft, FloppyDisk, CalendarBlank, Tag, Package, Scales, CurrencyDollar, Notepad, User } from '@phosphor-icons/react'
+import { ArrowLeft, FloppyDisk, CalendarBlank, Tag, Package, Scales, Coins, Notepad, User } from '@phosphor-icons/react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../context/AuthContext'
 import { toast } from 'react-hot-toast'
@@ -192,7 +192,7 @@ const AddTransaction = () => {
 
                     {/* Unit Price */}
                     <div className="relative">
-                        <CurrencyDollar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                        <Coins className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
                         <input
                             type="number"
                             placeholder="Harga satuan (Rp)"
