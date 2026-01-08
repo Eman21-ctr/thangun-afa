@@ -38,9 +38,6 @@ const AddTransaction = () => {
         defaultValues: {
             type: initialType,
             date: new Date().toISOString().split('T')[0],
-            quantity: 1,
-            unit_price: 0,
-            total_amount: 0,
             unit: initialType === 'income' ? 'kg' : 'pcs'
         }
     })
