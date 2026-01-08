@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { Plus, MagnifyingGlass, Funnel, ArrowUpRight, ArrowDownLeft, CircleNotch, Receipt, X, CalendarBlank, CaretDown, PencilSimple, Trash, Tag, Package, Scales, Coins, Notepad, User, Check, FloppyDisk, DownloadSimple } from '@phosphor-icons/react'
+import { Plus, MagnifyingGlass, Funnel, ArrowUpRight, ArrowDownLeft, CircleNotch, Receipt, X, CalendarBlank, CaretDown, PencilSimple, Trash, Tag, Package, Scales, Coins, Notepad, User, Check, FloppyDisk, DownloadSimple, WhatsappLogo } from '@phosphor-icons/react'
 import { Link } from 'react-router-dom'
 import { format, startOfMonth, endOfMonth, startOfYear, endOfYear, isWithinInterval, parse } from 'date-fns'
 import { id } from 'date-fns/locale'
@@ -60,10 +60,24 @@ const transactionSchema = z.object({
     unit_price: z.number({ invalid_type_error: 'Harus berupa angka' }).positive('Harga satuan harus positif'),
     total_amount: z.number().positive(),
     buyer: z.string().optional().nullable(),
+    buyer_phone: z.string().optional().nullable(),
     notes: z.string().optional().nullable(),
 })
 
 const TransactionDetailModal = ({ transaction, onClose, onEdit, onDelete }) => {
+    const handleWhatsAppShare = () => {
+        const phone = transaction.buyer_phone?.replace(/\D/g, '') || ''
+        if (!phone) {
+            toast.error('Nomor WA pembeli tidak tersedia')
+            return
+        }
+
+        const formattedPhone = phone.startsWith('0') ? '62' + phone.slice(1) : phone
+        const message = `*NOTA PENJUALAN THANGUN AFA* 🚜%0A------------------------------%0ATanggal: ${format(new Date(transaction.date), 'dd MMM yyyy', { locale: id })}%0AProduk: *${transaction.description}*%0AJumlah: ${transaction.quantity} ${transaction.unit}%0ATotal: *Rp ${transaction.total_amount.toLocaleString('id-ID')}*%0A------------------------------%0ATerima kasih sudah mendukung petani lokal NTT! 🌾`
+
+        window.open(`https://wa.me/${formattedPhone}?text=${message}`, '_blank')
+    }
+
     return (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm transition-all">
             <div className="bg-white w-full max-w-lg rounded-t-[2.5rem] sm:rounded-[2.5rem] p-8 shadow-2xl animate-in slide-in-from-bottom duration-300 max-h-[90vh] overflow-y-auto">
@@ -98,7 +112,7 @@ const TransactionDetailModal = ({ transaction, onClose, onEdit, onDelete }) => {
                                 <Package size={14} weight="duotone" />
                                 {transaction.type === 'income' ? 'Komoditas' : 'Kategori'}
                             </p>
-                            <p className="text-sm font-semibold text-gray-800">{transaction.commodity || transaction.category}</p>
+                            <p className="text-sm font-semibold text-gray-800">{transaction.commodity || transaction.category || 'Umum'}</p>
                         </div>
                         <div className="p-4 bg-gray-50 rounded-[1.5rem] border border-gray-100">
                             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
@@ -126,15 +140,28 @@ const TransactionDetailModal = ({ transaction, onClose, onEdit, onDelete }) => {
                     {/* Additional Info */}
                     {(transaction.buyer || transaction.notes) && (
                         <div className="space-y-4 pt-2 border-t border-gray-100">
-                            {transaction.buyer && (
-                                <div className="flex items-center space-x-3">
-                                    <div className="w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center">
-                                        <User size={20} weight="duotone" />
+                            {(transaction.buyer || transaction.buyer_phone) && (
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center space-x-3">
+                                        <div className="w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center">
+                                            <User size={20} weight="duotone" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Pembeli</p>
+                                            <p className="text-sm font-semibold text-gray-800">
+                                                {transaction.buyer || 'N/A'} {transaction.buyer_phone && <span className="text-xs text-gray-400 font-normal ml-1">({transaction.buyer_phone})</span>}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Pembeli</p>
-                                        <p className="text-sm font-semibold text-gray-800">{transaction.buyer}</p>
-                                    </div>
+                                    {transaction.type === 'income' && transaction.buyer_phone && (
+                                        <button
+                                            onClick={handleWhatsAppShare}
+                                            className="flex items-center space-x-2 px-4 py-2 bg-green-500 text-white rounded-xl text-xs font-bold hover:bg-green-600 transition-all active:scale-95 shadow-sm"
+                                        >
+                                            <WhatsappLogo size={16} weight="bold" />
+                                            <span>Kirim Nota</span>
+                                        </button>
+                                    )}
                                 </div>
                             )}
                             {transaction.notes && (
@@ -144,7 +171,7 @@ const TransactionDetailModal = ({ transaction, onClose, onEdit, onDelete }) => {
                                     </div>
                                     <div>
                                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Catatan Tambahan</p>
-                                        <p className="text-sm font-medium text-gray-600 leading-relaxed">"{transaction.notes}"</p>
+                                        <p className="text-sm font-medium text-gray-600 leading-relaxed italic">"{transaction.notes}"</p>
                                     </div>
                                 </div>
                             )}
@@ -227,6 +254,7 @@ const EditTransactionModal = ({ transaction, onClose, onSave }) => {
                 unit_price: Number(data.unit_price),
                 total_amount: Number(data.total_amount),
                 buyer: data.buyer || null,
+                buyer_phone: data.buyer_phone || null,
                 notes: data.notes || null,
             }
 
@@ -292,23 +320,24 @@ const EditTransactionModal = ({ transaction, onClose, onSave }) => {
                             {errors.date && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.date.message}</p>}
                         </div>
 
-                        {/* Commodity/Category */}
-                        {type === 'income' ? (
-                            <div className="relative">
-                                <Package className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
-                                <select
-                                    {...register('commodity')}
-                                    className={clsx(
-                                        "w-full pl-10 pr-3 py-3 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm appearance-none",
-                                        errors.commodity ? "border-red-500" : "border-primary-100/30"
-                                    )}
-                                >
-                                    <option value="">Pilih Komoditas</option>
-                                    {commodities.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-                                </select>
-                                {errors.commodity && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.commodity.message}</p>}
-                            </div>
-                        ) : (
+                        {/* Commodity Select (Always show, optional for expense) */}
+                        <div className="relative">
+                            <Package className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                            <select
+                                {...register('commodity')}
+                                className={clsx(
+                                    "w-full pl-10 pr-3 py-3 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm appearance-none",
+                                    errors.commodity ? "border-red-500" : "border-primary-100/30"
+                                )}
+                            >
+                                <option value="">{type === 'income' ? 'Pilih Komoditas' : 'Pilih Komoditas (Opsional/Umum)'}</option>
+                                {commodities.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
+                            </select>
+                            {errors.commodity && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.commodity.message}</p>}
+                        </div>
+
+                        {/* Category only for Expense */}
+                        {type === 'expense' && (
                             <div className="relative">
                                 <Tag className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
                                 <select
@@ -318,7 +347,7 @@ const EditTransactionModal = ({ transaction, onClose, onSave }) => {
                                         errors.category ? "border-red-500" : "border-primary-100/30"
                                     )}
                                 >
-                                    <option value="">Pilih Kategori</option>
+                                    <option value="">Pilih Kategori Pengeluaran</option>
                                     {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
                                 </select>
                                 {errors.category && <p className="text-[10px] text-red-500 mt-1 ml-1">{errors.category.message}</p>}
@@ -392,6 +421,37 @@ const EditTransactionModal = ({ transaction, onClose, onSave }) => {
                                 Rp {((quantity || 0) * (unitPrice || 0)).toLocaleString('id-ID')}
                             </span>
                         </div>
+                    </div>
+
+                    {/* Additional Info */}
+                    <div className="bg-white p-4 rounded-xl border border-primary-100/30 space-y-3">
+                        {type === 'income' && (
+                            <div className="space-y-3">
+                                <div className="relative">
+                                    <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                                    <input
+                                        type="text"
+                                        placeholder="Nama pembeli (opsional)"
+                                        {...register('buyer')}
+                                        className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm placeholder:text-gray-300"
+                                    />
+                                </div>
+                                <div className="relative">
+                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs uppercase">WA</div>
+                                    <input
+                                        type="tel"
+                                        placeholder="Nomor WA (Contoh: 0812...)"
+                                        {...register('buyer_phone')}
+                                        className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm placeholder:text-gray-300"
+                                    />
+                                </div>
+                            </div>
+                        )}
+                        <textarea
+                            placeholder="Catatan tambahan..."
+                            {...register('notes')}
+                            className="w-full px-4 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm placeholder:text-gray-300 min-h-[80px]"
+                        />
                     </div>
 
                     <div className="flex space-x-3 pt-4">

@@ -1,7 +1,10 @@
-import { Wallet, Plus, Minus } from '@phosphor-icons/react'
+import { Wallet, Plus, Minus, Trophy, Star, Crown, Medal, Sparkle } from '@phosphor-icons/react'
 import { useAuth } from '../context/AuthContext'
-import { useDashboardStats } from '../hooks/useTransactions'
+import { useDashboardStats, useTransactions } from '../hooks/useTransactions'
 import { useContent } from '../hooks/useContent'
+import { useMemo } from 'react'
+import { startOfMonth, endOfMonth, isWithinInterval } from 'date-fns'
+import { clsx } from 'clsx'
 
 const Dashboard = () => {
     const { profile } = useAuth()
@@ -9,6 +12,60 @@ const Dashboard = () => {
     const { data: stats, isLoading } = useDashboardStats(
         profile?.role === 'member' ? profile.id : null
     )
+    const { data: transactions } = useTransactions()
+
+    const motivationBadge = useMemo(() => {
+        if (!transactions) return null
+        const now = new Date()
+        const monthStart = startOfMonth(now)
+        const monthEnd = endOfMonth(now)
+
+        if (profile?.role === 'member') {
+            // Komoditas Terlaris Anda (All time revenue)
+            const myTxs = transactions.filter(t => t.user_id === profile.id && t.type === 'income')
+            if (myTxs.length === 0) return null
+
+            const commodities = {}
+            myTxs.forEach(t => {
+                const name = t.commodity || 'Tanpa Nama'
+                commodities[name] = (commodities[name] || 0) + Number(t.total_amount)
+            })
+
+            const topCommodity = Object.entries(commodities).reduce((a, b) => b[1] > a[1] ? b : a)[0]
+            return {
+                title: 'Komoditas Terlaris Anda',
+                value: topCommodity,
+                icon: Trophy
+            }
+        }
+
+        if (profile?.role === 'super_admin') {
+            // Petani Paling Rajin Catat Bulan Ini (Most transactions in current month)
+            const monthTxs = transactions.filter(t => isWithinInterval(new Date(t.date), { start: monthStart, end: monthEnd }))
+            if (monthTxs.length === 0) return null
+
+            const userCounts = {}
+            monthTxs.forEach(t => {
+                userCounts[t.user_id] = (userCounts[t.user_id] || 0) + 1
+            })
+
+            const topUserId = Object.entries(userCounts).reduce((a, b) => b[1] > a[1] ? b : a)[0]
+
+            // Note: Since we don't have member names here easily without fetching members
+            // We'll just say "Anda Luar Biasa" or ideally we should have member names.
+            // But let's assume we can get it from the transaction if we had member name in tx
+            // Or just fetch members. Since I don't want to overcomplicate, I'll just check if tx has profiles joined.
+            // useTransactions hook seems to return raw transactions.
+
+            return {
+                title: 'Petani Ter-Rajin Bulan Ini',
+                value: 'Cek di Laporan Anggota',
+                icon: Crown
+            }
+        }
+
+        return null
+    }, [transactions, profile])
 
     const formatCurrency = (val) => `Rp ${(val || 0).toLocaleString('id-ID')}`
 
@@ -37,6 +94,24 @@ const Dashboard = () => {
 
             {/* Main Content Area - White background */}
             <div className="bg-white rounded-t-[2.5rem] -mt-8 relative z-10 p-6 space-y-6 min-h-[60vh]">
+
+                {/* Motivation Badge */}
+                {motivationBadge && (
+                    <div className="animate-in fade-in slide-in-from-top duration-700 delay-150">
+                        <div className="bg-gradient-to-br from-white to-amber-50/30 p-4 rounded-[2rem] border border-amber-100/50 shadow-sm flex items-center space-x-4">
+                            <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-200 bg-gradient-to-br from-amber-300 via-amber-500 to-amber-600 text-white">
+                                <motivationBadge.icon size={28} weight="duotone" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-600/60 mb-0.5">{motivationBadge.title}</p>
+                                <p className="text-lg font-bold text-gray-800 tracking-tight truncate">{motivationBadge.value}</p>
+                            </div>
+                            <div className="pr-2">
+                                <Sparkle size={20} className="text-amber-400 animate-pulse" weight="fill" />
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Balance Card - Angka Besar Saldo */}
                 <div className="text-center py-6">

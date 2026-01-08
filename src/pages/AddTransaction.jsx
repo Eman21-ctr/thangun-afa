@@ -20,6 +20,7 @@ const transactionSchema = z.object({
     unit_price: z.number().positive('Harga satuan harus positif'),
     total_amount: z.number().positive(),
     buyer: z.string().optional(),
+    buyer_phone: z.string().optional(),
     notes: z.string().optional(),
 })
 
@@ -131,30 +132,34 @@ const AddTransaction = () => {
                         />
                     </div>
 
-                    {/* Commodity/Category */}
-                    {type === 'income' ? (
+                    {/* Commodity/Category Select */}
+                    <div className="space-y-3">
+                        {/* Always show Commodity for both, but for Expense it's optional (Umum) */}
                         <div className="relative">
                             <Package className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
                             <select
                                 {...register('commodity')}
                                 className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm appearance-none"
                             >
-                                <option value="">Pilih Komoditas</option>
+                                <option value="">{type === 'income' ? 'Pilih Komoditas' : 'Pilih Komoditas (Opsional/Umum)'}</option>
                                 {commodities.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
                             </select>
                         </div>
-                    ) : (
-                        <div className="relative">
-                            <Tag className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
-                            <select
-                                {...register('category')}
-                                className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm appearance-none"
-                            >
-                                <option value="">Pilih Kategori</option>
-                                {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-                            </select>
-                        </div>
-                    )}
+
+                        {/* Category only for Expense */}
+                        {type === 'expense' && (
+                            <div className="relative">
+                                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                                <select
+                                    {...register('category')}
+                                    className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm appearance-none"
+                                >
+                                    <option value="">Pilih Kategori Pengeluaran</option>
+                                    {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
+                                </select>
+                            </div>
+                        )}
+                    </div>
 
                     {/* Description */}
                     <div className="relative">
@@ -210,14 +215,25 @@ const AddTransaction = () => {
                 {/* Additional Info (Collapsible-like) */}
                 <div className="bg-white p-4 rounded-xl border border-primary-100/30 space-y-3">
                     {type === 'income' && (
-                        <div className="relative">
-                            <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
-                            <input
-                                type="text"
-                                placeholder="Nama pembeli (opsional)"
-                                {...register('buyer')}
-                                className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm placeholder:text-gray-300"
-                            />
+                        <div className="space-y-3">
+                            <div className="relative">
+                                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} weight="duotone" />
+                                <input
+                                    type="text"
+                                    placeholder="Nama pembeli (opsional)"
+                                    {...register('buyer')}
+                                    className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm placeholder:text-gray-300"
+                                />
+                            </div>
+                            <div className="relative">
+                                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">WA</div>
+                                <input
+                                    type="tel"
+                                    placeholder="Nomor WA (Contoh: 0812...)"
+                                    {...register('buyer_phone')}
+                                    className="w-full pl-10 pr-3 py-3 bg-gray-50/50 border border-primary-100/30 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-normal text-gray-700 text-sm placeholder:text-gray-300"
+                                />
+                            </div>
                         </div>
                     )}
                     <textarea
