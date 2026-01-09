@@ -116,14 +116,20 @@ const Reports = () => {
             const amount = Number(tx.total_amount)
             if (tx.type === 'income') {
                 const name = tx.commodity || 'Tanpa Nama'
-                if (!commodities[name]) commodities[name] = { name, revenue: 0, specificExpense: 0, count: 0 }
+                if (!commodities[name]) commodities[name] = { name, revenue: 0, specificExpense: 0, count: 0, prices: [] }
                 commodities[name].revenue += amount
                 commodities[name].count++
+                if (tx.unit_price) {
+                    commodities[name].prices.push({
+                        price: Number(tx.unit_price),
+                        date: new Date(tx.date)
+                    })
+                }
                 totalRevenue += amount
             } else {
                 if (tx.commodity) {
                     const name = tx.commodity
-                    if (!commodities[name]) commodities[name] = { name, revenue: 0, specificExpense: 0, count: 0 }
+                    if (!commodities[name]) commodities[name] = { name, revenue: 0, specificExpense: 0, count: 0, prices: [] }
                     commodities[name].specificExpense += amount
                 } else {
                     totalSharedExpense += amount
@@ -138,12 +144,33 @@ const Reports = () => {
             const netProfit = c.revenue - totalExpense
             const margin = c.revenue > 0 ? (netProfit / c.revenue) * 100 : 0
 
+            // Price Trend Analysis
+            let avgPrice = 0
+            let lastPrice = 0
+            let trend = 0 // percent change
+
+            if (c.prices.length > 0) {
+                // Sort by date to get the real chronological order
+                const sortedPrices = c.prices.sort((a, b) => a.date - b.date)
+                const sum = sortedPrices.reduce((acc, p) => acc + p.price, 0)
+                avgPrice = sum / sortedPrices.length
+
+                lastPrice = sortedPrices[sortedPrices.length - 1].price
+                if (sortedPrices.length > 1) {
+                    const prevPrice = sortedPrices[sortedPrices.length - 2].price
+                    trend = prevPrice > 0 ? ((lastPrice - prevPrice) / prevPrice) * 100 : 0
+                }
+            }
+
             return {
                 ...c,
                 allocatedSharedExpense,
                 totalExpense,
                 netProfit,
-                margin
+                margin,
+                avgPrice,
+                lastPrice,
+                trend
             }
         })
 
@@ -435,6 +462,34 @@ const Reports = () => {
                                                 <Scales size={12} weight="bold" className="text-red-400" /> Total Biaya
                                             </p>
                                             <p className="text-xs font-bold text-gray-800">Rp {data.totalExpense.toLocaleString('id-ID')}</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Price Trend Stats */}
+                                    <div className="bg-primary/5 p-4 rounded-2xl border border-primary-100/30">
+                                        <div className="flex items-center justify-between mb-3">
+                                            <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
+                                                <Coins size={12} weight="bold" className="text-primary" /> Analisa Harga
+                                            </p>
+                                            {data.trend !== 0 && (
+                                                <div className={clsx(
+                                                    "flex items-center space-x-1 text-[10px] font-black italic",
+                                                    data.trend > 0 ? "text-green-600" : "text-red-500"
+                                                )}>
+                                                    <span>{data.trend > 0 ? '+' : ''}{data.trend.toFixed(1)}%</span>
+                                                    {data.trend > 0 ? <TrendUp size={14} weight="bold" /> : <TrendUp size={14} weight="bold" className="rotate-180" />}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <p className="text-[8px] text-gray-400 font-bold uppercase tracking-tight">Rata-rata</p>
+                                                <p className="text-sm font-bold text-gray-700">Rp {Math.round(data.avgPrice).toLocaleString('id-ID')}</p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className="text-[8px] text-gray-400 font-bold uppercase tracking-tight">Terakhir</p>
+                                                <p className="text-sm font-black text-primary">Rp {data.lastPrice.toLocaleString('id-ID')}</p>
+                                            </div>
                                         </div>
                                     </div>
 
