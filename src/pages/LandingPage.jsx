@@ -87,6 +87,7 @@ const LandingPage = () => {
                         src={settings?.hero_image_url || "/images/hero-2.jpg"}
                         alt="Kelompok Tani Thangun Afa"
                         className="w-full h-full object-cover"
+                        fetchpriority="high"
                     />
                     <div className="absolute inset-0 bg-black/40"></div>
                 </div>
@@ -140,6 +141,7 @@ const LandingPage = () => {
                                 src={settings?.about_image_url || "/images/hero-1.jpg"}
                                 alt="Tim Thangun Afa di ladang"
                                 className="w-full aspect-[4/3] lg:aspect-[5/4] object-cover rounded-none shadow-xl"
+                                loading="lazy"
                             />
                         </div>
 
@@ -200,6 +202,7 @@ const LandingPage = () => {
                                                         src={m.photo_url || `/images/member-${(i % 2) + 1}.jpg`}
                                                         alt={m.name}
                                                         className="w-full h-full object-cover"
+                                                        loading="lazy"
                                                     />
                                                 </div>
                                                 <div className="text-left">
@@ -275,6 +278,7 @@ const LandingPage = () => {
                                             src={item.thumbnail_url || '/images/hero-2.jpg'}
                                             alt={item.title}
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                            loading="lazy"
                                         />
                                     </div>
                                     <div className="flex items-center space-x-3 text-[10px] font-bold text-primary mb-3">

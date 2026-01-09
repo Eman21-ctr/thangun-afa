@@ -103,7 +103,7 @@ const ContentManagement = () => {
         if (!file) return
 
         const options = {
-            maxSizeMB: 0.5,
+            maxSizeMB: 0.2,
             maxWidthOrHeight: 1200,
             useWebWorker: true
         }

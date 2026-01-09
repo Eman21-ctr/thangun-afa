@@ -86,12 +86,13 @@ const Dashboard = () => {
     return (
         <div className="font-sans">
             {/* Hero Section - 1/3 dari atas dengan gambar hortikultura */}
-            <div
-                className="relative h-64 bg-cover bg-center"
-                style={{
-                    backgroundImage: `url('${settings?.dashboard_hero_url || 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80'}')`
-                }}
-            >
+            <div className="relative h-64 overflow-hidden">
+                <img
+                    src={settings?.dashboard_hero_url || 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80'}
+                    alt="Dashboard Hero"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    fetchpriority="high"
+                />
                 {/* Dark overlay */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60"></div>
 

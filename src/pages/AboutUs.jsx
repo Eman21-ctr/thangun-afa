@@ -33,6 +33,7 @@ const AboutUs = () => {
                             src="/images/hero-1.jpg"
                             alt="Kelompok Tani Thangun Afa"
                             className="w-full h-[400px] lg:h-[500px] object-cover"
+                            loading="lazy"
                         />
                     </div>
 
