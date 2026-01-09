@@ -129,22 +129,6 @@ const MainLayout = ({ children }) => {
                             </div>
                         )}
 
-                        <div className="p-4 space-y-1">
-                            <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mb-3 ml-2">Fitur Utama</p>
-                            <nav className="space-y-1">
-                                <Link
-                                    to="/analysis"
-                                    onClick={() => setIsMenuOpen(false)}
-                                    className={clsx(
-                                        "flex items-center space-x-3 p-3 rounded-xl transition-all",
-                                        location.pathname === '/analysis' ? "bg-primary text-white shadow-md shadow-primary/10" : "text-gray-600 hover:bg-primary-50"
-                                    )}
-                                >
-                                    <Ranking size={18} weight="duotone" />
-                                    <span className="text-sm font-medium tracking-tight">Analisa Komoditas</span>
-                                </Link>
-                            </nav>
-                        </div>
 
                         <div className="p-4">
                             <button

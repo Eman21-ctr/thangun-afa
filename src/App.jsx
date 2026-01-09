@@ -17,7 +17,6 @@ import NewsDetail from './pages/NewsDetail'
 import AllNews from './pages/AllNews'
 import AllGallery from './pages/AllGallery'
 import AboutUs from './pages/AboutUs'
-import Analysis from './pages/Analysis'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import MainLayout from './components/layout/MainLayout'
 import ScrollToTop from './components/layout/ScrollToTop'
@@ -49,16 +48,6 @@ function App() {
                                     <ProtectedRoute>
                                         <MainLayout>
                                             <Transactions />
-                                        </MainLayout>
-                                    </ProtectedRoute>
-                                }
-                            />
-                            <Route
-                                path="/analysis"
-                                element={
-                                    <ProtectedRoute>
-                                        <MainLayout>
-                                            <Analysis />
                                         </MainLayout>
                                     </ProtectedRoute>
                                 }
