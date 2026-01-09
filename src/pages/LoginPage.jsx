@@ -122,7 +122,13 @@ const LoginPage = () => {
                                 </div>
                                 <span className="text-xs font-medium text-gray-400 group-hover:text-gray-600 transition-colors">Ingat saya</span>
                             </label>
-                            <button type="button" className="text-xs font-medium text-primary hover:underline">Lupa password?</button>
+                            <button
+                                type="button"
+                                onClick={() => window.open('https://wa.me/6285704519549?text=Halo%20Admin%2C%20saya%20lupa%20password%20akun%20Thangun%20Afa', '_blank')}
+                                className="text-xs font-medium text-primary hover:underline transition-all"
+                            >
+                                Lupa password?
+                            </button>
                         </div>
 
                         <button

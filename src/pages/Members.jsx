@@ -34,9 +34,10 @@ const MemberCard = ({ member, onEdit }) => (
 
 const Members = () => {
     const { profile } = useAuth()
-    const { data: members, isLoading, updateMember, createMember, deleteMember } = useMembers()
+    const { data: members, isLoading, updateMember, createMember, deleteMember, resetPassword } = useMembers()
     const [editingMember, setEditingMember] = useState(null)
     const [isAddingMember, setIsAddingMember] = useState(false)
+    const [newPassword, setNewPassword] = useState('')
     const [formData, setFormData] = useState({
         full_name: '',
         identifier: '',
@@ -86,6 +87,23 @@ const Members = () => {
             await deleteMember.mutateAsync(editingMember.id)
             toast.success('Anggota berhasil dihapus')
             setEditingMember(null)
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
+    const handleResetPassword = async () => {
+        if (!newPassword || newPassword.length < 6) {
+            toast.error('Password baru minimal 6 karakter')
+            return
+        }
+        try {
+            await resetPassword.mutateAsync({
+                userId: editingMember.id,
+                newPassword: newPassword
+            })
+            toast.success('Password berhasil diperbarui')
+            setNewPassword('')
         } catch (error) {
             toast.error(error.message)
         }
@@ -248,6 +266,37 @@ const Members = () => {
                                     </>
                                 )}
                             </button>
+
+                            {!isAddingMember && (
+                                <div className="mt-8 pt-6 border-t border-dashed border-gray-100 space-y-4">
+                                    <div>
+                                        <h4 className="text-[10px] font-black text-gray-800 uppercase tracking-[0.2em] mb-4">Zona Reset Password</h4>
+                                        <div className="flex space-x-2">
+                                            <div className="flex-1 relative group">
+                                                <UserGear className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={16} weight="duotone" />
+                                                <input
+                                                    type="text"
+                                                    value={newPassword}
+                                                    onChange={e => setNewPassword(e.target.value)}
+                                                    className="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-xs transition-all focus:bg-white focus:ring-2 focus:ring-primary/10"
+                                                    placeholder="Ketik password baru..."
+                                                />
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={handleResetPassword}
+                                                disabled={resetPassword.isPending}
+                                                className="px-4 py-2.5 bg-white border border-primary-100 text-primary rounded-lg text-xs font-bold hover:bg-primary-50 transition-all disabled:opacity-50"
+                                            >
+                                                {resetPassword.isPending ? <CircleNotch className="animate-spin" size={16} /> : 'Update'}
+                                            </button>
+                                        </div>
+                                        <p className="text-[9px] text-gray-400 font-medium mt-2 italic px-1">
+                                            *Gunakan fitur ini jika anggota lupa password.
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
 
                             {!isAddingMember && (
                                 <button

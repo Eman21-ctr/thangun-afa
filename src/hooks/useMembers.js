@@ -61,10 +61,21 @@ export const useMembers = () => {
         }
     })
 
+    const resetPassword = useMutation({
+        mutationFn: async ({ userId, newPassword }) => {
+            const { error } = await supabase.rpc('admin_update_password', {
+                target_user_id: userId,
+                new_password: newPassword
+            })
+            if (error) throw error
+        }
+    })
+
     return {
         ...membersQuery,
         updateMember,
         createMember,
-        deleteMember
+        deleteMember,
+        resetPassword
     }
 }
