@@ -67,7 +67,7 @@ const LoginPage = () => {
                 <div className="p-8 bg-white rounded-[2.5rem] border border-primary-100/30 shadow-2xl shadow-primary/5">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-1.5">
-                            <label className="block text-xs font-medium text-gray-400 px-1">Nomor HP / Nama Panggilan</label>
+                            <label className="block text-xs font-medium text-gray-400 px-1">Nomor HP</label>
                             <div className="relative group">
                                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} weight="duotone" />
                                 <input
@@ -75,7 +75,7 @@ const LoginPage = () => {
                                     value={identifier}
                                     onChange={(e) => setIdentifier(e.target.value)}
                                     className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-normal text-gray-700 transition-all placeholder:text-gray-300"
-                                    placeholder="Contoh: 0812... / berto"
+                                    placeholder="Contoh: 081234567890"
                                     required
                                 />
                             </div>
