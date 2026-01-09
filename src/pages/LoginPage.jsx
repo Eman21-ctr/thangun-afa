@@ -124,7 +124,10 @@ const LoginPage = () => {
                             </label>
                             <button
                                 type="button"
-                                onClick={() => window.open('https://wa.me/6285704519549?text=Halo%20Admin%2C%20saya%20lupa%20password%20akun%20Thangun%20Afa', '_blank')}
+                                onClick={() => {
+                                    const msg = encodeURIComponent(`Halo Admin, saya lupa password akun Thangun Afa. \n\nNama/No.HP: ${identifier || '-'}`)
+                                    window.open(`https://wa.me/6281353087786?text=${msg}`, '_blank')
+                                }}
                                 className="text-xs font-medium text-primary hover:underline transition-all"
                             >
                                 Lupa password?
