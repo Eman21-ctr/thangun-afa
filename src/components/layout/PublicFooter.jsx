@@ -41,14 +41,19 @@ const PublicFooter = () => {
                         <h4 className="text-xs font-black uppercase tracking-widest text-white/50">Terhubung</h4>
                         <div className="flex flex-wrap items-center justify-center md:justify-end gap-4">
                             {/* Location */}
-                            <div className="group relative">
-                                <div className="p-3 bg-gray-800 rounded-xl text-gray-400 hover:bg-primary hover:text-white transition-all cursor-help shadow-lg">
+                            <a
+                                href="https://www.google.com/maps/place/Biupu/@-10.2389427,123.6677153,857m/data=!3m1!1e3!4m15!1m8!3m7!1s0x2c568587f8a2aeef:0x37df5aba8d48cf5f!2sBesmarak,+Kec.+Nekamese,+Kabupaten+Kupang,+Nusa+Tenggara+Tim.!3b1!8m2!3d-10.2490812!4d123.6707189!16s%2Fg%2F12338fsy!3m5!1s0x2c5685e282424777:0xdf486d260f360251!8m2!3d-10.2401875!4d123.6686875!16s%2Fg%2F11t586z2sd?entry=ttu&g_ep=EgoyMDI2MDEwNi4wIKXMDSoASAFQAw%3D%3D"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group relative"
+                            >
+                                <div className="p-3 bg-gray-800 rounded-xl text-gray-400 group-hover:bg-primary group-hover:text-white transition-all shadow-lg">
                                     <MapPin size={24} weight="fill" />
                                 </div>
                                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-2 bg-gray-800 text-white text-[10px] rounded shadowing-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
                                     {settings?.address || 'Desa Besmarak, NTT'}
                                 </div>
-                            </div>
+                            </a>
 
                             {/* Socials */}
                             {settings?.instagram_url && (
