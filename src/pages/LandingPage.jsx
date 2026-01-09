@@ -64,7 +64,7 @@ const LandingPage = () => {
         )
     }
 
-    const whatsappLink = `https://wa.me/${settings?.whatsapp_number || '6281234567890'}`
+    const whatsappLink = `https://wa.me/${settings?.whatsapp_number || '6281338398197'}`
 
     const goToPrevSlide = () => {
         setCurrentSlide((prev) => (prev - 1 + team.length) % team.length)

@@ -5,7 +5,7 @@ import { useContent } from '../../hooks/useContent'
 
 const PublicFooter = () => {
     const { settings } = useContent()
-    const whatsappLink = `https://wa.me/${settings?.whatsapp_number}`
+    const whatsappLink = `https://wa.me/${settings?.whatsapp_number || '6281338398197'}`
 
     const partners = [
         { name: 'Sayur Sleman', logo: '/images/partners/sayur-sleman.png' },
