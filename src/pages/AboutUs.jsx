@@ -30,7 +30,7 @@ const AboutUs = () => {
                     {/* Hero Image */}
                     <div className="w-full bg-gray-200 rounded-none overflow-hidden shadow-2xl mb-10">
                         <img
-                            src="/images/hero-1.jpg"
+                            src={settings?.about_hero_image_url || "/images/hero-1.jpg"}
                             alt="Kelompok Tani Thangun Afa"
                             className="w-full h-[400px] lg:h-[500px] object-cover"
                             loading="lazy"

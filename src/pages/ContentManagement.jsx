@@ -45,6 +45,7 @@ const ContentManagement = () => {
         dashboard_hero_url: '',
         hero_image_url: '',
         about_image_url: '',
+        about_hero_image_url: '',
         dashboard_announcement: ''
     })
 
@@ -78,6 +79,7 @@ const ContentManagement = () => {
                 dashboard_hero_url: settings.dashboard_hero_url || '',
                 hero_image_url: settings.hero_image_url || '',
                 about_image_url: settings.about_image_url || '',
+                about_hero_image_url: settings.about_hero_image_url || '',
                 dashboard_announcement: settings.dashboard_announcement || ''
             })
         }
@@ -509,6 +511,40 @@ const ContentManagement = () => {
                                     {formData.about_image_url && (
                                         <div className="mt-2 rounded-lg overflow-hidden h-24 border border-gray-100">
                                             <img src={formData.about_image_url} alt="Preview About" className="w-full h-full object-cover" />
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="space-y-1.5 border-t border-gray-50 pt-4">
+                                    <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Foto Hero (Halaman Detail Tentang Kami)</label>
+                                    <div className="flex items-center space-x-3">
+                                        <div className="flex-1">
+                                            <input
+                                                type="text"
+                                                value={formData.about_hero_image_url}
+                                                onChange={(e) => setFormData({ ...formData, about_hero_image_url: e.target.value })}
+                                                className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-xs transition-all"
+                                                placeholder="https://images.unsplash.com/..."
+                                            />
+                                        </div>
+                                        <div className="relative">
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={async (e) => {
+                                                    const url = await handleImageUpload(e.target.files[0], 'site')
+                                                    if (url) setFormData({ ...formData, about_hero_image_url: url })
+                                                }}
+                                                className="absolute inset-0 opacity-0 cursor-pointer"
+                                                disabled={isUploading}
+                                            />
+                                            <div className="p-3 bg-primary text-white rounded-lg shadow-md hover:scale-105 active:scale-95 transition-all">
+                                                {isUploading ? <CircleNotch className="animate-spin" size={18} weight="bold" /> : <Plus size={18} weight="bold" />}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {formData.about_hero_image_url && (
+                                        <div className="mt-2 rounded-lg overflow-hidden h-24 border border-gray-100">
+                                            <img src={formData.about_hero_image_url} alt="Preview About Hero" className="w-full h-full object-cover" />
                                         </div>
                                     )}
                                 </div>
