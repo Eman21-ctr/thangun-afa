@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useMembers } from '../hooks/useMembers'
-import { Users, UserGear, CircleNotch, ShieldCheck, CaretRight, X } from '@phosphor-icons/react'
+import { Users, UserGear, CircleNotch, ShieldCheck, CaretRight, X, Trash } from '@phosphor-icons/react'
 import { toast } from 'react-hot-toast'
 import { clsx } from 'clsx'
 import { useAuth } from '../context/AuthContext'
@@ -34,12 +34,12 @@ const MemberCard = ({ member, onEdit }) => (
 
 const Members = () => {
     const { profile } = useAuth()
-    const { members, isLoading, updateMember, createMember } = useMembers()
+    const { data: members, isLoading, updateMember, createMember, deleteMember } = useMembers()
     const [editingMember, setEditingMember] = useState(null)
     const [isAddingMember, setIsAddingMember] = useState(false)
     const [formData, setFormData] = useState({
         full_name: '',
-        email: '',
+        identifier: '',
         password: '',
         role: 'member',
         position: ''
@@ -63,7 +63,7 @@ const Members = () => {
         setEditingMember(member)
         setFormData({
             full_name: member.full_name || '',
-            email: member.email || '',
+            identifier: member.email || '',
             role: member.role || '',
             position: member.position || ''
         })
@@ -73,11 +73,22 @@ const Members = () => {
         setIsAddingMember(true)
         setFormData({
             full_name: '',
-            email: '',
+            identifier: '',
             password: '',
             role: 'member',
             position: ''
         })
+    }
+
+    const handleDelete = async () => {
+        if (!window.confirm('Apakah Anda yakin ingin menghapus anggota ini? Akses login akan langsung dicabut.')) return
+        try {
+            await deleteMember.mutateAsync(editingMember.id)
+            toast.success('Anggota berhasil dihapus')
+            setEditingMember(null)
+        } catch (error) {
+            toast.error(error.message)
+        }
     }
 
     const handleSave = async (e) => {
@@ -149,7 +160,7 @@ const Members = () => {
                                     {isAddingMember ? 'Tambah Anggota Baru' : 'Edit Profil Anggota'}
                                 </h2>
                                 {!isAddingMember && (
-                                    <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mt-1">{formData.email}</p>
+                                    <p className="text-[10px] font-medium text-gray-400 uppercase tracking-widest mt-1">{formData.identifier}</p>
                                 )}
                             </div>
                             <button onClick={() => { setEditingMember(null); setIsAddingMember(false); }} className="p-2 text-gray-400 hover:text-gray-600 rounded-lg bg-gray-50 transition-colors">
@@ -173,13 +184,13 @@ const Members = () => {
                             {isAddingMember && (
                                 <>
                                     <div className="space-y-1">
-                                        <label className="block text-[9px] font-medium text-gray-400 uppercase tracking-widest px-1">Email</label>
+                                        <label className="block text-[9px] font-medium text-gray-400 uppercase tracking-widest px-1">Nomor HP / Nama Panggilan</label>
                                         <input
-                                            type="email"
-                                            value={formData.email}
-                                            onChange={e => setFormData({ ...formData, email: e.target.value })}
+                                            type="text"
+                                            value={formData.identifier}
+                                            onChange={e => setFormData({ ...formData, identifier: e.target.value })}
                                             className="w-full p-3 bg-white border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm"
-                                            placeholder="email@contoh.com"
+                                            placeholder="Contoh: 0812... atau berto"
                                             required
                                         />
                                     </div>
@@ -237,6 +248,18 @@ const Members = () => {
                                     </>
                                 )}
                             </button>
+
+                            {!isAddingMember && (
+                                <button
+                                    type="button"
+                                    onClick={handleDelete}
+                                    disabled={deleteMember.isPending}
+                                    className="w-full py-3 text-red-500 font-medium text-xs flex items-center justify-center space-x-2 border border-red-100 rounded-lg hover:bg-red-50 transition-colors"
+                                >
+                                    <Trash size={16} weight="bold" />
+                                    <span>Hapus Anggota Ini</span>
+                                </button>
+                            )}
                         </form>
                     </div>
                 </div>

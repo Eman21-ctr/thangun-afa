@@ -44,7 +44,8 @@ const ContentManagement = () => {
         gallery_title: '',
         dashboard_hero_url: '',
         hero_image_url: '',
-        about_image_url: ''
+        about_image_url: '',
+        dashboard_announcement: ''
     })
 
     const [newPhoto, setNewPhoto] = useState({ photo_url: '', caption: '', display_type: 'square' })
@@ -76,7 +77,8 @@ const ContentManagement = () => {
                 gallery_title: settings.gallery_title || '',
                 dashboard_hero_url: settings.dashboard_hero_url || '',
                 hero_image_url: settings.hero_image_url || '',
-                about_image_url: settings.about_image_url || ''
+                about_image_url: settings.about_image_url || '',
+                dashboard_announcement: settings.dashboard_announcement || ''
             })
         }
     }, [settings])
@@ -374,6 +376,17 @@ const ContentManagement = () => {
                                 <h2 className="text-xs font-semibold uppercase tracking-wider">Banner Dashboard Internal</h2>
                             </div>
                             <div className="space-y-4">
+                                <div className="space-y-1.5 border-t border-gray-50 pt-4">
+                                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">Pengumuman Dashboard (Opsional)</label>
+                                    <textarea
+                                        value={formData.dashboard_announcement}
+                                        onChange={(e) => setFormData({ ...formData, dashboard_announcement: e.target.value })}
+                                        className="w-full p-3 bg-gray-50 border border-primary-100/30 rounded-xl text-xs outline-none focus:ring-1 focus:ring-primary/20 min-h-[80px]"
+                                        placeholder="Kosongkan untuk menampilkan Quote harian otomatis..."
+                                    />
+                                    <p className="text-[9px] text-gray-400 px-1 italic">*Jika diisi, teks ini akan muncul di dashboard menggantikan Quote harian harian.</p>
+                                </div>
+
                                 <div className="space-y-1.5">
                                     <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Foto Banner (Beranda Member)</label>
                                     <div className="flex items-center space-x-3">

@@ -100,7 +100,7 @@ const Reports = () => {
 
     const chartData = useMemo(() => {
         return [
-            { name: 'Pemasukan', value: stats.income, color: '#2D5016' },
+            { name: 'Pemasukan', value: stats.income, color: '#2D4F1E' },
             { name: 'Pengeluaran', value: stats.expense, color: '#EF4444' }
         ]
     }, [stats])

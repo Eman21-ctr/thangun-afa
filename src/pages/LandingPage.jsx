@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react'
 import PublicFooter from '../components/layout/PublicFooter'
 import PublicNavbar from '../components/layout/PublicNavbar'
 import MomentSlider from '../components/gallery/MomentSlider'
+import { useReveal } from '../hooks/useReveal'
 
 const iconMap = {
     Drop: Drop,
@@ -49,6 +50,11 @@ const LandingPage = () => {
         }, 3000)
         return () => clearInterval(interval)
     }, [team.length])
+
+    const [aboutRef, aboutVisible] = useReveal()
+    const [teamRef, teamVisible] = useReveal()
+    const [newsRef, newsVisible] = useReveal()
+    const [galeriRef, galeriVisible] = useReveal()
 
     if (isLoading) {
         return (
@@ -115,7 +121,7 @@ const LandingPage = () => {
             </section>
 
             {/* About Section */}
-            <section id="tentang" className="py-12 lg:py-24 px-6 bg-white">
+            <section id="tentang" ref={aboutRef} className={clsx("py-12 lg:py-24 px-6 bg-white reveal", aboutVisible && "active")}>
                 <div className="max-w-7xl mx-auto">
                     {/* Header - Center Aligned */}
                     <div className="text-center mb-8 lg:mb-16 space-y-3">
@@ -162,7 +168,7 @@ const LandingPage = () => {
 
 
             {/* Tim Kami Section */}
-            <section id="tim" className="py-12 lg:py-24 px-6 bg-primary">
+            <section id="tim" ref={teamRef} className={clsx("py-12 lg:py-24 px-6 bg-primary reveal", teamVisible && "active")}>
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12 lg:mb-20 space-y-3">
                         <div className="inline-flex items-center px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-white text-[10px] font-black uppercase tracking-[0.2em]">
@@ -247,7 +253,7 @@ const LandingPage = () => {
 
             {/* News/Activity Section */}
             {news.filter(a => a.is_published).length > 0 && (
-                <section id="berita" className="py-12 lg:py-24 px-6 bg-white">
+                <section id="berita" ref={newsRef} className={clsx("py-12 lg:py-24 px-6 bg-white reveal", newsVisible && "active")}>
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center mb-12 lg:mb-20 space-y-3">
                             <div className="inline-flex items-center px-4 py-1.5 bg-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">
@@ -301,7 +307,7 @@ const LandingPage = () => {
             )}
 
             {/* Momen Berharga - Gallery */}
-            <section id="galeri" className="py-12 lg:py-24 px-6 bg-gray-50/50">
+            <section id="galeri" ref={galeriRef} className={clsx("py-12 lg:py-24 px-6 bg-gray-50/50 reveal", galeriVisible && "active")}>
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-12 lg:mb-20 space-y-3">
                         <div className="inline-flex items-center px-4 py-1.5 bg-white border border-gray-100 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.2em]">

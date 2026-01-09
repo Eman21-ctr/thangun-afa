@@ -1,13 +1,24 @@
-import { Wallet, Plus, Minus, Trophy, Star, Crown, Medal, Sparkle } from '@phosphor-icons/react'
+import { Wallet, Plus, Minus, Trophy, Star, Crown, Medal, Sparkle, Eye, EyeSlash } from '@phosphor-icons/react'
 import { useAuth } from '../context/AuthContext'
 import { useDashboardStats, useTransactions } from '../hooks/useTransactions'
 import { useContent } from '../hooks/useContent'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { startOfMonth, endOfMonth, isWithinInterval } from 'date-fns'
 import { clsx } from 'clsx'
+import { getQuoteOfTheDay } from '../utils/quotes'
 
 const Dashboard = () => {
     const { profile } = useAuth()
+    const [showBalance, setShowBalance] = useState(() => {
+        const saved = localStorage.getItem('hideBalance')
+        return saved !== 'true'
+    })
+
+    const toggleBalance = () => {
+        const newState = !showBalance
+        setShowBalance(newState)
+        localStorage.setItem('hideBalance', (!newState).toString())
+    }
     const { settings } = useContent()
     const { data: stats, isLoading } = useDashboardStats(
         profile?.role === 'member' ? profile.id : null
@@ -67,7 +78,10 @@ const Dashboard = () => {
         return null
     }, [transactions, profile])
 
-    const formatCurrency = (val) => `Rp ${(val || 0).toLocaleString('id-ID')}`
+    const formatCurrency = (val) => {
+        if (!showBalance) return '••••••••'
+        return `Rp ${(val || 0).toLocaleString('id-ID')}`
+    }
 
     return (
         <div className="font-sans">
@@ -120,6 +134,12 @@ const Dashboard = () => {
                         <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">
                             Saldo Bersih
                         </span>
+                        <button
+                            onClick={toggleBalance}
+                            className="ml-3 p-1 text-gray-400 hover:text-primary transition-colors"
+                        >
+                            {showBalance ? <EyeSlash size={18} /> : <Eye size={18} />}
+                        </button>
                     </div>
                     {isLoading ? (
                         <div className="h-12 w-48 mx-auto bg-gray-100 animate-pulse rounded-xl"></div>
@@ -169,10 +189,10 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                {/* Info Note */}
+                {/* Dynamic Quote / Announcement Section */}
                 <div className="bg-primary-50/50 p-4 rounded-2xl border border-dashed border-primary-200/50 text-center">
                     <p className="text-xs text-primary-900/60 font-medium italic leading-relaxed">
-                        "Pencatatan yang jujur dan teliti adalah fondasi utama menuju kemandirian serta transparansi dalam bertani."
+                        "{settings?.dashboard_announcement || getQuoteOfTheDay()}"
                     </p>
                 </div>
 

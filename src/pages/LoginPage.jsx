@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
-import { Envelope, LockSimple, CircleNotch, Eye, EyeSlash } from '@phosphor-icons/react'
+import { Envelope, LockSimple, CircleNotch, Eye, EyeSlash, User } from '@phosphor-icons/react'
 
 const LoginPage = () => {
-    const [email, setEmail] = useState('')
+    const [identifier, setIdentifier] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [rememberMe, setRememberMe] = useState(false)
@@ -18,7 +18,7 @@ const LoginPage = () => {
         const savedEmail = localStorage.getItem('rememberedEmail')
         const savedRememberMe = localStorage.getItem('rememberMe') === 'true'
         if (savedRememberMe && savedEmail) {
-            setEmail(savedEmail)
+            setIdentifier(savedEmail)
             setRememberMe(true)
         }
     }, [])
@@ -29,11 +29,11 @@ const LoginPage = () => {
         e.preventDefault()
         setLoading(true)
         try {
-            await login(email, password)
+            await login(identifier, password)
 
             // Handle Remember Me
             if (rememberMe) {
-                localStorage.setItem('rememberedEmail', email)
+                localStorage.setItem('rememberedEmail', identifier)
                 localStorage.setItem('rememberMe', 'true')
             } else {
                 localStorage.removeItem('rememberedEmail')
@@ -43,7 +43,7 @@ const LoginPage = () => {
             toast.success('Login berhasil')
             navigate(from, { replace: true })
         } catch (error) {
-            toast.error(error.message || 'Email atau password salah')
+            toast.error(error.message || 'ID atau password salah')
         } finally {
             setLoading(false)
         }
@@ -67,15 +67,15 @@ const LoginPage = () => {
                 <div className="p-8 bg-white rounded-[2.5rem] border border-primary-100/30 shadow-2xl shadow-primary/5">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-1.5">
-                            <label className="block text-xs font-medium text-gray-400 px-1">Alamat email</label>
+                            <label className="block text-xs font-medium text-gray-400 px-1">Nomor HP / Nama Panggilan</label>
                             <div className="relative group">
-                                <Envelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} weight="duotone" />
+                                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={20} weight="duotone" />
                                 <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    type="text"
+                                    value={identifier}
+                                    onChange={(e) => setIdentifier(e.target.value)}
                                     className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-primary-100/30 rounded-2xl focus:ring-4 focus:ring-primary/10 outline-none font-normal text-gray-700 transition-all placeholder:text-gray-300"
-                                    placeholder="email@contoh.com"
+                                    placeholder="Contoh: 0812... / berto"
                                     required
                                 />
                             </div>

@@ -98,8 +98,12 @@ const Profile = () => {
                                 <Envelope size={18} weight="regular" />
                             </div>
                             <div>
-                                <p className="text-[10px] font-medium text-gray-400 uppercase">Email</p>
-                                <p className="text-sm font-normal text-gray-800">{profile?.email}</p>
+                                <p className="text-[10px] font-medium text-gray-400 uppercase">ID Login</p>
+                                <p className="text-sm font-normal text-gray-800">
+                                    {profile?.email?.includes('@thangun.afa')
+                                        ? profile?.email?.split('@')[0]
+                                        : profile?.email}
+                                </p>
                             </div>
                         </div>
                     </div>

@@ -32,6 +32,7 @@ const AddTransaction = () => {
 
     const [categories, setCategories] = useState([])
     const [commodities, setCommodities] = useState([])
+    const [frequentCommodities, setFrequentCommodities] = useState([])
     const [loading, setLoading] = useState(false)
 
     const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm({
@@ -60,6 +61,29 @@ const AddTransaction = () => {
         const { data: comData } = await supabase.from('commodities').select('*').eq('is_active', true)
         setCategories(catData || [])
         setCommodities(comData || [])
+
+        // Fetch frequent commodities from recent transactions
+        if (user) {
+            const { data: recentTxs } = await supabase
+                .from('transactions')
+                .select('commodity')
+                .eq('user_id', user.id)
+                .not('commodity', 'is', null)
+                .order('date', { ascending: false })
+                .limit(50)
+
+            if (recentTxs) {
+                const counts = recentTxs.reduce((acc, tx) => {
+                    acc[tx.commodity] = (acc[tx.commodity] || 0) + 1
+                    return acc
+                }, {})
+                const sorted = Object.entries(counts)
+                    .sort((a, b) => b[1] - a[1])
+                    .map(entry => entry[0])
+                    .slice(0, 5)
+                setFrequentCommodities(sorted)
+            }
+        }
     }
 
     const onSubmit = async (data) => {
@@ -145,6 +169,27 @@ const AddTransaction = () => {
                                 {commodities.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
                             </select>
                         </div>
+
+                        {/* Smart Suggestions */}
+                        {type === 'income' && frequentCommodities.length > 0 && (
+                            <div className="flex flex-wrap gap-2 px-1">
+                                {frequentCommodities.map(name => (
+                                    <button
+                                        key={name}
+                                        type="button"
+                                        onClick={() => setValue('commodity', name)}
+                                        className={clsx(
+                                            "px-3 py-1.5 rounded-full text-[10px] font-bold border transition-all active:scale-95",
+                                            watch('commodity') === name
+                                                ? "bg-primary text-white border-primary"
+                                                : "bg-white text-gray-500 border-gray-100 hover:border-primary-200"
+                                        )}
+                                    >
+                                        {name}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
 
                         {/* Category only for Expense */}
                         {type === 'expense' && (

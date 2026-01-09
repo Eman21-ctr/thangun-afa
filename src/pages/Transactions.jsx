@@ -73,7 +73,7 @@ const TransactionDetailModal = ({ transaction, onClose, onEdit, onDelete }) => {
         }
 
         const formattedPhone = phone.startsWith('0') ? '62' + phone.slice(1) : phone
-        const message = `*NOTA PENJUALAN THANGUN AFA* 🚜%0A------------------------------%0ATanggal: ${format(new Date(transaction.date), 'dd MMM yyyy', { locale: id })}%0AProduk: *${transaction.description}*%0AJumlah: ${transaction.quantity} ${transaction.unit}%0ATotal: *Rp ${transaction.total_amount.toLocaleString('id-ID')}*%0A------------------------------%0ATerima kasih sudah mendukung petani lokal NTT! 🌾`
+        const message = `*NOTA PENJUALAN THANGUN AFA* 🚜%0A------------------------------%0ATanggal: ${format(new Date(transaction.date), 'dd MMM yyyy', { locale: id })}%0AProduk: *${transaction.commodity || transaction.description}*%0AJumlah: ${transaction.quantity} ${transaction.unit} x Rp ${transaction.unit_price.toLocaleString('id-ID')}%0ATotal: *Rp ${transaction.total_amount.toLocaleString('id-ID')}*%0A------------------------------%0ATerima kasih sudah mendukung petani lokal NTT! 🌾`
 
         window.open(`https://wa.me/${formattedPhone}?text=${message}`, '_blank')
     }

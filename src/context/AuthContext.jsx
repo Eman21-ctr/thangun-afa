@@ -50,7 +50,18 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    const login = async (email, password) => {
+    const toVirtualEmail = (identifier) => {
+        if (!identifier) return ''
+        // If it's already an email, return as is
+        if (identifier.includes('@')) return identifier
+        // Otherwise, convert to virtual email
+        // Remove spaces and special characters for safety
+        const cleanId = identifier.trim().toLowerCase().replace(/[^a-z0-9]/g, '')
+        return `${cleanId}@thangun.afa`
+    }
+
+    const login = async (identifier, password) => {
+        const email = toVirtualEmail(identifier)
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
@@ -70,6 +81,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         login,
         logout,
+        toVirtualEmail,
         isAdmin: profile?.role === 'super_admin',
         isMember: profile?.role === 'member',
         isAdvisor: profile?.role === 'advisor',
