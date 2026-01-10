@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react'
 import PublicFooter from '../components/layout/PublicFooter'
 import PublicNavbar from '../components/layout/PublicNavbar'
 import MomentSlider from '../components/gallery/MomentSlider'
+import ProductSection from '../components/home/ProductSection'
 import { useReveal } from '../hooks/useReveal'
 
 const iconMap = {
@@ -21,7 +22,7 @@ const iconMap = {
 }
 
 const LandingPage = () => {
-    const { settings, gallery, team, news, isLoading } = useContent()
+    const { settings, gallery, team, news, products, isLoading } = useContent()
     const navigate = useNavigate()
 
     const [currentSlide, setCurrentSlide] = useState(0)
@@ -52,6 +53,7 @@ const LandingPage = () => {
     }, [team.length])
 
     const [aboutRef, aboutVisible] = useReveal()
+    const [productRef, productVisible] = useReveal()
     const [teamRef, teamVisible] = useReveal()
     const [newsRef, newsVisible] = useReveal()
     const [galeriRef, galeriVisible] = useReveal()
@@ -168,6 +170,10 @@ const LandingPage = () => {
                 </div>
             </section>
 
+            {/* Product Showcase Section */}
+            {products && products.length > 0 && (
+                <ProductSection products={products} settings={settings} whatsappLink={whatsappLink} />
+            )}
 
             {/* Tim Kami Section */}
             <section id="tim" ref={teamRef} className={clsx("py-12 lg:py-24 px-6 bg-primary reveal", teamVisible && "active")}>

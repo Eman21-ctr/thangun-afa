@@ -4,7 +4,7 @@ import {
     DeviceMobile, MapPin, Info, Desktop, FloppyDisk,
     CircleNotch, InstagramLogo, TextT, Users, Leaf,
     Image as ImageIcon, Newspaper, Plus, Trash, PencilSimple,
-    Drop, Sun, Star
+    Drop, Sun, Star, ShoppingBag
 } from '@phosphor-icons/react'
 import { toast } from 'react-hot-toast'
 import { clsx } from 'clsx'
@@ -16,7 +16,8 @@ const ContentManagement = () => {
         settings, isLoading, updateSettings,
         gallery, addGallery, updateGallery, deleteGallery,
         team, addTeamMember, updateTeamMember, deleteTeamMember,
-        news, addNews, updateNews, deleteNews
+        news, addNews, updateNews, deleteNews,
+        products, addProduct, updateProduct, deleteProduct
     } = useContent()
 
     const [editingId, setEditingId] = useState(null)
@@ -52,6 +53,7 @@ const ContentManagement = () => {
     const [newPhoto, setNewPhoto] = useState({ photo_url: '', caption: '', display_type: 'square' })
     const [newMember, setNewMember] = useState({ name: '', position: '', photo_url: '', quote: '' })
     const [newNews, setNewNews] = useState({ title: '', content: '', thumbnail_url: '', is_published: true })
+    const [newProduct, setNewProduct] = useState({ name: '', description: '', image_url: '', status: 'siap_panen', category: '' })
     const [isUploading, setIsUploading] = useState(false)
 
     useEffect(() => {
@@ -191,6 +193,24 @@ const ContentManagement = () => {
         }
     }
 
+    const handleProductSubmit = async (e) => {
+        e.preventDefault()
+        if (!newProduct.name) return toast.error('Nama produk wajib diisi')
+        try {
+            if (editingId) {
+                await updateProduct.mutateAsync({ ...newProduct, id: editingId })
+                toast.success('Produk berhasil diperbarui')
+            } else {
+                await addProduct.mutateAsync(newProduct)
+                toast.success('Produk berhasil ditambahkan')
+            }
+            setNewProduct({ name: '', description: '', image_url: '', status: 'siap_panen', category: '' })
+            setEditingId(null)
+        } catch (error) {
+            toast.error('Gagal menyimpan produk')
+        }
+    }
+
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-cream">
@@ -202,6 +222,7 @@ const ContentManagement = () => {
     const tabs = [
         { id: 'umum', label: 'Umum', icon: Desktop },
         { id: 'tentang', label: 'Tentang Kami', icon: Info },
+        { id: 'produk', label: 'Produk', icon: ShoppingBag },
         { id: 'tim', label: 'Tim Kami', icon: Users },
         { id: 'galeri', label: 'Galeri', icon: ImageIcon },
         { id: 'berita', label: 'Berita', icon: Newspaper },
@@ -897,6 +918,157 @@ const ContentManagement = () => {
                                     </div>
                                 </div>
                             ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* TAB: PRODUK */}
+                {activeTab === 'produk' && (
+                    <div className="space-y-6">
+                        {/* Add/Edit Product Form */}
+                        <form onSubmit={handleProductSubmit} className="bg-white p-4 rounded-none border border-primary-100/30 shadow-sm space-y-4">
+                            <div className="flex items-center space-x-2 text-primary border-b border-gray-50 pb-2">
+                                <ShoppingBag size={18} weight="duotone" />
+                                <h2 className="text-xs font-semibold uppercase tracking-wider">{editingId ? 'Edit Produk' : 'Tambah Produk Baru'}</h2>
+                            </div>
+                            <div className="space-y-4">
+                                <div className="space-y-1.5">
+                                    <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Nama Produk *</label>
+                                    <input
+                                        type="text"
+                                        value={newProduct.name}
+                                        onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+                                        className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm"
+                                        placeholder="Contoh: Cabai Rawit Besmarak"
+                                    />
+                                </div>
+                                <div className="space-y-1.5">
+                                    <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Deskripsi (Opsional)</label>
+                                    <textarea
+                                        rows="2"
+                                        value={newProduct.description}
+                                        onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+                                        className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm resize-none"
+                                        placeholder="Deskripsi singkat produk..."
+                                    ></textarea>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1.5">
+                                        <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Status</label>
+                                        <select
+                                            value={newProduct.status}
+                                            onChange={(e) => setNewProduct({ ...newProduct, status: e.target.value })}
+                                            className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-semibold text-gray-700 text-sm"
+                                        >
+                                            <option value="siap_panen">🟢 Siap Panen</option>
+                                            <option value="masa_tanam">🟡 Masa Tanam</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-1.5">
+                                        <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Kategori (Opsional)</label>
+                                        <input
+                                            type="text"
+                                            value={newProduct.category}
+                                            onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+                                            className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-sm"
+                                            placeholder="Contoh: Sayuran"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="space-y-1.5">
+                                    <label className="block text-[10px] font-medium text-gray-400 uppercase tracking-widest px-1">Foto Produk</label>
+                                    <div className="flex items-center space-x-3">
+                                        <div className="flex-1">
+                                            <input
+                                                type="text"
+                                                value={newProduct.image_url}
+                                                onChange={(e) => setNewProduct({ ...newProduct, image_url: e.target.value })}
+                                                className="w-full p-3 bg-gray-50/50 border border-primary-100/30 rounded-lg outline-none font-normal text-gray-700 text-xs"
+                                                placeholder="https://images.unsplash.com/..."
+                                            />
+                                        </div>
+                                        <div className="relative">
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={async (e) => {
+                                                    const url = await handleImageUpload(e.target.files[0], 'products')
+                                                    if (url) setNewProduct({ ...newProduct, image_url: url })
+                                                }}
+                                                className="absolute inset-0 opacity-0 cursor-pointer"
+                                                disabled={isUploading}
+                                            />
+                                            <div className="p-3 bg-primary text-white rounded-lg shadow-md hover:scale-105 active:scale-95 transition-all">
+                                                {isUploading ? <CircleNotch className="animate-spin" size={18} weight="bold" /> : <Plus size={18} weight="bold" />}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {newProduct.image_url && (
+                                        <div className="mt-2 rounded-lg overflow-hidden h-24 border border-gray-100">
+                                            <img src={newProduct.image_url} alt="Preview Produk" className="w-full h-full object-cover" />
+                                        </div>
+                                    )}
+                                </div>
+                                <button type="submit" className="w-full py-3 bg-primary text-white font-semibold uppercase tracking-wider rounded-lg shadow-lg shadow-primary/10 flex items-center justify-center space-x-2">
+                                    <FloppyDisk size={18} weight="duotone" />
+                                    <span>{editingId ? 'Simpan Perubahan' : 'Tambah Produk'}</span>
+                                </button>
+                            </div>
+                        </form>
+
+                        {/* Products List */}
+                        <div className="space-y-3">
+                            <h2 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-2">Daftar Produk ({products.length})</h2>
+                            {products.map((item) => (
+                                <div key={item.id} className="bg-white p-4 rounded-3xl border border-primary-100/20 flex items-center justify-between group">
+                                    <div className="flex items-center space-x-4 overflow-hidden">
+                                        <div className="w-14 h-14 rounded-xl bg-gray-100 shrink-0 overflow-hidden">
+                                            <img src={item.image_url || '/images/hero-1.jpg'} alt="" className="w-full h-full object-cover" />
+                                        </div>
+                                        <div className="min-w-0">
+                                            <h3 className="text-xs font-black text-gray-800 truncate px-1">{item.name}</h3>
+                                            <p className="text-[10px] font-bold px-1">
+                                                <span className={clsx(
+                                                    "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px]",
+                                                    item.status === 'siap_panen' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
+                                                )}>
+                                                    {item.status === 'siap_panen' ? '🟢 Siap Panen' : '🟡 Masa Tanam'}
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center space-x-1">
+                                        <button
+                                            onClick={() => {
+                                                setEditingId(item.id)
+                                                setNewProduct({
+                                                    name: item.name,
+                                                    description: item.description || '',
+                                                    image_url: item.image_url || '',
+                                                    status: item.status || 'siap_panen',
+                                                    category: item.category || ''
+                                                })
+                                                window.scrollTo({ top: 0, behavior: 'smooth' })
+                                            }}
+                                            className="p-3 text-primary hover:bg-primary-50 rounded-xl transition-colors"
+                                        >
+                                            <PencilSimple size={18} weight="bold" />
+                                        </button>
+                                        <button
+                                            onClick={() => deleteProduct.mutate(item.id)}
+                                            className="p-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+                                        >
+                                            <Trash size={18} weight="bold" />
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                            {products.length === 0 && (
+                                <div className="text-center py-10 text-gray-300">
+                                    <ShoppingBag size={40} weight="duotone" className="mx-auto mb-2" />
+                                    <p className="text-xs font-semibold">Belum ada produk. Tambahkan produk pertama!</p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}

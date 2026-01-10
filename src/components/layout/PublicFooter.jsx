@@ -1,11 +1,11 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
-import { MapPin, InstagramLogo, WhatsappLogo, YoutubeLogo, FacebookLogo } from '@phosphor-icons/react'
+import { MapPin, InstagramLogo, WhatsappLogo, YoutubeLogo, FacebookLogo, ArrowUpRight } from '@phosphor-icons/react'
 import { useContent } from '../../hooks/useContent'
 
 const PublicFooter = () => {
     const { settings } = useContent()
     const whatsappLink = `https://wa.me/${settings?.whatsapp_number || '6281338398197'}`
+    const mapsLink = "https://www.google.com/maps/place/Biupu/@-10.2389427,123.6677153,857m/data=!3m1!1e3!4m15!1m8!3m7!1s0x2c568587f8a2aeef:0x37df5aba8d48cf5f!2sBesmarak,+Kec.+Nekamese,+Kabupaten+Kupang,+Nusa+Tenggara+Tim.!3b1!8m2!3d-10.2490812!4d123.6707189!16s%2Fg%2F12338fsy!3m5!1s0x2c5685e282424777:0xdf486d260f360251!8m2!3d-10.2401875!4d123.6686875!16s%2Fg%2F11t586z2sd?entry=ttu&g_ep=EgoyMDI2MDEwNi4wIKXMDSoASAFQAw%3D%3D"
 
     const partners = [
         { name: 'Sayur Sleman', logo: '/images/partners/sayur-sleman.png' },
@@ -15,11 +15,11 @@ const PublicFooter = () => {
     ]
 
     return (
-        <footer className="bg-gray-900 text-white pt-16 pb-10 px-6">
-            <div className="max-w-7xl mx-auto space-y-6 md:space-y-12">
+        <footer className="bg-primary-900 text-white pt-16 pb-8 px-6">
+            <div className="max-w-7xl mx-auto space-y-10">
                 {/* Partners Section */}
-                <div className="text-center space-y-8">
-                    <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.3em]">Membangun Bersama Mitra</p>
+                <div className="text-center space-y-8 pb-10 border-b border-white/10">
+                    <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.3em]">Membangun Bersama Mitra</p>
                     <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-700">
                         {partners.map((p) => (
                             <img key={p.name} src={p.logo} alt={p.name} title={p.name} className="h-10 md:h-16 w-auto object-contain brightness-0 invert" />
@@ -27,61 +27,97 @@ const PublicFooter = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-6 md:pt-10 border-t border-gray-800/50">
-                    {/* Brand Section */}
-                    <div className="space-y-6 text-center md:text-left">
-                        <img src="/images/logo-white.png" alt="Thangun Afa" className="h-10 w-auto mx-auto md:mx-0 opacity-80" />
-                        <p className="text-gray-400 text-sm leading-relaxed max-w-sm mx-auto md:mx-0">
-                            Bersama-sama membangun pertanian di Besmarak. Dari petani muda, untuk bumi yang lebih hijau dan kehidupan yang lebih mandiri.
+                {/* Main Footer Content - 4 Columns */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-10 pt-4">
+                    {/* Col 1: Brand */}
+                    <div className="col-span-2 md:col-span-1 space-y-4">
+                        <img src="/images/logo-white.png" alt="Thangun Afa" className="h-9 w-auto opacity-90" />
+                        <p className="text-white/50 text-sm leading-relaxed max-w-xs">
+                            Kelompok Tani Muda Besmarak. Dari petani muda, untuk bumi yang lebih hijau.
                         </p>
-                    </div>
-
-                    {/* Connect Section */}
-                    <div className="space-y-6 text-center md:text-right md:flex md:flex-col md:items-end">
-                        <h4 className="text-xs font-black uppercase tracking-widest text-white/50">Terhubung</h4>
-                        <div className="flex flex-wrap items-center justify-center md:justify-end gap-4">
-                            {/* Location */}
-                            <a
-                                href="https://www.google.com/maps/place/Biupu/@-10.2389427,123.6677153,857m/data=!3m1!1e3!4m15!1m8!3m7!1s0x2c568587f8a2aeef:0x37df5aba8d48cf5f!2sBesmarak,+Kec.+Nekamese,+Kabupaten+Kupang,+Nusa+Tenggara+Tim.!3b1!8m2!3d-10.2490812!4d123.6707189!16s%2Fg%2F12338fsy!3m5!1s0x2c5685e282424777:0xdf486d260f360251!8m2!3d-10.2401875!4d123.6686875!16s%2Fg%2F11t586z2sd?entry=ttu&g_ep=EgoyMDI2MDEwNi4wIKXMDSoASAFQAw%3D%3D"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="group relative"
-                            >
-                                <div className="p-3 bg-gray-800 rounded-xl text-gray-400 group-hover:bg-primary group-hover:text-white transition-all shadow-lg">
-                                    <MapPin size={24} weight="fill" />
-                                </div>
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-2 bg-gray-800 text-white text-[10px] rounded shadowing-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-50">
-                                    {settings?.address || 'Desa Besmarak, NTT'}
-                                </div>
-                            </a>
-
-                            {/* Socials */}
+                        <div className="flex items-center gap-3 pt-2">
                             {settings?.instagram_url && (
-                                <a href={settings.instagram_url} target="_blank" rel="noopener noreferrer" className="p-3 bg-gray-800 rounded-xl text-gray-400 hover:bg-primary hover:text-white transition-all shadow-lg">
-                                    <InstagramLogo size={24} weight="fill" />
+                                <a href={settings.instagram_url} target="_blank" rel="noopener noreferrer" className="p-2.5 bg-white/10 rounded-lg text-white/60 hover:bg-primary hover:text-white transition-all">
+                                    <InstagramLogo size={18} weight="fill" />
                                 </a>
                             )}
-                            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="p-3 bg-gray-800 rounded-xl text-gray-400 hover:bg-primary hover:text-white transition-all shadow-lg">
-                                <WhatsappLogo size={24} weight="fill" />
+                            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="p-2.5 bg-white/10 rounded-lg text-white/60 hover:bg-primary hover:text-white transition-all">
+                                <WhatsappLogo size={18} weight="fill" />
                             </a>
-                            <a href="#" className="p-3 bg-gray-800 rounded-xl text-gray-400 hover:bg-primary hover:text-white transition-all shadow-lg">
-                                <YoutubeLogo size={24} weight="fill" />
-                            </a>
-                            <a href="#" className="p-3 bg-gray-800 rounded-xl text-gray-400 hover:bg-primary hover:text-white transition-all shadow-lg">
-                                <FacebookLogo size={24} weight="fill" />
+                            <a href="#" className="p-2.5 bg-white/10 rounded-lg text-white/60 hover:bg-primary hover:text-white transition-all">
+                                <YoutubeLogo size={18} weight="fill" />
                             </a>
                         </div>
                     </div>
+
+                    {/* Col 2: Resources */}
+                    <div className="space-y-4">
+                        <h4 className="text-xs font-black uppercase tracking-[0.2em] text-white/40">Pusat Informasi</h4>
+                        <ul className="space-y-2.5">
+                            <li>
+                                <Link to="/news" className="text-sm text-white/60 hover:text-white transition-colors flex items-center gap-1 group">
+                                    Blog & Update <ArrowUpRight size={12} weight="bold" className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/gallery" className="text-sm text-white/60 hover:text-white transition-colors flex items-center gap-1 group">
+                                    Galeri Momen <ArrowUpRight size={12} weight="bold" className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </Link>
+                            </li>
+                            <li>
+                                <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="text-sm text-white/60 hover:text-white transition-colors flex items-center gap-1 group">
+                                    Lokasi Kami <ArrowUpRight size={12} weight="bold" className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Col 3: About */}
+                    <div className="space-y-4">
+                        <h4 className="text-xs font-black uppercase tracking-[0.2em] text-white/40">Tentang Kami</h4>
+                        <ul className="space-y-2.5">
+                            <li>
+                                <Link to="/about" className="text-sm text-white/60 hover:text-white transition-colors flex items-center gap-1 group">
+                                    Kisah Kami <ArrowUpRight size={12} weight="bold" className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/#tim" className="text-sm text-white/60 hover:text-white transition-colors flex items-center gap-1 group">
+                                    Tim <ArrowUpRight size={12} weight="bold" className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/#produk" className="text-sm text-white/60 hover:text-white transition-colors flex items-center gap-1 group">
+                                    Produk <ArrowUpRight size={12} weight="bold" className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Col 4: Contact */}
+                    <div className="space-y-4">
+                        <h4 className="text-xs font-black uppercase tracking-[0.2em] text-white/40">Kontak</h4>
+                        <ul className="space-y-2.5">
+                            <li className="text-sm text-white/60">
+                                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                                    {settings?.whatsapp_number ? `+${settings.whatsapp_number.replace(/^62/, '62 ').replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')}` : '+62 813-3839-8197'}
+                                </a>
+                            </li>
+                            <li className="text-sm text-white/60">
+                                {settings?.address || 'Desa Besmarak, NTT'}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
-                {/* Bottom Section */}
-                <div className="pt-8 border-t border-gray-800/50 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <p className="text-gray-500 text-[10px] font-medium uppercase tracking-[0.2em]">
+                {/* Bottom Bar */}
+                <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-white/30 text-[10px] font-medium uppercase tracking-[0.2em]">
                         © 2026 Thangun Afa Besmarak. Hak Cipta Dilindungi.
                     </p>
-                    <div className="flex items-center space-x-8 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
-                        <Link to="/privacy" className="hover:text-white transition-colors">Privacy</Link>
-                        <Link to="/terms" className="hover:text-white transition-colors">Terms</Link>
+                    <div className="flex items-center space-x-8 text-[10px] font-bold uppercase tracking-[0.2em] text-white/30">
+                        <Link to="/privacy" className="hover:text-white transition-colors">Kebijakan Privasi</Link>
+                        <Link to="/terms" className="hover:text-white transition-colors">Syarat & Ketentuan</Link>
                     </div>
                 </div>
             </div>

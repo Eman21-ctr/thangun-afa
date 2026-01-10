@@ -174,6 +174,48 @@ export const useContent = () => {
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['team'] })
     })
 
+    // PRODUCTS
+    const productsQuery = useQuery({
+        queryKey: ['products'],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from('products')
+                .select('*')
+                .order('created_at', { ascending: false })
+            if (error) throw error
+            return data
+        }
+    })
+
+    const addProduct = useMutation({
+        mutationFn: async (product) => {
+            const { data, error } = await supabase.from('products').insert(product)
+            if (error) throw error
+            return data
+        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['products'] })
+    })
+
+    const updateProduct = useMutation({
+        mutationFn: async (product) => {
+            const { data, error } = await supabase
+                .from('products')
+                .update(product)
+                .eq('id', product.id)
+            if (error) throw error
+            return data
+        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['products'] })
+    })
+
+    const deleteProduct = useMutation({
+        mutationFn: async (id) => {
+            const { error } = await supabase.from('products').delete().eq('id', id)
+            if (error) throw error
+        },
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['products'] })
+    })
+
     return {
         settings: settingsQuery.data,
         isLoading: settingsQuery.isLoading,
@@ -193,6 +235,11 @@ export const useContent = () => {
         addNews,
         updateNews,
         deleteNews,
-        useNewsArticle
+        useNewsArticle,
+        products: productsQuery.data || [],
+        isLoadingProducts: productsQuery.isLoading,
+        addProduct,
+        updateProduct,
+        deleteProduct
     }
 }
