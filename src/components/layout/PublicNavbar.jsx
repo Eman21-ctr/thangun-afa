@@ -23,6 +23,7 @@ const PublicNavbar = ({ isHome = false }) => {
     const navLinks = [
         { name: 'Beranda', href: '/' },
         { name: 'Tentang', href: '/#tentang' },
+        { name: 'Produk', href: '/#produk' },
         { name: 'Tim', href: '/#tim' },
         { name: 'Berita', href: '/#berita' },
         { name: 'Galeri', href: '/#galeri' },
