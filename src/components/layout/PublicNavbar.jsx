@@ -25,7 +25,7 @@ const PublicNavbar = ({ isHome = false }) => {
         { name: 'Tentang', href: '/#tentang' },
         { name: 'Produk', href: '/#produk' },
         { name: 'Tim', href: '/#tim' },
-        { name: 'Berita', href: '/#berita' },
+        { name: 'Blog', href: '/#berita' },
         { name: 'Galeri', href: '/#galeri' },
     ]
 

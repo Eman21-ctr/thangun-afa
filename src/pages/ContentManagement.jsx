@@ -366,11 +366,11 @@ const ContentManagement = () => {
                                     <div className="space-y-3">
                                         <div className="space-y-1">
                                             <label className="block text-[9px] font-medium text-gray-400 uppercase tracking-widest px-1">Subtitle</label>
-                                            <input type="text" value={formData.news_subtitle} onChange={(e) => setFormData({ ...formData, news_subtitle: e.target.value })} className="w-full p-2.5 bg-white border border-primary-100/30 rounded-md outline-none font-normal text-gray-700 text-sm" placeholder="Berita & Kegiatan" />
+                                            <input type="text" value={formData.news_subtitle} onChange={(e) => setFormData({ ...formData, news_subtitle: e.target.value })} className="w-full p-2.5 bg-white border border-primary-100/30 rounded-md outline-none font-normal text-gray-700 text-sm" placeholder="Wawasan & Cerita" />
                                         </div>
                                         <div className="space-y-1">
                                             <label className="block text-[9px] font-medium text-gray-400 uppercase tracking-widest px-1">Judul Besar</label>
-                                            <input type="text" value={formData.news_title} onChange={(e) => setFormData({ ...formData, news_title: e.target.value })} className="w-full p-2.5 bg-white border border-primary-100/30 rounded-md outline-none font-normal text-gray-700 text-sm" placeholder="Update Terbaru..." />
+                                            <input type="text" value={formData.news_title} onChange={(e) => setFormData({ ...formData, news_title: e.target.value })} className="w-full p-2.5 bg-white border border-primary-100/30 rounded-md outline-none font-normal text-gray-700 text-sm" placeholder="Blog & Artikel" />
                                         </div>
                                     </div>
                                 </div>

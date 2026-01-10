@@ -57,7 +57,7 @@ const PublicFooter = () => {
                         <ul className="space-y-2.5">
                             <li>
                                 <Link to="/news" className="text-sm text-white/60 hover:text-white transition-colors flex items-center gap-1 group">
-                                    Blog & Update <ArrowUpRight size={12} weight="bold" className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                    Blog & Artikel <ArrowUpRight size={12} weight="bold" className="opacity-0 group-hover:opacity-100 transition-opacity" />
                                 </Link>
                             </li>
                             <li>
