@@ -53,7 +53,7 @@ const ContentManagement = () => {
     const [newPhoto, setNewPhoto] = useState({ photo_url: '', caption: '', display_type: 'square' })
     const [newMember, setNewMember] = useState({ name: '', position: '', photo_url: '', quote: '' })
     const [newNews, setNewNews] = useState({ title: '', content: '', thumbnail_url: '', is_published: true })
-    const [newProduct, setNewProduct] = useState({ name: '', description: '', image_url: '', status: 'siap_panen', category: '' })
+    const [newProduct, setNewProduct] = useState({ name: '', description: '', image_url: '', status: 'siap_panen', category: '', is_featured: false })
     const [isUploading, setIsUploading] = useState(false)
 
     useEffect(() => {
@@ -204,7 +204,7 @@ const ContentManagement = () => {
                 await addProduct.mutateAsync(newProduct)
                 toast.success('Produk berhasil ditambahkan')
             }
-            setNewProduct({ name: '', description: '', image_url: '', status: 'siap_panen', category: '' })
+            setNewProduct({ name: '', description: '', image_url: '', status: 'siap_panen', category: '', is_featured: false })
             setEditingId(null)
         } catch (error) {
             toast.error('Gagal menyimpan produk')
@@ -1009,6 +1009,19 @@ const ContentManagement = () => {
                                         </div>
                                     )}
                                 </div>
+                                {/* Featured Toggle */}
+                                <label className="flex items-center space-x-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={newProduct.is_featured}
+                                        onChange={(e) => setNewProduct({ ...newProduct, is_featured: e.target.checked })}
+                                        className="w-5 h-5 text-yellow-500 border-gray-300 rounded focus:ring-yellow-400"
+                                    />
+                                    <div>
+                                        <span className="text-sm font-bold text-yellow-700">⭐ Produk Unggulan</span>
+                                        <p className="text-[10px] text-yellow-600">Tampilkan di Landing Page (maksimal 6)</p>
+                                    </div>
+                                </label>
                                 <button type="submit" className="w-full py-3 bg-primary text-white font-semibold uppercase tracking-wider rounded-lg shadow-lg shadow-primary/10 flex items-center justify-center space-x-2">
                                     <FloppyDisk size={18} weight="duotone" />
                                     <span>{editingId ? 'Simpan Perubahan' : 'Tambah Produk'}</span>
@@ -1026,7 +1039,10 @@ const ContentManagement = () => {
                                             <img src={item.image_url || '/images/hero-1.jpg'} alt="" className="w-full h-full object-cover" />
                                         </div>
                                         <div className="min-w-0">
-                                            <h3 className="text-xs font-black text-gray-800 truncate px-1">{item.name}</h3>
+                                            <div className="flex items-center gap-2">
+                                                <h3 className="text-xs font-black text-gray-800 truncate px-1">{item.name}</h3>
+                                                {item.is_featured && <span className="text-yellow-500 text-[10px]">⭐</span>}
+                                            </div>
                                             <p className="text-[10px] font-bold px-1">
                                                 <span className={clsx(
                                                     "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px]",
@@ -1046,7 +1062,8 @@ const ContentManagement = () => {
                                                     description: item.description || '',
                                                     image_url: item.image_url || '',
                                                     status: item.status || 'siap_panen',
-                                                    category: item.category || ''
+                                                    category: item.category || '',
+                                                    is_featured: item.is_featured || false
                                                 })
                                                 window.scrollTo({ top: 0, behavior: 'smooth' })
                                             }}

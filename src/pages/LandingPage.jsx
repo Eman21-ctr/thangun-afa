@@ -171,8 +171,8 @@ const LandingPage = () => {
             </section>
 
             {/* Product Showcase Section */}
-            {products && products.length > 0 && (
-                <ProductSection products={products} settings={settings} whatsappLink={whatsappLink} />
+            {products && products.filter(p => p.is_featured).length > 0 && (
+                <ProductSection products={products.filter(p => p.is_featured).slice(0, 6)} settings={settings} whatsappLink={whatsappLink} />
             )}
 
             {/* Tim Kami Section */}
