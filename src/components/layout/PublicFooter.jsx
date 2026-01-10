@@ -12,6 +12,7 @@ const PublicFooter = () => {
         { name: 'Equity Initiative', logo: '/images/partners/equity-initiative.png' },
         { name: 'GS Organik', logo: '/images/partners/gs-organik.png' },
         { name: 'Tandurasa', logo: '/images/partners/tandurasa.png' },
+        { name: 'GARAMIN', logo: '/images/partners/garamin.png' },
     ]
 
     return (
