@@ -82,6 +82,9 @@ const PublicNavbar = ({ isHome = false }) => {
                 </div>
 
                 <div className="flex items-center space-x-4">
+                    {/* Google Translate Widget */}
+                    <div id="google_translate_element" className="hidden lg:block"></div>
+
                     <Link
                         to="/login"
                         className={clsx(
