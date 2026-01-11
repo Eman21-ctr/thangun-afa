@@ -81,17 +81,36 @@ body {
 /* Google Translate Widget Styling */
 .goog-te-gadget {
   font-size: 0 !important;
+  line-height: 1 !important;
 }
 
 .goog-te-gadget .goog-te-combo {
-  font-size: 12px !important;
+  font-size: 11px !important;
   font-weight: 600 !important;
-  padding: 6px 10px !important;
-  border-radius: 8px !important;
-  border: 1px solid #e5e7eb !important;
-  background-color: #f9fafb !important;
-  color: #374151 !important;
+  padding: 8px 28px 8px 12px !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(45, 79, 30, 0.15) !important;
+  background-color: rgba(45, 79, 30, 0.05) !important;
+  color: #2D4F1E !important;
   cursor: pointer !important;
+  min-height: 36px !important;
+  height: 36px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%232D4F1E' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 10px center !important;
+  transition: all 0.2s ease !important;
+}
+
+.goog-te-gadget .goog-te-combo:hover {
+  background-color: rgba(45, 79, 30, 0.1) !important;
+  border-color: rgba(45, 79, 30, 0.25) !important;
+}
+
+.goog-te-gadget .goog-te-combo:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px rgba(45, 79, 30, 0.15) !important;
 }
 
 .goog-te-banner-frame {
@@ -103,5 +122,12 @@ body {
 }
 
 #google_translate_element {
-  display: inline-block;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+/* Hide Google branding */
+.goog-logo-link,
+.goog-te-gadget>span {
+  display: none !important;
 }
