@@ -37,10 +37,36 @@
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
         pageLanguage: 'id',
-        includedLanguages: 'en,id,zh-CN,ja,ko',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        includedLanguages: 'en',
         autoDisplay: false
       }, 'google_translate_element');
+    }
+
+    function switchToEnglish() {
+      // Set cookie and reload to trigger translation
+      document.cookie = 'googtrans=/id/en; path=/; domain=' + window.location.hostname;
+      document.cookie = 'googtrans=/id/en; path=/';
+      window.location.reload();
+    }
+
+    function switchToIndonesian() {
+      // Clear the translation cookie
+      document.cookie = 'googtrans=; path=/; domain=' + window.location.hostname + '; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      document.cookie = 'googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+      window.location.reload();
+    }
+
+    function toggleLanguage() {
+      var currentLang = document.cookie.match(/googtrans=\/id\/en/);
+      if (currentLang) {
+        switchToIndonesian();
+      } else {
+        switchToEnglish();
+      }
+    }
+
+    function isEnglishActive() {
+      return document.cookie.indexOf('googtrans=/id/en') !== -1;
     }
   </script>
   <script type="text/javascript"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { List, X } from '@phosphor-icons/react'
+import { List, X, Globe } from '@phosphor-icons/react'
 import clsx from 'clsx'
 
 const PublicNavbar = ({ isHome = false }) => {
@@ -19,6 +19,20 @@ const PublicNavbar = ({ isHome = false }) => {
 
     // If we're not on home, we always want the white/scrolled state
     const displayScrolled = !isActuallyHome || scrolled
+
+    // Check if English is currently active
+    const [isEnglish, setIsEnglish] = useState(false)
+
+    useEffect(() => {
+        // Check cookie on mount
+        setIsEnglish(document.cookie.indexOf('googtrans=/id/en') !== -1)
+    }, [])
+
+    const toggleLanguage = () => {
+        if (typeof window !== 'undefined' && window.toggleLanguage) {
+            window.toggleLanguage()
+        }
+    }
 
     const navLinks = [
         { name: 'Beranda', href: '/' },
@@ -82,9 +96,23 @@ const PublicNavbar = ({ isHome = false }) => {
                     </div>
                 </div>
 
-                <div className="flex items-center space-x-4">
-                    {/* Google Translate Widget */}
-                    <div id="google_translate_element" className="hidden lg:block"></div>
+                <div className="flex items-center space-x-3">
+                    {/* Hidden Google Translate Element */}
+                    <div id="google_translate_element" className="hidden"></div>
+
+                    {/* Custom Language Toggle Button */}
+                    <button
+                        onClick={toggleLanguage}
+                        className={clsx(
+                            "hidden lg:flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-xl transition-all duration-500",
+                            displayScrolled
+                                ? "bg-primary/5 text-primary border border-primary/10 hover:bg-primary/10"
+                                : "bg-white/10 text-white backdrop-blur-md border border-white/20 hover:bg-white/20"
+                        )}
+                    >
+                        <Globe size={14} weight="bold" />
+                        <span>{isEnglish ? 'Indonesia' : 'English'}</span>
+                    </button>
 
                     <Link
                         to="/login"
