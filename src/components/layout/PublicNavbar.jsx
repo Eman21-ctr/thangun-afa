@@ -104,15 +104,16 @@ const PublicNavbar = ({ isHome = false }) => {
                     <button
                         onClick={toggleLanguage}
                         className={clsx(
-                            "hidden lg:flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-xl transition-all duration-500",
+                            "hidden lg:flex items-center gap-1.5 text-xs font-bold transition-all duration-300 hover:opacity-70",
                             displayScrolled
-                                ? "bg-primary/5 text-primary border border-primary/10 hover:bg-primary/10"
-                                : "bg-white/10 text-white backdrop-blur-md border border-white/20 hover:bg-white/20"
+                                ? "text-primary"
+                                : "text-white/90"
                         )}
                     >
                         <Globe size={14} weight="bold" />
                         <span>{isEnglish ? 'Indonesia' : 'English'}</span>
                     </button>
+
 
                     <Link
                         to="/login"
