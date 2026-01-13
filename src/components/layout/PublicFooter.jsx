@@ -105,7 +105,7 @@ const PublicFooter = () => {
                                 </a>
                             </li>
                             <li className="text-sm text-white/60">
-                                {settings?.address || 'Desa Besmarak, NTT'}
+                                {settings?.address || 'Desa Besmarak, NTT'}, Indonesia
                             </li>
                         </ul>
                     </div>
