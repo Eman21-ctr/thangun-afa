@@ -37,11 +37,9 @@ const PublicFooter = () => {
                             Kelompok Tani Muda Besmarak. Dari petani muda, untuk bumi yang lebih hijau.
                         </p>
                         <div className="flex items-center gap-3 pt-2">
-                            {settings?.instagram_url && (
-                                <a href={settings.instagram_url} target="_blank" rel="noopener noreferrer" className="p-2.5 bg-white/10 rounded-lg text-white/60 hover:bg-primary hover:text-white transition-all">
-                                    <InstagramLogo size={18} weight="fill" />
-                                </a>
-                            )}
+                            <a href={settings?.instagram_url || 'https://www.instagram.com/thangunafa?igsh=MXViejBic2cybTN4ZA=='} target="_blank" rel="noopener noreferrer" className="p-2.5 bg-white/10 rounded-lg text-white/60 hover:bg-primary hover:text-white transition-all">
+                                <InstagramLogo size={18} weight="fill" />
+                            </a>
                             <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="p-2.5 bg-white/10 rounded-lg text-white/60 hover:bg-primary hover:text-white transition-all">
                                 <WhatsappLogo size={18} weight="fill" />
                             </a>
