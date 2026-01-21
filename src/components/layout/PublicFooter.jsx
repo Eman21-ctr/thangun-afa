@@ -43,9 +43,10 @@ const PublicFooter = () => {
                             <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="p-2.5 bg-white/10 rounded-lg text-white/60 hover:bg-primary hover:text-white transition-all">
                                 <WhatsappLogo size={18} weight="fill" />
                             </a>
-                            <a href="#" className="p-2.5 bg-white/10 rounded-lg text-white/60 hover:bg-primary hover:text-white transition-all">
+                            <a href="https://www.youtube.com/@ThangunAfaBesmarak" target="_blank" rel="noopener noreferrer" className="p-2.5 bg-white/10 rounded-lg text-white/60 hover:bg-primary hover:text-white transition-all">
                                 <YoutubeLogo size={18} weight="fill" />
                             </a>
+
                         </div>
                     </div>
 
