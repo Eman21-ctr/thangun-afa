@@ -170,6 +170,30 @@ const LandingPage = () => {
                 </div>
             </section>
 
+            {/* Video Highlight Section */}
+            <section className="py-12 lg:py-20 px-6 bg-primary-50">
+                <div className="max-w-5xl mx-auto text-center space-y-8">
+                    <div className="space-y-3">
+                        <div className="inline-flex items-center px-4 py-1.5 bg-primary/10 backdrop-blur-sm rounded-full text-primary text-[10px] font-black uppercase tracking-[0.2em]">
+                            <span>Tonton Video</span>
+                        </div>
+                        <h2 className="text-3xl md:text-5xl font-normal text-gray-900 tracking-tight">
+                            Lihat Perjalanan Kami
+                        </h2>
+                    </div>
+                    <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl shadow-primary/10">
+                        <iframe
+                            src="https://www.youtube.com/embed/7OmeXX7eWp4"
+                            title="Thangun Afa Besmarak"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                            className="absolute inset-0 w-full h-full"
+                        ></iframe>
+                    </div>
+                </div>
+            </section>
+
             {/* Product Showcase Section */}
             {products && products.filter(p => p.is_featured).length > 0 && (
                 <ProductSection products={products.filter(p => p.is_featured).slice(0, 6)} settings={settings} whatsappLink={whatsappLink} />
