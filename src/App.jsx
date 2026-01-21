@@ -16,6 +16,7 @@ import ContentManagement from './pages/ContentManagement'
 import NewsDetail from './pages/NewsDetail'
 import AllNews from './pages/AllNews'
 import AllGallery from './pages/AllGallery'
+import AllProducts from './pages/AllProducts'
 import AboutUs from './pages/AboutUs'
 import { ProtectedRoute } from './components/ProtectedRoute'
 import MainLayout from './components/layout/MainLayout'
@@ -114,6 +115,7 @@ function App() {
                             <Route path="/news/:slug" element={<NewsDetail />} />
                             <Route path="/news" element={<AllNews />} />
                             <Route path="/gallery" element={<AllGallery />} />
+                            <Route path="/products" element={<AllProducts />} />
                             <Route path="/about" element={<AboutUs />} />
                             <Route path="/" element={<LandingPage />} />
                         </Routes>

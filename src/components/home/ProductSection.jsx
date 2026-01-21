@@ -1,4 +1,5 @@
-import { WhatsappLogo, Leaf, Plant } from '@phosphor-icons/react'
+import { WhatsappLogo, Leaf, Plant, ArrowRight } from '@phosphor-icons/react'
+import { Link } from 'react-router-dom'
 import { clsx } from 'clsx'
 import { useReveal } from '../../hooks/useReveal'
 
@@ -75,6 +76,17 @@ const ProductSection = ({ products = [], settings, whatsappLink }) => {
                             </div>
                         )
                     })}
+                </div>
+
+                {/* View All Products Link */}
+                <div className="mt-12 text-center">
+                    <Link
+                        to="/products"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 shadow-sm hover:shadow-lg group"
+                    >
+                        <span>Lihat Semua Produk</span>
+                        <ArrowRight size={16} weight="bold" className="group-hover:translate-x-1 transition-transform" />
+                    </Link>
                 </div>
             </div>
         </section>
